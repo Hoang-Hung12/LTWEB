@@ -1,0 +1,35 @@
+.hero-section {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../images/sanchinh.avif');
+    background-size: cover;
+    background-position: center;
+    color:white;
+    padding: 100px 0;
+    margin-bottom: 40px;
+}
+.search-box{
+    background: rgba(255, 255, 255, 0.75);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+}
+.pitch-card{
+    border:none;
+    transition: transform 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+.pitch-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.pitch-img{
+    height:200px;
+    object-fit: cover;
+    border-top-left-radius: var(--bs-card-border-radius);
+    border-top-right-radius: var(--bs-card-border-radius);
+}
+.price-tag{
+    color: #d32f2f;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
