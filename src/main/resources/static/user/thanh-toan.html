@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác nhận Đặt Sân</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../static/user/css/style.css">
+    <link rel="stylesheet" href="../../static/user/css/thanh-toan.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-futbol"></i> ARENAX</a>
+        </div>
+    </nav>
+
+    <div class="container checkout-container">
+        <h1 class="page-title">Xác nhận đặt sân</h1>
+        
+        <div class="row">
+            <div class="col-lg-7">
+                
+                <div class="box">
+                    <h3 class="box-title">1. Chọn thời gian</h3>
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">Ngày thi đấu</label>
+                        <input type="date" class="form-control" value="2026-02-12" style="max-width: 250px;">
+                    </div>
+                    <div>
+                        <label class="form-label font-weight-bold">Khung giờ (90 phút)</label>
+                        <div class="time-slots">
+                            <div class="slot disabled">16:00 - 17:30<br><small>Đã đặt</small></div>
+                            <div class="slot active">17:30 - 19:00<br><small>Đang chọn</small></div>
+                            <div class="slot">19:00 - 20:30<br><small>Trống</small></div>
+                            <div class="slot">20:30 - 22:00<br><small>Trống</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <h3 class="box-title">2. Ưu đãi & Tích điểm</h3>
+                    <label class="form-label">Mã giảm giá</label>
+                    <div class="promo-box">
+                        <input type="text" class="form-control" placeholder="Nhập mã (VD: ARENAX10)">
+                        <button class="btn btn-dark">Áp dụng</button>
+                    </div>
+                    
+                    <div class="points-box">
+                        <div>
+                            <strong class="text-success"><i class="fas fa-gift"></i> Điểm của bạn: 150 điểm</strong>
+                            <div style="font-size: 13px; color: #666;">Dùng 100 điểm để giảm 10.000đ</div>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="usePoints" style="width: 40px; height: 20px; cursor: pointer;">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-5">
+                <div class="box bill-box">
+                    <h3 class="box-title">Thông tin hóa đơn</h3>
+                    
+                    <div class="pitch-info-sm">
+                        <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Pitch">
+                        <div>
+                            <h5 class="mb-1" style="font-weight: bold;">Sân A - Khu KTX</h5>
+                            <p class="mb-0 text-muted" style="font-size: 14px;">Sân 7 người | Cỏ nhân tạo</p>
+                        </div>
+                    </div>
+
+                    <div class="summary-row"><span>Ngày đá:</span> <strong>12/02/2026</strong></div>
+                    <div class="summary-row"><span>Khung giờ:</span> <strong>17:30 - 19:00</strong></div>
+                    <div class="summary-row"><span>Giá sân:</span> <strong>300.000đ</strong></div>
+                    <div class="summary-row text-success"><span>Giảm giá (Voucher):</span> <strong>- 30.000đ</strong></div>
+                    <div class="summary-row text-success"><span>Dùng điểm:</span> <strong id="pointDiscount">- 0đ</strong></div>
+                    
+                    <div class="summary-row summary-total">
+                        <span>Tổng cộng:</span>
+                        <span id="finalTotal">270.000đ</span>
+                    </div>
+
+                    <div class="summary-deposit">
+                        Cọc trước (30%): <span style="font-size: 18px;">81.000đ</span>
+                    </div>
+
+                    <button class="btn-submit">XÁC NHẬN ĐẶT SÂN <i class="fas fa-arrow-right ms-2"></i></button>
+                    <p class="text-center mt-3 text-muted" style="font-size: 13px;">Bạn sẽ nhận được 27 điểm thưởng sau trận đấu.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('usePoints').addEventListener('change', function() {
+            if(this.checked) {
+                document.getElementById('pointDiscount').innerText = '- 10.000đ';
+                document.getElementById('finalTotal').innerText = '260.000đ';
+            } else {
+                document.getElementById('pointDiscount').innerText = '- 0đ';
+                document.getElementById('finalTotal').innerText = '270.000đ';
+            }
+        });
+    </script>
+    <script src="../../static/user/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+.page-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e6e0e0;
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+.filter-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: flex-end;
+}
+.filter-box .form-select {
+    border: 1px solid #d1d5db; 
+    border-radius: 8px; 
+    padding: 8px 35px 8px 15px; 
+    font-size: 15px; 
+    color: #4b5563; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+}
+.filter-box .form-select:hover { border-color: #0d6efd; background-color: #f8f9fa; }
+.filter-box .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15); 
+    outline: none;
+}

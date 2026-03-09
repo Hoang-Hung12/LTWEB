@@ -1,0 +1,18 @@
+.checkout-container { margin-top: 40px; margin-bottom: 50px; }
+.page-title { font-size: 28px; font-weight: bold; margin-bottom: 30px; border-left: 4px solid #0d6efd; padding-left: 15px; }
+.box { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 25px; }
+.box-title { font-size: 18px; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+.time-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.slot { border: 1px solid #ddd; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+.slot:hover:not(.disabled) { border-color: #0d6efd; }
+.slot.active { background: #0d6efd; color: white; border-color: #0d6efd; font-weight: bold; }
+.slot.disabled { background: #f1f1f1; color: #aaa; cursor: not-allowed; text-decoration: line-through; }
+.promo-box { display: flex; gap: 10px; margin-bottom: 20px; }
+.points-box { background: #eef9f0; border: 1px dashed #198754; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+.bill-box { position: sticky; top: 20px; }
+.pitch-info-sm { display: flex; gap: 15px; margin-bottom: 20px; }
+.pitch-info-sm img { width: 80px; height: 80px; border-radius: 8px; object-fit: cover; }
+.summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; color: #555; }
+.summary-total { font-size: 22px; font-weight: bold; color: #dc3545; border-top: 1px solid #eee; padding-top: 15px; margin-top: 10px; }
+.summary-deposit { background: #fff8e1; color: #ff9800; font-weight: bold; padding: 12px; border-radius: 8px; margin-top: 15px; text-align: center; }
+.btn-submit { background: #0d6efd; color: white; width: 100%; padding: 15px; font-size: 16px; font-weight: bold; border: none; border-radius: 8px; margin-top: 20px; }

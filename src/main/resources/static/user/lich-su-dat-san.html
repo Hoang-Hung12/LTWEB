@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử đặt sân</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../static/user/css/style.css">
+    <link rel="stylesheet" href="../../static/user/css/lich-su.css">
+</head>
+<body>
+    <nav class = "navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
+        <div class = "container">
+            <a class = "navbar-brand fw-bold" href = "#"><i class = "fas fa-futbol me-2"></i>ARENAX</a>
+            <button class = "navbar-toggler" type = "button" data-bs-toggle="collapse" data-bs-target = "#navbarNav">
+                <span class = "navbar-toggler-icon"></span>
+            </button>
+            <div class = "collapse navbar-collapse" id = "navbarNav">
+                <ul class = "navbar-nav ms-auto align-items-center">
+                    <li class = "nav-item"><a class = "nav-link" href = "index.html">Trang chủ</a></li>
+                    <li class ="nav-item"><a class = "nav-link" href = "danh-sach-san.html">Danh sách sân</a></li>
+                    <li class = "nav-item"><a class ="nav-link active" href = "lich-su-dat-san.html">Lịch sử đặt sân</a></li>
+                    <li class = "nav-item ms-2"><a class = "btn btn-primary btn-sm px-3 rounded-pill" href = "login.html">Đăng nhập</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class = "container">
+        <div class = "history-container mt-5 mb-5 p-4 p-md-5">
+            <h1 class = "fw-bold mb-4 border-start border-4 border-primary ps-3 fs-4">Lịch sử đặt sân của tôi</h1>
+            <div class = "table-reponsive">
+                <table class = "table table-hover table-custom align-middle">
+                    <thead class = "table-light">
+                        <tr>
+                            <th class = "fw-semibold">Mã đơn</th>
+                            <th class = "fw-semibold">Sân bóng</th>
+                            <th class = "fw-semibold">Thời gian đá</th>
+                            <th class = "fw-semibold">Tổng tiền</th>
+                            <th class = "fw-semibold">Tích điểm</th>
+                            <th class = "fw-semibold">Trạng thái</th>
+                            <th class = "fw-semibold">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class = "fw-bold text-dark">#ORD889</td>
+                            <td>
+                                <div class = "fw-bold text-dark mb-1"> Sân A - Khu KTX</div>
+                                <div class = "text-secondary small">sân 7 người</div>
+                            </td>
+                            <td>
+                                <div>10/03/2026</div>
+                                <div class = "text-secondary small">17:30 - 19:00</div>
+                            </td>
+                            <td class = "fw-bold">300.000đ</td>
+                            <td class = "text-success fw-bold">+30 điểm</td>
+                            <td><span class = "badge bg-success-light rounded-pill px-3 py-2 fw-medium">Hoàn thành</span></td>
+                            <td>
+                                <button class = "btn btn-outline-primary btn-sm fw-bold px-3 py-1" data-bs-toggle = "modal" data-bs-target="#billModal">Xem Bill</button>
+                                <button class = "btn btn-primary btn-sm fw-bold px-3 py-1 ms-1">Đặt lại</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-dark">#ORD992</td>
+                            <td>
+                                <div class="fw-bold text-dark mb-1">Sân B - SVĐ</div>
+                                <div class="text-secondary small">Sân 5 người</div>
+                            </td>
+                            <td>
+                                <div>12/02/2026</div>
+                                <div class="text-secondary small">19:00 - 20:30</div>
+                            </td>
+                            <td class="fw-bold">200.000đ</td>
+                            <td class="text-muted">Chưa cộng</td>
+                            <td><span class="badge bg-warning-light rounded-pill px-3 py-2 fw-medium">Đã cọc 30%</span></td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm fw-bold px-3 py-1" data-bs-toggle="modal" data-bs-target="#billModal">Xem Bill</button>
+                                <button class="btn btn-outline-danger btn-sm fw-bold px-3 py-1 ms-1">Hủy sân</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="billModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 p-md-5">
+                    <div class="text-center border-dashed pb-4 mb-4">
+                        <h4 class="fw-bold">HÓA ĐƠN ĐẶT SÂN</h4>
+                        <p class="text-muted mb-0">Mã đơn: #ORD889</p>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2"><span>Sân:</span> <strong>Sân A - Khu KTX</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Thời gian:</span> <strong>17:30 - 19:00 (10/02)</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Giá gốc:</span> <strong>300.000đ</strong></div>
+                    <div class="d-flex justify-content-between mb-2 text-success"><span>Mã giảm giá (TET2026):</span> <strong>- 30.000đ</strong></div>
+                    <div class="d-flex justify-content-between mb-2 text-success"><span>Dùng điểm:</span> <strong>- 0đ</strong></div>
+                    <hr class="border-dashed">
+                    <div class="d-flex justify-content-between mb-2 fs-5 text-danger">
+                        <span>Tổng cộng:</span> <strong>270.000đ</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2"><span>Đã cọc (30%):</span> <strong>81.000đ</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Cần thanh toán tại sân:</span> <strong>189.000đ</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../static/user/js/main.js"></script>
+</body>
+</html>

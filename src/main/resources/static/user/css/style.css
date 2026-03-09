@@ -1,35 +1,83 @@
-.hero-section {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../images/sanchinh.avif');
-    background-size: cover;
-    background-position: center;
-    color:white;
-    padding: 100px 0;
-    margin-bottom: 40px;
+/* --- CÀI ĐẶT CHUNG --- */
+body { 
+    font-family: 'Segoe UI', sans-serif; 
+    background-color: #f4f6f9; 
 }
-.search-box{
-    background: rgba(255, 255, 255, 0.75);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+
+/* --- NAVBAR QUẢN LÝ ACTIVE --- */
+.navbar { 
+    background-color: #212529 !important; 
+    padding: 15px 0; 
 }
-.pitch-card{
-    border:none;
+.navbar-brand { 
+    color: #fff !important; 
+    font-weight: bold; 
+    font-size: 24px; 
+}
+.navbar-nav .nav-link { 
+    color: #ccc !important; 
+    transition: all 0.3s ease;
+}
+/* Hiệu ứng khi được trỏ vào hoặc đang active */
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active { 
+    color: #0d6efd !important; 
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(13,110,253,0.4); /* Làm sáng bừng chữ */
+}
+
+.btn-login { 
+    background-color: #0d6efd; 
+    color: white; 
+    border-radius: 20px; 
+    padding: 5px 20px; 
+    text-decoration: none; 
+}
+
+/* --- CARD SÂN BÓNG (Dùng chung nhiều trang) --- */
+.pitch-card { 
+    border: none; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
+    border-radius: 8px; 
+    overflow: hidden; 
+    margin-bottom: 30px; 
     transition: transform 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    margin-bottom: 30px;
 }
-.pitch-card:hover{
+.pitch-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
-.pitch-img{
-    height:200px;
-    object-fit: cover;
+.pitch-card img, .pitch-img { 
+    height: 220px; 
+    object-fit: cover; 
+    width: 100%; 
     border-top-left-radius: var(--bs-card-border-radius);
     border-top-right-radius: var(--bs-card-border-radius);
 }
-.price-tag{
-    color: #d32f2f;
-    font-weight: bold;
-    font-size: 1.1rem;
+.pitch-body { 
+    padding: 20px; 
+}
+.price-tag, .pitch-price { 
+    color: #d32f2f; 
+    font-weight: bold; 
+    font-size: 1.1rem; 
+}
+.badge-custom { 
+    position: absolute; 
+    top: 15px; 
+    right: 15px; 
+    background: #28a745; 
+    color: white; 
+    padding: 5px 15px; 
+    border-radius: 20px; 
+}
+
+/* --- BOX TÌM KIẾM CHUNG --- */
+.search-box {
+    background: rgba(255, 255, 255, 0.9); 
+    padding: 30px; 
+    border-radius: 10px;
+    max-width: 900px; 
+    margin: 20px auto 0; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }

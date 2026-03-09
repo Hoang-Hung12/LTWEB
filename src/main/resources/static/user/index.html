@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ - ArenaX</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../static/user/css/style.css">
+    <link rel="stylesheet" href="../../static/user/css/index.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#"><i class="fas fa-futbol me-2"></i>ARENAX</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="danh-sach-san.html">Danh sách sân</a></li>
+                    <li class="nav-item"><a class="nav-link" href="lich-su-dat-san.html">Lịch sử đặt</a></li>    
+                    <li class="nav-item ms-2"><a class="btn btn-primary btn-sm px-3 rounded-pill" href="login.html">Đăng nhập</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">Tìm & Đặt Sân Nhanh Chóng</h1>
+            <p class="lead mb-5">Hệ thống quản lý sân bóng hiện đại nhất Hà Nội</p>
+            <div class="row justify-content-center">
+                <div class="col-ms-10">
+                    <div class="search-box text-dark">
+                        <form class="row g-3 align-items-end">
+                            <div class="col-md-3 text-start">
+                                <label class="form-label fw-bold">Ngày đá</label>
+                                <input type="date" class="form-control" value="2026-02-27"> 
+                            </div>
+                            <div class="col-md-3 text-start">
+                                <label class="form-label fw-bold">Khung giờ</label>
+                                <select class="form-select">
+                                    <option>17:00 - 18:30</option>
+                                    <option>18:30 - 20:00</option>
+                                    <option>20:00 - 21:30</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 text-start">
+                                <label class="form-label fw-bold">Loại sân</label>
+                                <select class="form-select">
+                                    <option>Sân 5 người</option>
+                                    <option>Sân 7 người</option>
+                                    <option>Sân 11 người</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-success w-100 fw-bold py-2"><i class="fas fa-search me-2"></i>Tìm sân</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <div class="container py-4">
+        <h3 class="fw-bold mb-4 border-start border-4 border-primary ps-3"> Sân nổi bật</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card pitch-card">
+                    <img src="../../static/user/images/san3.jpg" class="pitch-img card-img-top" alt="San 1">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-info text-dark"> Sân 7 người</span>
+                            <span class="badge bg-success "><i class="fas fa-check-circle me-1"></i>Còn trống</span>
+                        </div>
+                        <h5 class="card-title fw-bold"> Sân A - Khu KTX</h5>
+                        <p class="card-text text-muted"><i class="fas fa-map-marker-alt me-2"></i>Khu A học viện</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="price-tag">300.000đ<span class="text-muted fs-6 fw-normal">/1.5h</span></div>
+                            <button class="btn btn-outline-primary btn-sm" onclick="openModal()">Xem chi tiết</button>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white  border-0 pb-3">
+                        <button class="btn btn-primary w-100 fw-bold">ĐẶT NGAY</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card pitch-card">
+                    <img src="../../static/user/images/san1.avif" class="pitch-img card-img-top" alt="San 2">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-info text-dark"> Sân 5 người</span>
+                            <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Còn trống</span>
+                        </div>
+                        <h5 class="card-title fw-bold">Sân B - Khu Vé</h5>
+                        <p class="card-text text-muted"><i class="fas fa-map-marker-alt me-2"></i>Khu B XXX</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="price-tag">250.000đ<span class="text-muted fs-6 fw-normal">/1.5h</span></div>
+                            <button class="btn btn-outline-primary btn-sm" onclick="openModal()"> Xem chi tiết</button>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0 pb-3">
+                        <button class="btn btn-primary w-100 fw-bold">ĐẶT NGAY</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card pitch-card">
+                    <img src="../../static/user/images/san2.avif" class="pitch-img card-img-top" alt="San 3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-warning text-dark">Sân 5 người</span>
+                            <span class="badge bg-danger"><i class="fas fa-check-circle me-1"></i> Hết chỗ</span>
+                        </div>
+                        <h5 class="card-title fw-bold"> Sân C - Khu Sau</h5>
+                        <p class="card-text text-muted"><i class="fas fa-map-marker-alt me-2"></i>KHU C</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="price-tag">450.000đ<span class="text-muted fs-6 fw-normal">/1.5h</span></div>
+                            <button class="btn btn-outline-primary btn-sm" onclick="openModal()"> Xem chi tiết</button>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0 pb-3">
+                        <button class="btn btn-secondary w-100 fw-bold">ĐẶT NGAY</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <button class="btn btn-outline-primary btn-lg rounded-pill px-5 py-2 fw-bold "> Xem thêm &rarr;</button>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0">&copy; 2024 ARENAX Football Management. Designed by Hung Xuan Hoang.</p>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="detailModal">
+        <div class="custom-modal">
+            <i class="fas fa-times modal-close" onclick="closeModal()"></i>
+            
+            <div class="modal-left">
+                <h2 class="modal-title">Sân A - Khu KTX</h2>
+                <p class="modal-loc"><i class="fas fa-map-marker-alt text-danger me-2"></i>Khu A, Học viện PTIT</p>
+                <hr style="border-color: #eee;">
+                
+                <h5 class="mb-3 fw-bold">Tiện ích</h5>
+                <div class="amenities">
+                    <div class="amenity"><i class="fas fa-wifi"></i>Wifi</div>
+                    <div class="amenity"><i class="fas fa-parking text-success"></i>Gửi xe</div>
+                    <div class="amenity"><i class="fas fa-tint text-info"></i>Nước uống</div>
+                    <div class="amenity"><i class="fas fa-tshirt text-warning"></i>Thuê áo</div>
+                </div>
+
+                <h5 class="mb-2 fw-bold mt-4">Mô tả</h5>
+                <p class="modal-desc">Sân cỏ nhân tạo chất lượng cao 100% nhập khẩu, hệ thống đèn chiếu sáng tiêu chuẩn LED Philips. Phù hợp cho đá giải, đá giao hữu và quay phát trực tiếp.</p>
+            </div>
+
+            <div class="modal-right">
+                <div class="price-box">
+                    <h3>300.000đ <span>/ trận</span></h3>
+                </div>
+                <hr style="border-color: #ddd;">
+                <ul class="benefits">
+                    <li><i class="fas fa-check text-success"></i> Giữ sân ngay lập tức</li>
+                    <li><i class="fas fa-check text-success"></i> Đặt cọc online chỉ 30%</li>
+                    <li><i class="fas fa-check text-success"></i> Hoàn cọc nếu hủy trước 24h</li>
+                </ul>
+                <button class="btn btn-primary w-100 fw-bold py-2 mt-2">ĐẶT LỊCH NGAY</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="../../static/user/js/xem-them.js"></script>
+    <script src="../../static/user/js/main.js"></script>
+</body>
+</html>

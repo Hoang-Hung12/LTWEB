@@ -1,0 +1,13 @@
+.history-container { 
+    background: #fff; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+}
+.bg-success-light {
+    background-color: #d1e7dd !important; 
+    color: #0f5132 !important; 
+}
+.bg-warning-light {
+    background-color: #fff3cd !important; 
+    color: #854000 !important; 
+}

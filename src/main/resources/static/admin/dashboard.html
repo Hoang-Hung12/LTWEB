@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARENAX Admin - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../static/admin/style.css"> 
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-header"><i class="fas fa-futbol me-2"></i> ARENAX ADMIN</div>
+    <ul class="nav flex-column mt-3">
+        <li class="nav-item"><a class="nav-link active" href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="quan-ly-don-dat.html"><i class="fas fa-calendar-check"></i> Quản lý đơn đặt</a></li>
+        <li class="nav-item"><a class="nav-link" href="lap-hoa-don.html"><i class="fas fa-file-invoice-dollar"></i> Lập hóa đơn</a></li>
+        <li class="nav-item"><a class="nav-link" href="quan-ly-san.html"><i class="fas fa-flag"></i> Quản lý sân</a></li>
+        <li class="nav-item"><a class="nav-link" href="quan-ly-khach-hang.html"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
+        <li class="nav-item"><a class="nav-link" href="thong-ke-doanh-thu.html"><i class="fas fa-chart-line"></i> Thống kê doanh thu</a></li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="top-header">
+        <div class="text-secondary fw-bold fs-5">Dashboard Tổng Quan</div>
+        <div class="d-flex align-items-center gap-2">
+            <div class="text-end lh-1">
+                <div class="fw-bold small">Hoàng Xuân Hưng</div>
+                <div class="text-muted" style="font-size: 0.75rem;">Admin</div>
+            </div>
+            <div class="avatar">H</div>
+        </div>
+    </div>
+
+    <div class="page-section">
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card-custom p-3 border-start border-4 border-primary">
+                    <div class="text-secondary small fw-bold text-uppercase">Doanh thu hôm nay</div>
+                    <div class="fs-4 fw-bold mt-1 text-dark">1.250.000 đ</div>
+                    <div class="small text-success mt-1"><i class="fas fa-arrow-up"></i> 15%</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card-custom p-3 border-start border-4 border-success">
+                    <div class="text-secondary small fw-bold text-uppercase">Đơn đặt sân</div>
+                    <div class="fs-4 fw-bold mt-1 text-dark">24 Đơn</div>
+                    <div class="small text-muted mt-1">Chờ xử lý: <strong>4</strong></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card-custom p-3 border-start border-4 border-warning">
+                    <div class="text-secondary small fw-bold text-uppercase">Khách hàng mới</div>
+                    <div class="fs-4 fw-bold mt-1 text-dark">5</div>
+                    <div class="small text-success mt-1">+2 so với hôm qua</div>
+                </div>
+            </div>
+             <div class="col-md-3">
+                <div class="card-custom p-3 border-start border-4 border-danger">
+                    <div class="text-secondary small fw-bold text-uppercase">Sân đang bảo trì</div>
+                    <div class="fs-4 fw-bold mt-1 text-dark">1</div>
+                    <div class="small text-danger mt-1">Sân C (Cỏ hỏng)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-custom">
+            <div class="card-custom-header">
+                <div class="card-title"><i class="fas fa-history me-2"></i>Hoạt động gần đây</div>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Thời gian</th>
+                            <th>Nội dung</th>
+                            <th>Người thực hiện</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="ps-4">10:30 AM</td>
+                            <td>Tạo hóa đơn #HD102 cho đơn #ORD45</td>
+                            <td>Admin Hưng</td>
+                            <td><span class="badge-soft badge-soft-success">Hoàn thành</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4">09:15 AM</td>
+                            <td>Hủy đơn đặt sân #ORD44 (Khách yêu cầu)</td>
+                            <td>Admin Hưng</td>
+                            <td><span class="badge-soft badge-soft-danger">Đã hủy</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4">08:00 AM</td>
+                            <td>Cập nhật trạng thái Sân A -> Trống</td>
+                            <td>Hệ thống</td>
+                            <td><span class="badge-soft badge-soft-info">Auto</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../static/admin/script.js"></script>
+</body>
+</html>
