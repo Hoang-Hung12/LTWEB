@@ -7,5 +7,5 @@ import com.hung.demo_web.entity.HoaDonEntity;
 
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDonEntity, String>{
-    
+    boolean existsByDonDatSan_MaDon(String maDon);
 }

@@ -32,4 +32,10 @@ public class DonDatSanController {
         // Nhận JSON từ Frontend, đẩy xuống Service để kiểm tra logic và tính tiền
         return new ResponseEntity<>(donDatSanService.taoDonDatSan(dto), HttpStatus.CREATED);
     }
+    @PatchMapping("/{maDon}/trang-thai")
+    public ResponseEntity<DonDatSanDto> capNhatTrangThai(
+            @PathVariable String maDon,
+            @RequestParam String trangThai) {
+        return ResponseEntity.ok(donDatSanService.capNhatTrangThai(maDon, trangThai));
+    }
 }

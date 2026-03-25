@@ -8,4 +8,5 @@ public interface DonDatSanService {
     List<DonDatSanDto> getAllDonDat();
     List<DonDatSanDto> getLichSuDatSan(String maKH);
     DonDatSanDto taoDonDatSan(DonDatSanDto dto);
+    DonDatSanDto capNhatTrangThai(String maDon, String trangThai);
 }

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class HoaDonServiceImpl implements HoaDonService {
@@ -36,32 +35,39 @@ public class HoaDonServiceImpl implements HoaDonService {
         }
         return dto;
     }
-
-    @Override
+@Override
+    @org.springframework.transaction.annotation.Transactional // Fix lỗi 8
     public HoaDonDto xuatHoaDon(String maDon, String maQLLap) {
-        // 1. TÌM KIẾM ĐÚNG TÊN ENTITY 'DonDatSan' VÀ 'TaiKhoan'
-        DonDatSan donDat = donDatSanRepository.findById(maDon)
-                .orElseThrow(() -> new KhongTimThay("Không tìm thấy Đơn đặt sân"));
-        TaiKhoan admin = taiKhoanRepository.findById(maQLLap)
-                .orElseThrow(() -> new KhongTimThay("Không tìm thấy Admin"));
+        // Fix lỗi 6: Check duplicate hóa đơn
+        if (hoaDonRepository.existsByDonDatSan_MaDon(maDon)) {
+            throw new LoiThaoTac("Đơn này đã có hóa đơn rồi!");
+        }
+
+        DonDatSan donDat = donDatSanRepository.findById(maDon).orElseThrow(() -> new KhongTimThay("Không tìm thấy Đơn đặt sân"));
+        TaiKhoan admin = taiKhoanRepository.findById(maQLLap).orElseThrow(() -> new KhongTimThay("Không tìm thấy Admin"));
 
         if (!donDat.getTrangThai().equals("Hoàn thành")) {
             throw new LoiThaoTac("Đơn đặt sân chưa hoàn thành, không thể xuất hóa đơn!");
         }
 
-        // 2. TÍNH TỔNG TIỀN DỊCH VỤ VỚI ĐÚNG ENTITY 'DonDat_DichVu'
         List<DonDat_DichVu> listDichVu = donDatDichVuRepository.findById_maDon(maDon);
         double tongTienDV = 0;
-        for (DonDat_DichVu dv : listDichVu) {
-            tongTienDV += dv.getThanhTien();
-        }
+        for (DonDat_DichVu dv : listDichVu) { tongTienDV += dv.getThanhTien(); }
 
         double tongThanhToan = donDat.getTienSan() + tongTienDV - donDat.getTienCoc();
         if (tongThanhToan < 0) tongThanhToan = 0;
 
-        // 3. KHỞI TẠO ĐÚNG ENTITY 'HoaDon'
+        // Fix lỗi 4: Cộng DiemTichLuy vào tài khoản khách sau khi hoàn thành hóa đơn
+        TaiKhoan khach = donDat.getKhachHang();
+        khach.setDiemTichLuy(khach.getDiemTichLuy() + donDat.getDiemThuong());
+        taiKhoanRepository.save(khach);
+
+        // Fix lỗi 6: Cập nhật trạng thái đơn thành Đã thanh toán
+        donDat.setTrangThai("Đã thanh toán");
+        donDatSanRepository.save(donDat);
+
         HoaDonEntity hoaDon = new HoaDonEntity();
-        hoaDon.setMaHoaDon("HD" + UUID.randomUUID().toString().substring(0, 6).toUpperCase());
+        hoaDon.setMaHoaDon("HD" + java.util.UUID.randomUUID().toString().substring(0, 6).toUpperCase());
         hoaDon.setDonDatSan(donDat);
         hoaDon.setNguoiLap(admin);
         hoaDon.setTongTienDichVu(tongTienDV);

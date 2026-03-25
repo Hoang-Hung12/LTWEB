@@ -22,26 +22,20 @@ public class KhuyenMaiJob {
     @Scheduled(cron = "0 0 0 * * ?")
     public void quetMaKhuyenMaiHetHan() {
         System.out.println("⏳ [JOB NỬA ĐÊM] Bắt đầu quét các mã khuyến mãi hết hạn...");
-
-        // 1. Lấy toàn bộ mã khuyến mãi lên
-        List<KhuyenMai> danhSachKM = khuyenMaiRepository.findAll();
-        int soMaBiKhoa = 0;
-        LocalDate homNay = LocalDate.now();
-
-        // 2. Chạy vòng lặp soi từng mã
-        for (KhuyenMai km : danhSachKM) {
-            // Nếu mã ĐANG MỞ (1) và NGÀY HẾT HẠN đã qua so với hôm nay
-            if (km.getTrangThai() == 1 && km.getNgayHetHan().isBefore(homNay)) {
-                km.setTrangThai(0); // Đổi thành ĐÃ KHÓA
-                khuyenMaiRepository.save(km); // Lưu lại xuống Database
-                soMaBiKhoa++;
-                System.out.println("   -> Đã khóa tự động mã: " + km.getMaCode());
-            }
+        
+        // Fix lỗi 9: Query thẳng DB để lọc mã, không dùng findAll()
+        List<KhuyenMai> hetHan = khuyenMaiRepository.findByTrangThaiAndNgayHetHanBefore(1, java.time.LocalDate.now());
+        
+        for (KhuyenMai km : hetHan) {
+            km.setTrangThai(0);
+            System.out.println("   -> Đã khóa tự động mã: " + km.getMaCode());
         }
-
-        System.out.println("✅ [JOB NỬA ĐÊM] Quét xong! Đã khóa thành công " + soMaBiKhoa + " mã hết hạn.");
+        
+        if (!hetHan.isEmpty()) {
+            khuyenMaiRepository.saveAll(hetHan); // Dùng saveAll hiệu suất cao hơn
+        }
+        System.out.println("✅ [JOB NỬA ĐÊM] Quét xong! Đã khóa thành công " + hetHan.size() + " mã.");
     }
-    
     
     // =========================================================================
     // BONUS THÊM 1 JOB THỰC TẾ HAY DÙNG: HỦY ĐƠN CHƯA CỌC SAU 30 PHÚT

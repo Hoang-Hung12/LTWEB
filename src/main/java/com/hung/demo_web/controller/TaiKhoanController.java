@@ -33,10 +33,12 @@ public class TaiKhoanController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody TaiKhoanDto loginRequest) {
+    public ResponseEntity<?> login(@RequestBody TaiKhoanDto loginRequest) {
         boolean isSuccess = taiKhoanService.login(loginRequest.getSdt(), loginRequest.getMatKhau());
         if(isSuccess) {
-            return ResponseEntity.ok("Đăng nhập thành công");
+            // Sửa: Trả về Object DTO chứa thông tin user thay vì String
+            TaiKhoanDto user = taiKhoanService.getBySdt(loginRequest.getSdt());
+            return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sai số điện thoại hoặc mật khẩu");
         }
