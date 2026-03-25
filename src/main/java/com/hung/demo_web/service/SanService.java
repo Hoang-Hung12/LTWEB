@@ -8,4 +8,6 @@ public interface SanService {
     List<SanDto> getAllSan();
     SanDto getSanById(String maSan);
     SanDto createSan(SanDto sanDto);
+    SanDto updateSan(String maSan, SanDto sanDto);
+    void deleteSan(String maSan);
 }

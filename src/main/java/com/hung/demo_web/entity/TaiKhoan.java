@@ -1,6 +1,6 @@
 package com.hung.demo_web.entity;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import jakarta.persistence.*;
 

@@ -1,12 +1,13 @@
 package com.hung.demo_web.dto;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public class TaiKhoanDto {
     private String maTK;
     private String hoten;
     private String sdt;
     private String email;
+    private String matKhau;
     private String vaiTro;
     private Integer diemTichLuy;
     private String hangThanhVien;
@@ -66,5 +67,11 @@ public class TaiKhoanDto {
     }
     public Timestamp getNgayTao(){
         return ngayTao;
+    }
+    public void setMatKhau(String matKhau){
+        this.matKhau = matKhau;
+    }
+    public String getMatKhau(){
+        return matKhau;
     }
 }

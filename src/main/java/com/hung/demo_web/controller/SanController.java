@@ -31,4 +31,15 @@ public class SanController {
     public ResponseEntity<SanDto> create(@RequestBody SanDto sanDTO) {
         return new ResponseEntity<>(sanService.createSan(sanDTO), HttpStatus.CREATED);
     }
+
+    @PutMapping("/{maSan}")
+    public ResponseEntity<SanDto> update(@PathVariable String maSan, @RequestBody SanDto sanDTO) {
+        return ResponseEntity.ok(sanService.updateSan(maSan, sanDTO));
+    }
+
+    @DeleteMapping("/{maSan}")
+    public ResponseEntity<Void> delete(@PathVariable String maSan) {
+        sanService.deleteSan(maSan);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -9,6 +9,6 @@ import com.hung.demo_web.entity.AnhSan;
 
 @Repository
 public interface AnhSanRepository extends JpaRepository<AnhSan, String>{
-    List<AnhSan> findBySan_MaSan(String maSan);
+    List<AnhSan> findByMaSan_MaSan(String maSan);
     
 }
