@@ -81,4 +81,10 @@ public class SanDto {
     public Integer getSoNguoi(){
         return soNguoi;
     }
+    // Thêm biến này vào cùng các biến khác
+    private String maLoaiSan; 
+
+    // Nhớ Generate ra 2 hàm Getter/Setter cho nó:
+    public String getMaLoaiSan() { return maLoaiSan; }
+    public void setMaLoaiSan(String maLoaiSan) { this.maLoaiSan = maLoaiSan; }
 }
