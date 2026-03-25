@@ -3,6 +3,8 @@ package com.hung.demo_web.entity;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "HoaDon")
 public class HoaDonEntity {
@@ -26,6 +28,7 @@ public class HoaDonEntity {
 
     @ManyToOne
     @JoinColumn(name = "MaQLLap")
+    @JsonIgnore
     private TaiKhoan nguoiLap;
 
     public String getMaHoaDon() {

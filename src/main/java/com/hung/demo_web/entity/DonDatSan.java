@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -42,14 +44,17 @@ public class DonDatSan {
 
     @ManyToOne
     @JoinColumn(name = "MaKM")
+    @JsonIgnore
     private KhuyenMai khuyenMai;
 
     @ManyToOne
     @JoinColumn(name = "MaSan", nullable = false)
+    @JsonIgnore
     private San san;
 
     @ManyToOne
     @JoinColumn(name = "MaKH", nullable = false)
+    @JsonIgnore
     private TaiKhoan khachHang;
 
     public String getMaDon() {

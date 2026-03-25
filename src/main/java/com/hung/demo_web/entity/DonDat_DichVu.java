@@ -1,6 +1,8 @@
     package com.hung.demo_web.entity;
 
-    import jakarta.persistence.*;
+    import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.*;
 
     @Entity
     @Table(name = "DonDat_DichVu")
@@ -11,11 +13,13 @@
         @ManyToOne
         @MapsId("MaDon")
         @JoinColumn(name = "MaDon")
+        @JsonIgnore
         private DonDatSan donDatSan;
 
         @ManyToOne
         @MapsId("MaDV")
         @JoinColumn(name = "MaDV")
+        @JsonIgnore
         private DichVu dichVu;
 
         @Column(name = "SoLuong")

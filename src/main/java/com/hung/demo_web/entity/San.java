@@ -1,5 +1,7 @@
 package com.hung.demo_web.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -32,6 +34,7 @@ public class San {
 
     @ManyToOne
     @JoinColumn(name = "MaLoaiSan")
+    @JsonIgnore
     private LoaiSan loaiSan;
 
     public void setMaSan(String maSan){
