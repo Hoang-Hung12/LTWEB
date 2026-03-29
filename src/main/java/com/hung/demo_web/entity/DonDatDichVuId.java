@@ -8,23 +8,23 @@ import jakarta.persistence.*;
 @Embeddable
 public class DonDatDichVuId implements Serializable{
     @Column(name = "MaDon")
-    private String MaDon;
+    private String maDon;
 
     @Column(name = "MaDV")
-    private String MaDV;
+    private String maDV;
 
-    public void setMaDon(String MaDon){
-        this.MaDon = MaDon;
+    public void setMaDon(String maDon){
+        this.maDon = maDon;
     }
     public String getMaDon(){
-        return MaDon;
+        return maDon;
     }
 
-    public void setMaDV(String MaDV){
-        this.MaDV = MaDV;
+    public void setMaDV(String maDV){
+        this.maDV = maDV;
     }
     public String getMaDV(){
-        return MaDV;
+        return maDV;
     }
 
     @Override
@@ -32,11 +32,11 @@ public class DonDatDichVuId implements Serializable{
         if(this == o) return true;
         if(o == null||this.getClass() != o.getClass()) return false;
         DonDatDichVuId that = (DonDatDichVuId) o;
-        return Objects.equals(that.MaDV, MaDV)&&Objects.equals(that.MaDon, MaDon);    
+        return Objects.equals(that.maDV, maDV)&&Objects.equals(that.maDon, maDon);    
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(MaDV, MaDon);
+        return Objects.hash(maDV, maDon);
     }
 }
