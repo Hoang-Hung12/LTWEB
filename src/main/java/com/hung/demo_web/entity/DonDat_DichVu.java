@@ -1,6 +1,6 @@
-    package com.hung.demo_web.entity;
+package com.hung.demo_web.entity;
 
-    import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
@@ -11,13 +11,13 @@ import jakarta.persistence.*;
         private DonDatDichVuId id;
         
         @ManyToOne
-        @MapsId("MaDon")
+        @MapsId("maDon")
         @JoinColumn(name = "MaDon")
         @JsonIgnore
         private DonDatSan donDatSan;
 
         @ManyToOne
-        @MapsId("MaDV")
+        @MapsId("maDV")
         @JoinColumn(name = "MaDV")
         @JsonIgnore
         private DichVu dichVu;
