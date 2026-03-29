@@ -20,7 +20,9 @@ public class BaoVe {
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ThongBaoLoi> handleBaoVe(Exception ex){
+        ex.printStackTrace();
         ThongBaoLoi error = new ThongBaoLoi(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Hệ thống đang bảo trì hoặc gặp sự cố"+ ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    
 }
