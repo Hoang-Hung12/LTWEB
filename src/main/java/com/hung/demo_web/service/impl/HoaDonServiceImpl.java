@@ -25,7 +25,6 @@ public class HoaDonServiceImpl implements HoaDonService {
         dto.setTongTienDichVu(entity.getTongTienDichVu());
         dto.setTongThanhToan(entity.getTongThanhToan());
         dto.setNgayLap(entity.getNgayLap());
-        
         if (entity.getDonDatSan() != null) {
             dto.setMaDon(entity.getDonDatSan().getMaDon());
         }
@@ -35,37 +34,61 @@ public class HoaDonServiceImpl implements HoaDonService {
         }
         return dto;
     }
-@Override
-    @org.springframework.transaction.annotation.Transactional // Fix lỗi 8
+
+    @Override
+    @org.springframework.transaction.annotation.Transactional
     public HoaDonDto xuatHoaDon(String maDon, String maQLLap) {
-        // Fix lỗi 6: Check duplicate hóa đơn
+
+        // Chống tạo hóa đơn trùng
         if (hoaDonRepository.existsByDonDatSan_MaDon(maDon)) {
             throw new LoiThaoTac("Đơn này đã có hóa đơn rồi!");
         }
 
-        DonDatSan donDat = donDatSanRepository.findById(maDon).orElseThrow(() -> new KhongTimThay("Không tìm thấy Đơn đặt sân"));
-        TaiKhoan admin = taiKhoanRepository.findById(maQLLap).orElseThrow(() -> new KhongTimThay("Không tìm thấy Admin"));
+        DonDatSan donDat = donDatSanRepository.findById(maDon)
+                .orElseThrow(() -> new KhongTimThay("Không tìm thấy Đơn đặt sân"));
+        TaiKhoan admin = taiKhoanRepository.findById(maQLLap)
+                .orElseThrow(() -> new KhongTimThay("Không tìm thấy Admin"));
 
         if (!donDat.getTrangThai().equals("Hoàn thành")) {
             throw new LoiThaoTac("Đơn đặt sân chưa hoàn thành, không thể xuất hóa đơn!");
         }
 
+        // Tính tổng tiền dịch vụ
         List<DonDat_DichVu> listDichVu = donDatDichVuRepository.findById_maDon(maDon);
         double tongTienDV = 0;
-        for (DonDat_DichVu dv : listDichVu) { tongTienDV += dv.getThanhTien(); }
+        for (DonDat_DichVu dv : listDichVu) {
+            tongTienDV += dv.getThanhTien();
+        }
 
-        double tongThanhToan = donDat.getTienSan() + tongTienDV - donDat.getTienCoc();
+        // Tổng thanh toán = Tiền sân + Tiền DV - Tiền cọc đã đặt trước
+        double tienCoc = donDat.getTienCoc() != null ? donDat.getTienCoc() : 0;
+        double tongThanhToan = donDat.getTienSan() + tongTienDV - tienCoc;
         if (tongThanhToan < 0) tongThanhToan = 0;
 
-        // Fix lỗi 4: Cộng DiemTichLuy vào tài khoản khách sau khi hoàn thành hóa đơn
+        // SỬA: Thêm kiểm tra null trước khi cộng điểm để tránh NullPointerException
+        // Lý do: cột DiemTichLuy và DiemThuong trong DB có thể là NULL
+        // → getDiemTichLuy() + getDiemThuong() = null + null → crash
         TaiKhoan khach = donDat.getKhachHang();
-        khach.setDiemTichLuy(khach.getDiemTichLuy() + donDat.getDiemThuong());
+        int diemHienTai = khach.getDiemTichLuy() != null ? khach.getDiemTichLuy() : 0;
+        int diemThuong  = donDat.getDiemThuong()  != null ? donDat.getDiemThuong()  : 0;
+        int tongDiem    = diemHienTai + diemThuong;
+
+        khach.setDiemTichLuy(tongDiem);
+
+        // SỬA: Thêm logic tự động cập nhật HangThanhVien sau khi cộng điểm
+        // Lý do: code cũ chỉ cộng điểm nhưng không bao giờ nâng hạng → sai nghiệp vụ
+        if      (tongDiem >= 500) khach.setHangThanhVien("Kim Cương");
+        else if (tongDiem >= 200) khach.setHangThanhVien("Vàng");
+        else if (tongDiem >= 100) khach.setHangThanhVien("Bạc");
+        else                      khach.setHangThanhVien("Đồng");
+
         taiKhoanRepository.save(khach);
 
-        // Fix lỗi 6: Cập nhật trạng thái đơn thành Đã thanh toán
+        // Cập nhật trạng thái đơn → Đã thanh toán
         donDat.setTrangThai("Đã thanh toán");
         donDatSanRepository.save(donDat);
 
+        // Tạo hóa đơn
         HoaDonEntity hoaDon = new HoaDonEntity();
         hoaDon.setMaHoaDon("HD" + java.util.UUID.randomUUID().toString().substring(0, 6).toUpperCase());
         hoaDon.setDonDatSan(donDat);

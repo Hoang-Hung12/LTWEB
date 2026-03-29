@@ -1,4 +1,5 @@
 package com.hung.demo_web.service.impl;
+
 import com.hung.demo_web.dto.DonDatSanDto;
 import com.hung.demo_web.entity.*;
 import com.hung.demo_web.exception.LoiThaoTac;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class DonDatSanServiceImpl implements DonDatSanService {
+
     @Autowired private DonDatSanRepository donDatSanRepository;
     @Autowired private SanRepository sanRepository;
     @Autowired private TaiKhoanRepository taiKhoanRepository;
@@ -31,7 +33,9 @@ public class DonDatSanServiceImpl implements DonDatSanService {
         dto.setTenKhachHang(entity.getKhachHang().getHoTen());
         dto.setMaSan(entity.getSan().getMaSan());
         dto.setTenSan(entity.getSan().getTenSan());
-        if (entity.getKhuyenMai() != null) dto.setMaCodeKhuyenMai(entity.getKhuyenMai().getMaCode());
+        if (entity.getKhuyenMai() != null) {
+            dto.setMaCodeKhuyenMai(entity.getKhuyenMai().getMaCode());
+        }
         return dto;
     }
 
@@ -44,47 +48,62 @@ public class DonDatSanServiceImpl implements DonDatSanService {
     public List<DonDatSanDto> getLichSuDatSan(String maKH) {
         return donDatSanRepository.findByKhachHang_maTK(maKH).stream().map(this::mapToDTO).collect(Collectors.toList());
     }
-@Override
-    @org.springframework.transaction.annotation.Transactional // Fix lỗi 8: Race condition
+
+    @Override
+    @org.springframework.transaction.annotation.Transactional
     public DonDatSanDto taoDonDatSan(DonDatSanDto dto) {
+
+        // Validate giờ
         if (dto.getGioBatDau().isAfter(dto.getGioKetThuc()) || dto.getGioBatDau().equals(dto.getGioKetThuc())) {
             throw new LoiThaoTac("Giờ bắt đầu phải nhỏ hơn giờ kết thúc!");
         }
-        TaiKhoan khach = taiKhoanRepository.findById(dto.getMaKH()).orElseThrow(() -> new KhongTimThay("Không tìm thấy Khách hàng"));
-        San san = sanRepository.findById(dto.getMaSan()).orElseThrow(() -> new KhongTimThay("Không tìm thấy Sân bóng"));
-        
+
+        TaiKhoan khach = taiKhoanRepository.findById(dto.getMaKH())
+                .orElseThrow(() -> new KhongTimThay("Không tìm thấy Khách hàng"));
+        San san = sanRepository.findById(dto.getMaSan())
+                .orElseThrow(() -> new KhongTimThay("Không tìm thấy Sân bóng"));
+
+        // Kiểm tra trùng giờ
         List<DonDatSan> cacDonCungNgay = donDatSanRepository.findBySan_MaSanAndNgayDa(san.getMaSan(), dto.getNgayDa());
         for (DonDatSan donCu : cacDonCungNgay) {
             if (!donCu.getTrangThai().equals("Đã hủy")) {
-                boolean biTrungGio = (dto.getGioBatDau().isBefore(donCu.getGioKetThuc())) && (dto.getGioKetThuc().isAfter(donCu.getGioBatDau()));
+                boolean biTrungGio = dto.getGioBatDau().isBefore(donCu.getGioKetThuc())
+                        && dto.getGioKetThuc().isAfter(donCu.getGioBatDau());
                 if (biTrungGio) throw new LoiThaoTac("Sân này đã có người đặt giờ đó!");
             }
         }
-        
-        long soPhutDa = java.time.Duration.between(dto.getGioBatDau(), dto.getGioKetThuc()).toMinutes();
-        double tongTienSan = Math.round((san.getGiaThue() / 90.0) * soPhutDa);
-        
-        DonDatSan entity = new DonDatSan();
-        
-        // Fix lỗi 3: Server tự sinh ID, không tin client
-        entity.setMaDon((dto.getMaDon() != null && !dto.getMaDon().isEmpty()) ? dto.getMaDon() : "ORD" + System.currentTimeMillis()); 
 
-        // Fix lỗi 2: Validate khuyến mãi và lưu vào đơn
+        // Tính tiền theo số phút thực tế (chuẩn: giá thuê / 90 phút)
+        long soPhut = java.time.Duration.between(dto.getGioBatDau(), dto.getGioKetThuc()).toMinutes();
+        double tongTienSan = Math.round((san.getGiaThue() / 90.0) * soPhut);
+
+        DonDatSan entity = new DonDatSan();
+        entity.setMaDon((dto.getMaDon() != null && !dto.getMaDon().isEmpty())
+                ? dto.getMaDon() : "ORD" + System.currentTimeMillis());
+
+        // Áp dụng khuyến mãi (nếu có)
         if (dto.getMaCodeKhuyenMai() != null && !dto.getMaCodeKhuyenMai().isEmpty()) {
-            KhuyenMai km = khuyenMaiRepository.findByMaCode(dto.getMaCodeKhuyenMai()).orElseThrow(() -> new LoiThaoTac("Mã không tồn tại"));
+            KhuyenMai km = khuyenMaiRepository.findByMaCode(dto.getMaCodeKhuyenMai())
+                    .orElseThrow(() -> new LoiThaoTac("Mã không tồn tại"));
             if (km.getTrangThai() == 0 || km.getNgayHetHan().isBefore(java.time.LocalDate.now())) {
                 throw new LoiThaoTac("Mã khuyến mãi đã hết hạn hoặc bị khóa!");
             }
-            if (km.getLoaiKhuyenMai().equalsIgnoreCase("PhanTram")) tongTienSan -= (tongTienSan * (km.getGiaTri() / 100.0));
-            else if (km.getLoaiKhuyenMai().equalsIgnoreCase("SoTien")) tongTienSan -= km.getGiaTri();
-            
-            entity.setKhuyenMai(km); // Rất quan trọng: Lưu lại khóa ngoại
+            if (km.getLoaiKhuyenMai().equalsIgnoreCase("PhanTram")) {
+                tongTienSan -= tongTienSan * (km.getGiaTri() / 100.0);
+            } else if (km.getLoaiKhuyenMai().equalsIgnoreCase("SoTien")) {
+                tongTienSan -= km.getGiaTri();
+            }
+            entity.setKhuyenMai(km);
         }
 
-        // Fix lỗi 5: Xử lý trừ DiemSuDung của khách
-        if (dto.getDiemSuDung() > 0) {
-            if (khach.getDiemTichLuy() < dto.getDiemSuDung()) throw new LoiThaoTac("Điểm tích lũy không đủ!");
-            tongTienSan -= dto.getDiemSuDung() * 100; // Giả sử 1 điểm = 100đ
+        // SỬA: Thêm kiểm tra null trước khi so sánh để tránh NullPointerException
+        // Lý do: client có thể không gửi field diemSuDung → dto.getDiemSuDung() = null
+        // → null > 0 → crash ngay lập tức
+        if (dto.getDiemSuDung() != null && dto.getDiemSuDung() > 0) {
+            if (khach.getDiemTichLuy() < dto.getDiemSuDung()) {
+                throw new LoiThaoTac("Điểm tích lũy không đủ!");
+            }
+            tongTienSan -= dto.getDiemSuDung() * 100; // 1 điểm = 100đ
             khach.setDiemTichLuy(khach.getDiemTichLuy() - dto.getDiemSuDung());
             taiKhoanRepository.save(khach);
             entity.setDiemSuDung(dto.getDiemSuDung());
@@ -103,15 +122,15 @@ public class DonDatSanServiceImpl implements DonDatSanService {
         entity.setTienSan(tongTienSan);
         entity.setTienCoc(tongTienSan * 0.3);
         entity.setDiemThuong((int) (tongTienSan / 10000));
-        
+
         return mapToDTO(donDatSanRepository.save(entity));
     }
 
-    // Fix lỗi 7: Hàm cập nhật trạng thái đơn (Dành cho Admin duyệt/hủy)
     @Override
     @org.springframework.transaction.annotation.Transactional
     public DonDatSanDto capNhatTrangThai(String maDon, String trangThai) {
-        DonDatSan entity = donDatSanRepository.findById(maDon).orElseThrow(() -> new KhongTimThay("Không tìm thấy đơn"));
+        DonDatSan entity = donDatSanRepository.findById(maDon)
+                .orElseThrow(() -> new KhongTimThay("Không tìm thấy đơn"));
         entity.setTrangThai(trangThai);
         return mapToDTO(donDatSanRepository.save(entity));
     }
