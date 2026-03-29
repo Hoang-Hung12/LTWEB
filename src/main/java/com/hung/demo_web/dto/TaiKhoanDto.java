@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class TaiKhoanDto {
     private String maTK;
-    private String hoten;
+    private String hoTen;   // SỬA: hoten → hoTen (phải khớp với getter getHoTen)
     private String sdt;
     private String email;
     private String matKhau;
@@ -13,65 +13,30 @@ public class TaiKhoanDto {
     private String hangThanhVien;
     private Timestamp ngayTao;
 
-    public void setMaTK(String maTK){
-        this.maTK = maTK;
-    }
-    public String getMaTK(){
-        return maTK;
-    }
-    
-    public void setHoTen(String hoTen){
-        this.hoten = hoTen;
-    }
-    public String getHoTen(){
-        return hoten;
-    }
+    public void setMaTK(String maTK) { this.maTK = maTK; }
+    public String getMaTK() { return maTK; }
 
-    public void setSdt(String sdt){
-        this.sdt = sdt;
-    }
-    public String getSdt(){
-        return sdt;
-    }
+    public void setHoTen(String hoTen) { this.hoTen = hoTen; }
+    public String getHoTen() { return hoTen; }
 
-    public void setEmail(String email){
-        this.email = email;
-    }
-    public String getEmail(){
-        return email;
-    }
+    public void setSdt(String sdt) { this.sdt = sdt; }
+    public String getSdt() { return sdt; }
 
-    public void setVaiTro(String vaiTro){
-        this.vaiTro = vaiTro;
-    }
-    public String getVaiTro(){
-        return vaiTro;
-    }
+    public void setEmail(String email) { this.email = email; }
+    public String getEmail() { return email; }
 
-    public void setDiemTichLuy(Integer diemTichLuy){
-        this.diemTichLuy = diemTichLuy;
-    }
-    public Integer getDiemTichLuy(){
-        return diemTichLuy;
-    }
+    public void setMatKhau(String matKhau) { this.matKhau = matKhau; }
+    public String getMatKhau() { return matKhau; }
 
-    public void setHangThanhVien(String hangThanhVien){
-        this.hangThanhVien = hangThanhVien;
-    }
-    public String getHangThanhVien(){
-        return hangThanhVien;
-    }
+    public void setVaiTro(String vaiTro) { this.vaiTro = vaiTro; }
+    public String getVaiTro() { return vaiTro; }
 
-    public void setNgayTao(Timestamp ngayTao){
-        this.ngayTao = ngayTao;
-    }
-    public Timestamp getNgayTao(){
-        return ngayTao;
-    }
-    public void setMatKhau(String matKhau){
-        this.matKhau = matKhau;
-    }
-    public String getMatKhau(){
-        return matKhau;
-    }
+    public void setDiemTichLuy(Integer diemTichLuy) { this.diemTichLuy = diemTichLuy; }
+    public Integer getDiemTichLuy() { return diemTichLuy; }
+
+    public void setHangThanhVien(String hangThanhVien) { this.hangThanhVien = hangThanhVien; }
+    public String getHangThanhVien() { return hangThanhVien; }
+
+    public void setNgayTao(Timestamp ngayTao) { this.ngayTao = ngayTao; }
+    public Timestamp getNgayTao() { return ngayTao; }
 }
