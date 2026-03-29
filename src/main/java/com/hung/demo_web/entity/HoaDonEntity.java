@@ -14,7 +14,7 @@ public class HoaDonEntity {
 
     @OneToOne
     @JoinColumn(name = "MaDon", nullable = false, unique = true)
-    @JsonIgnore // SỬA: Thêm @JsonIgnore — thiếu cái này Swagger đọc HoaDon → DonDatSan → San/TaiKhoan → vòng lặp vô hạn → 500
+    @JsonIgnore  // ← THIẾU CÁI NÀY: Swagger đọc HoaDon→DonDatSan→San/TaiKhoan/KhuyenMai→vòng lặp vô hạn→500
     private DonDatSan donDatSan;
 
     @Column(name = "TongTienDichVu")
@@ -28,7 +28,7 @@ public class HoaDonEntity {
 
     @ManyToOne
     @JoinColumn(name = "MaQLLap")
-    @JsonIgnore // SỬA: Thêm @JsonIgnore — tương tự, tránh Swagger đọc sâu vào TaiKhoan rồi lại quay lại HoaDon
+    @JsonIgnore
     private TaiKhoan nguoiLap;
 
     public String getMaHoaDon() { return maHoaDon; }

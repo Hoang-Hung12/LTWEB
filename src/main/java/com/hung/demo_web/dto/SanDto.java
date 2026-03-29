@@ -11,80 +11,38 @@ public class SanDto {
     private String trangThai;
     private String tenLoaiSan;
     private Integer soNguoi;
-    
-    public void setMaSan(String maSan){
-        this.maSan = maSan;
-    }
-    public String getMaSan(){
-        return maSan;
-    }
+    private String maLoaiSan;
 
-    public void setTenSan(String tenSan){
-        this.tenSan = tenSan;
-    }
-    public String getTenSan(){
-        return tenSan;
-    }
+    public void setMaSan(String maSan) { this.maSan = maSan; }
+    public String getMaSan() { return maSan; }
 
-    public void setDiaChi(String diaChi){
-        this.diaChi = diaChi;
-    }
-    public String getDiachi(){
-        return diaChi;
-    }
+    public void setTenSan(String tenSan) { this.tenSan = tenSan; }
+    public String getTenSan() { return tenSan; }
 
-    public void setMoTa(String moTa){
-        this.moTa = moTa;
-    }
-    public String getMoTa(){
-        return moTa;
-    }
+    public void setDiaChi(String diaChi) { this.diaChi = diaChi; }
+    public String getDiaChi() { return diaChi; }  // ← SỬA: getDiachi() → getDiaChi() cho đồng nhất
 
-    public void setTienIch(String tienIch){
-        this.tienIch = tienIch;
-    }
-    public String getTienIch(){
-        return tienIch;
-    }
+    public void setMoTa(String moTa) { this.moTa = moTa; }
+    public String getMoTa() { return moTa; }
 
-    public void setAnhChinh(String anhChinh){
-        this.anhChinh = anhChinh;
-    }
-    public String getAnhChinh(){
-        return anhChinh;
-    }
+    public void setTienIch(String tienIch) { this.tienIch = tienIch; }
+    public String getTienIch() { return tienIch; }
 
-    public void setGiaThue(Double giaThue){
-        this.giaThue = giaThue;
-    }
-    public Double getGiaThue(){
-        return giaThue;
-    }
+    public void setAnhChinh(String anhChinh) { this.anhChinh = anhChinh; }
+    public String getAnhChinh() { return anhChinh; }
 
-    public void setTrangThai(String trangThai){
-        this.trangThai = trangThai;
-    }
-    public String getTrangThai(){
-        return trangThai;
-    }
+    public void setGiaThue(Double giaThue) { this.giaThue = giaThue; }
+    public Double getGiaThue() { return giaThue; }
 
-    public void setTenLoaiSan(String tenLoaiSan){
-        this.tenLoaiSan = tenLoaiSan;
-    }
-    public String getTenLoaiSan(){
-        return tenLoaiSan;
-    }
+    public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
+    public String getTrangThai() { return trangThai; }
 
-    public void setSoNguoi(Integer soNguoi){
-        this.soNguoi = soNguoi;
-    }
-    public Integer getSoNguoi(){
-        return soNguoi;
-    }
-    // Thêm biến này vào cùng các biến khác
-    private String maLoaiSan; 
+    public void setTenLoaiSan(String tenLoaiSan) { this.tenLoaiSan = tenLoaiSan; }
+    public String getTenLoaiSan() { return tenLoaiSan; }
 
-    // Nhớ Generate ra 2 hàm Getter/Setter cho nó:
+    public void setSoNguoi(Integer soNguoi) { this.soNguoi = soNguoi; }
+    public Integer getSoNguoi() { return soNguoi; }
+
     public String getMaLoaiSan() { return maLoaiSan; }
     public void setMaLoaiSan(String maLoaiSan) { this.maLoaiSan = maLoaiSan; }
 }

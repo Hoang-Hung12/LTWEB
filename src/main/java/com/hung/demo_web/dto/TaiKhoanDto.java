@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class TaiKhoanDto {
     private String maTK;
-    private String hoTen;   // SỬA: hoten → hoTen (phải khớp với getter getHoTen)
+    private String hoTen;   // ← SỬA: "hoten" → "hoTen" cho khớp với getter getHoTen()
     private String sdt;
     private String email;
     private String matKhau;

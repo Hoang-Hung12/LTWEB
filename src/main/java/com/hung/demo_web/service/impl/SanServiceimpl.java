@@ -56,7 +56,7 @@ public class SanServiceimpl implements SanService {
         entity.setMaSan(sanDto.getMaSan() != null ? sanDto.getMaSan() : "S" + System.currentTimeMillis());
         // SỬA: seTenSan → setTenSan | setMota → setMoTa (khớp với San.java đã sửa)
         entity.setTenSan(sanDto.getTenSan());
-        entity.setDiaChi(sanDto.getDiachi());
+        entity.setDiaChi(sanDto.getDiaChi());
         entity.setMoTa(sanDto.getMoTa());
         entity.setTienIch(sanDto.getTienIch());
         entity.setAnhChinh(sanDto.getAnhChinh());
@@ -78,7 +78,7 @@ public class SanServiceimpl implements SanService {
         San entity = sanRepository.findById(maSan)
                 .orElseThrow(() -> new KhongTimThay("Không tìm thấy sân: " + maSan));
         entity.setTenSan(sanDto.getTenSan());
-        entity.setDiaChi(sanDto.getDiachi());
+        entity.setDiaChi(sanDto.getDiaChi());
         entity.setMoTa(sanDto.getMoTa());
         entity.setTienIch(sanDto.getTienIch());
         entity.setAnhChinh(sanDto.getAnhChinh());
