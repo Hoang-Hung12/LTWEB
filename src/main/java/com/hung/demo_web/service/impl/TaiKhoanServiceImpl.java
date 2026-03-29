@@ -13,18 +13,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class TaiKhoanServiceImpl implements TaiKhoanService {
+
     @Autowired private TaiKhoanRepository repo;
 
     private TaiKhoanDto mapToDTO(TaiKhoan entity) {
         TaiKhoanDto dto = new TaiKhoanDto();
         dto.setMaTK(entity.getMaTK());
         dto.setHoTen(entity.getHoTen());
-        dto.setSdt(entity.getsdt()); // Đã gọi hàm getSdt() viết hoa
+        dto.setSdt(entity.getSdt()); // SỬA: getsdt() → getSdt()
         dto.setEmail(entity.getEmail());
         dto.setVaiTro(entity.getVaiTro());
         dto.setDiemTichLuy(entity.getDiemTichLuy());
         dto.setHangThanhVien(entity.getHangThanhVien());
-        // Không map mật khẩu ra DTO khi trả về để bảo mật
         return dto;
     }
 
@@ -43,23 +43,21 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     @Override
     public TaiKhoanDto createTaiKhoan(TaiKhoanDto dto) {
         TaiKhoan entity = new TaiKhoan();
-        // Cần tự tạo maTK hoặc yêu cầu database tự tăng (tùy thiết kế của bạn)
-        entity.setMaTK(dto.getMaTK() != null ? dto.getMaTK() : "TK" + System.currentTimeMillis()); 
+        entity.setMaTK(dto.getMaTK() != null ? dto.getMaTK() : "TK" + System.currentTimeMillis());
         entity.setHoTen(dto.getHoTen());
-        entity.setsdt(dto.getSdt());
+        entity.setSdt(dto.getSdt()); // SỬA: setsdt() → setSdt()
         entity.setEmail(dto.getEmail());
         entity.setMatKhau(dto.getMatKhau());
-        entity.setVaiTro("USER"); // Mặc định đăng ký là USER
+        entity.setVaiTro("USER");
         entity.setDiemTichLuy(0);
         entity.setHangThanhVien("Đồng");
-        
         return mapToDTO(repo.save(entity));
     }
 
     @Override
     public boolean login(String sdt, String matKhau) {
         Optional<TaiKhoan> tk = repo.findBySdt(sdt);
-        if(tk.isPresent()){
+        if (tk.isPresent()) {
             return tk.get().getMatKhau().equals(matKhau);
         }
         return false;

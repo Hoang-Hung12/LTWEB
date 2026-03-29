@@ -1,65 +1,45 @@
 package com.hung.demo_web.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 
-    @Entity
-    @Table(name = "DonDat_DichVu")
-    public class DonDat_DichVu {
-        @EmbeddedId
-        private DonDatDichVuId id;
-        
-        @ManyToOne
-        @MapsId("maDon")
-        @JoinColumn(name = "MaDon")
-        @JsonIgnore
-        private DonDatSan donDatSan;
+@Entity
+@Table(name = "DonDat_DichVu")
+public class DonDat_DichVu {
 
-        @ManyToOne
-        @MapsId("maDV")
-        @JoinColumn(name = "MaDV")
-        @JsonIgnore
-        private DichVu dichVu;
+    @EmbeddedId
+    private DonDatDichVuId id;
 
-        @Column(name = "SoLuong")
-        private Integer soLuong;
+    @ManyToOne
+    @MapsId("maDon") // SỬA: "MaDon" → "maDon" (phải khớp tên field trong DonDatDichVuId)
+    @JoinColumn(name = "MaDon")
+    @JsonIgnore
+    private DonDatSan donDatSan;
 
-        @Column(name = "ThanhTien", nullable = false)
-        private Double thanhTien;
+    @ManyToOne
+    @MapsId("maDV")  // SỬA: "MaDV" → "maDV" (phải khớp tên field trong DonDatDichVuId)
+    @JoinColumn(name = "MaDV")
+    @JsonIgnore
+    private DichVu dichVu;
 
-        public void setId(DonDatDichVuId id){
-            this.id = id;
-        }
-        public DonDatDichVuId getId(){
-            return id;
-        }
+    @Column(name = "SoLuong")
+    private Integer soLuong;
 
-        public void setDonDatSan(DonDatSan donDatSan){
-            this.donDatSan = donDatSan;
-        }
-        public DonDatSan getDonDatSan(){
-            return donDatSan;
-        }
+    @Column(name = "ThanhTien", nullable = false)
+    private Double thanhTien;
 
-        public void setDichVu(DichVu dichVu){
-            this.dichVu = dichVu;
-        }
-        public DichVu getDichVu(){
-            return dichVu;
-        }
-        
-        public void setSoLuong(Integer soLuong){
-            this.soLuong = soLuong;
-        }
-        public Integer getSoLuong(){
-            return soLuong;
-        }
+    public DonDatDichVuId getId() { return id; }
+    public void setId(DonDatDichVuId id) { this.id = id; }
 
-        public void setThanhTien(Double thanhTien){
-            this.thanhTien = thanhTien;
-        }
-        public Double getThanhTien(){
-            return thanhTien;
-        }
-    }
+    public DonDatSan getDonDatSan() { return donDatSan; }
+    public void setDonDatSan(DonDatSan donDatSan) { this.donDatSan = donDatSan; }
+
+    public DichVu getDichVu() { return dichVu; }
+    public void setDichVu(DichVu dichVu) { this.dichVu = dichVu; }
+
+    public Integer getSoLuong() { return soLuong; }
+    public void setSoLuong(Integer soLuong) { this.soLuong = soLuong; }
+
+    public Double getThanhTien() { return thanhTien; }
+    public void setThanhTien(Double thanhTien) { this.thanhTien = thanhTien; }
+}

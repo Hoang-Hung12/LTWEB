@@ -1,7 +1,6 @@
 package com.hung.demo_web.entity;
 
 import java.time.LocalDate;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -9,7 +8,7 @@ import jakarta.persistence.*;
 public class KhuyenMai {
     @Id
     @Column(name = "MaKM")
-    private String MaKM;
+    private String maKM; // SỬA: MaKM → maKM
 
     @Column(name = "MaCode", nullable = false, unique = true)
     private String maCode;
@@ -26,40 +25,21 @@ public class KhuyenMai {
     @Column(name = "TrangThai")
     private Integer trangThai;
 
-    public void setMaKM(String MaKM){
-        this.MaKM = MaKM;
-    }
-    public String getMaKM(){
-        return MaKM;
-    }
-    public void setMaCode(String maCode){
-        this.maCode = maCode;
-    }
-    public String getMaCode(){
-        return this.maCode;
-    }
-    public void setLoaiKhuyenMai(String loaiKhuyenMai){
-        this.loaiKhuyenMai = loaiKhuyenMai;
-    }
-    public String getLoaiKhuyenMai(){
-        return loaiKhuyenMai;
-    }
-    public void setGiaTri(Double giaTri){
-        this.giaTri = giaTri;
-    }
-    public Double getGiaTri(){
-        return giaTri;
-    }
-    public void setNgayHetHan(LocalDate ngayHetHan){
-        this.ngayHetHan = ngayHetHan;
-    }
-    public LocalDate getNgayHetHan(){
-        return ngayHetHan;
-    }
-    public void setTrangThai(Integer trangThai){
-        this.trangThai = trangThai;
-    }
-    public Integer getTrangThai(){
-        return trangThai;
-    }
+    public String getMaKM() { return maKM; }
+    public void setMaKM(String maKM) { this.maKM = maKM; }
+
+    public String getMaCode() { return maCode; }
+    public void setMaCode(String maCode) { this.maCode = maCode; }
+
+    public String getLoaiKhuyenMai() { return loaiKhuyenMai; }
+    public void setLoaiKhuyenMai(String loaiKhuyenMai) { this.loaiKhuyenMai = loaiKhuyenMai; }
+
+    public Double getGiaTri() { return giaTri; }
+    public void setGiaTri(Double giaTri) { this.giaTri = giaTri; }
+
+    public LocalDate getNgayHetHan() { return ngayHetHan; }
+    public void setNgayHetHan(LocalDate ngayHetHan) { this.ngayHetHan = ngayHetHan; }
+
+    public Integer getTrangThai() { return trangThai; }
+    public void setTrangThai(Integer trangThai) { this.trangThai = trangThai; }
 }
