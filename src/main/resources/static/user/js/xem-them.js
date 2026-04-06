@@ -1,3 +1,4 @@
+
 // Hàm mở Modal
 function openModal() {
     document.getElementById('detailModal').style.display = 'flex';

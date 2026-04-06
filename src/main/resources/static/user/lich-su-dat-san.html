@@ -1,116 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch sử đặt sân</title>
+    <title>Lịch sử đặt sân - ArenaX</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../../static/user/css/style.css">
-    <link rel="stylesheet" href="../../static/user/css/lich-su.css">
+    <link rel="stylesheet" href="../user/css/style.css">
+    <link rel="stylesheet" href="../user/css/lich-su.css">
+    <style>
+        .user-menu-btn{background:transparent;border:1px solid rgba(255,255,255,.3);border-radius:25px;color:#fff;padding:5px 14px;cursor:pointer;display:flex;align-items:center;gap:8px}
+        .user-avatar{width:32px;height:32px;background:#0d6efd;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
+        .u-name{font-weight:600;font-size:14px}.u-sub{font-size:11px;color:#adb5bd}
+        .rank-badge{font-size:11px;background:rgba(255,255,255,.15);border-radius:12px;padding:2px 8px}
+        .history-card{background:#fff;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;gap:16px;align-items:flex-start}
+        .history-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+        .history-icon.pending{background:#fef3c7;color:#d97706}
+        .history-icon.confirmed{background:#d1fae5;color:#059669}
+        .history-icon.cancelled{background:#fee2e2;color:#dc2626}
+        .history-icon.done{background:#e0e7ff;color:#4f46e5}
+        .badge-tt{font-size:12px;padding:4px 10px;border-radius:20px}
+        .badge-tt.pending{background:#fef3c7;color:#d97706}
+        .badge-tt.confirmed{background:#d1fae5;color:#059669}
+        .badge-tt.cancelled{background:#fee2e2;color:#dc2626}
+        .badge-tt.done{background:#e0e7ff;color:#4f46e5}
+        .page-header{background:#fff;border-bottom:1px solid #e5e7eb;padding:20px 0;margin-bottom:24px}
+        .stats-bar{background:#fff;border-radius:12px;padding:20px;margin-bottom:24px;display:flex;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+        .stat-item{flex:1;text-align:center}
+        .stat-val{font-size:24px;font-weight:700;color:#0d6efd}
+        .stat-lbl{font-size:13px;color:#6b7280}
+        .empty-state{text-align:center;padding:60px 20px;color:#9ca3af}
+        .empty-state i{font-size:48px;margin-bottom:16px}
+    </style>
 </head>
 <body>
-    <nav class = "navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
-        <div class = "container">
-            <a class = "navbar-brand fw-bold" href = "#"><i class = "fas fa-futbol me-2"></i>ARENAX</a>
-            <button class = "navbar-toggler" type = "button" data-bs-toggle="collapse" data-bs-target = "#navbarNav">
-                <span class = "navbar-toggler-icon"></span>
-            </button>
-            <div class = "collapse navbar-collapse" id = "navbarNav">
-                <ul class = "navbar-nav ms-auto align-items-center">
-                    <li class = "nav-item"><a class = "nav-link" href = "index.html">Trang chủ</a></li>
-                    <li class ="nav-item"><a class = "nav-link" href = "danh-sach-san.html">Danh sách sân</a></li>
-                    <li class = "nav-item"><a class ="nav-link active" href = "lich-su-dat-san.html">Lịch sử đặt sân</a></li>
-                    <li class = "nav-item ms-2"><a class = "btn btn-primary btn-sm px-3 rounded-pill" href = "login.html">Đăng nhập</a></li>
-                </ul>
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-futbol me-2"></i>ARENAX</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+        <li class="nav-item"><a class="nav-link" href="danh-sach-san.html">Danh sách sân</a></li>
+        <li class="nav-item"><a class="nav-link active" href="lich-su-dat-san.html">Lịch sử đặt</a></li>
+        <li class="nav-item ms-2" id="nav-login-item">
+          <a class="btn btn-primary btn-sm px-3 rounded-pill" href="login.html">Đăng nhập</a>
+        </li>
+        <li class="nav-item ms-2 dropdown" id="nav-user-item" style="display:none">
+          <button class="user-menu-btn dropdown-toggle" data-bs-toggle="dropdown">
+            <div class="user-avatar" id="nav-user-avatar">U</div>
+            <div class="user-info-text">
+              <div class="u-name" id="nav-user-name">Khách</div>
+              <div class="u-sub"><span id="nav-user-points">0 điểm</span>&nbsp;·&nbsp;<span class="rank-badge" id="nav-user-rank"></span></div>
             </div>
-        </div>
-    </nav>
-    <div class = "container">
-        <div class = "history-container mt-5 mb-5 p-4 p-md-5">
-            <h1 class = "fw-bold mb-4 border-start border-4 border-primary ps-3 fs-4">Lịch sử đặt sân của tôi</h1>
-            <div class = "table-reponsive">
-                <table class = "table table-hover table-custom align-middle">
-                    <thead class = "table-light">
-                        <tr>
-                            <th class = "fw-semibold">Mã đơn</th>
-                            <th class = "fw-semibold">Sân bóng</th>
-                            <th class = "fw-semibold">Thời gian đá</th>
-                            <th class = "fw-semibold">Tổng tiền</th>
-                            <th class = "fw-semibold">Tích điểm</th>
-                            <th class = "fw-semibold">Trạng thái</th>
-                            <th class = "fw-semibold">Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class = "fw-bold text-dark">#ORD889</td>
-                            <td>
-                                <div class = "fw-bold text-dark mb-1"> Sân A - Khu KTX</div>
-                                <div class = "text-secondary small">sân 7 người</div>
-                            </td>
-                            <td>
-                                <div>10/03/2026</div>
-                                <div class = "text-secondary small">17:30 - 19:00</div>
-                            </td>
-                            <td class = "fw-bold">300.000đ</td>
-                            <td class = "text-success fw-bold">+30 điểm</td>
-                            <td><span class = "badge bg-success-light rounded-pill px-3 py-2 fw-medium">Hoàn thành</span></td>
-                            <td>
-                                <button class = "btn btn-outline-primary btn-sm fw-bold px-3 py-1" data-bs-toggle = "modal" data-bs-target="#billModal">Xem Bill</button>
-                                <button class = "btn btn-primary btn-sm fw-bold px-3 py-1 ms-1">Đặt lại</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold text-dark">#ORD992</td>
-                            <td>
-                                <div class="fw-bold text-dark mb-1">Sân B - SVĐ</div>
-                                <div class="text-secondary small">Sân 5 người</div>
-                            </td>
-                            <td>
-                                <div>12/02/2026</div>
-                                <div class="text-secondary small">19:00 - 20:30</div>
-                            </td>
-                            <td class="fw-bold">200.000đ</td>
-                            <td class="text-muted">Chưa cộng</td>
-                            <td><span class="badge bg-warning-light rounded-pill px-3 py-2 fw-medium">Đã cọc 30%</span></td>
-                            <td>
-                                <button class="btn btn-outline-primary btn-sm fw-bold px-3 py-1" data-bs-toggle="modal" data-bs-target="#billModal">Xem Bill</button>
-                                <button class="btn btn-outline-danger btn-sm fw-bold px-3 py-1 ms-1">Hủy sân</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
-    <div class="modal fade" id="billModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0 pb-0">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4 p-md-5">
-                    <div class="text-center border-dashed pb-4 mb-4">
-                        <h4 class="fw-bold">HÓA ĐƠN ĐẶT SÂN</h4>
-                        <p class="text-muted mb-0">Mã đơn: #ORD889</p>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2"><span>Sân:</span> <strong>Sân A - Khu KTX</strong></div>
-                    <div class="d-flex justify-content-between mb-2"><span>Thời gian:</span> <strong>17:30 - 19:00 (10/02)</strong></div>
-                    <div class="d-flex justify-content-between mb-2"><span>Giá gốc:</span> <strong>300.000đ</strong></div>
-                    <div class="d-flex justify-content-between mb-2 text-success"><span>Mã giảm giá (TET2026):</span> <strong>- 30.000đ</strong></div>
-                    <div class="d-flex justify-content-between mb-2 text-success"><span>Dùng điểm:</span> <strong>- 0đ</strong></div>
-                    <hr class="border-dashed">
-                    <div class="d-flex justify-content-between mb-2 fs-5 text-danger">
-                        <span>Tổng cộng:</span> <strong>270.000đ</strong>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2"><span>Đã cọc (30%):</span> <strong>81.000đ</strong></div>
-                    <div class="d-flex justify-content-between mb-2"><span>Cần thanh toán tại sân:</span> <strong>189.000đ</strong></div>
-                </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h3 class="fw-bold border-start border-4 border-primary ps-3 mb-1">Lịch sử đặt sân</h3>
+    <p class="text-muted mb-0 ps-3">Tất cả đơn đặt sân của bạn</p>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Stats -->
+  <div class="stats-bar" id="stats-bar" style="display:none">
+    <div class="stat-item"><div class="stat-val" id="st-total">0</div><div class="stat-lbl">Tổng đơn</div></div>
+    <div class="stat-item"><div class="stat-val text-success" id="st-done">0</div><div class="stat-lbl">Đã hoàn thành</div></div>
+    <div class="stat-item"><div class="stat-val text-warning" id="st-pending">0</div><div class="stat-lbl">Chờ xác nhận</div></div>
+    <div class="stat-item"><div class="stat-val text-danger" id="st-cancel">0</div><div class="stat-lbl">Đã hủy</div></div>
+    <div class="stat-item"><div class="stat-val" id="st-points" style="color:#8b5cf6">0</div><div class="stat-lbl">Tổng điểm tích lũy</div></div>
+  </div>
+
+  <!-- Filter -->
+  <div class="d-flex gap-2 mb-3" id="filter-bar" style="display:none!important">
+    <select class="form-select form-select-sm" id="filter-tt-lich" style="width:180px" onchange="renderList()">
+      <option value="">Tất cả trạng thái</option>
+      <option value="Chờ xác nhận">Chờ xác nhận</option>
+      <option value="Đã xác nhận">Đã xác nhận</option>
+      <option value="Đã hoàn thành">Đã hoàn thành</option>
+      <option value="Đã hủy">Đã hủy</option>
+    </select>
+  </div>
+
+  <div id="list-wrap">
+    <div class="text-center py-5"><i class="fas fa-spinner fa-spin fa-2x text-primary"></i><p class="mt-2">Đang tải...</p></div>
+  </div>
+</div>
+
+<footer class="bg-dark text-white text-center py-4 mt-5">
+  <div class="container"><p class="mb-0">&copy; 2026 ARENAX Football Management.</p></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../user/js/auth.js"></script>
+<script>
+  let allDons = [];
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const user = getCurrentUser();
+    if (!user) { window.location.href = 'login.html'; return; }
+    const av = document.getElementById('nav-user-avatar');
+    if (av) av.textContent = (user.hoTen || 'U')[0].toUpperCase();
+
+    try {
+      const res = await fetch(API_BASE + '/api/dondatsan/lich-su/' + user.maTK);
+      if (!res.ok) throw new Error();
+      allDons = await res.json();
+      allDons.sort((a,b) => new Date(b.ngayDat||0) - new Date(a.ngayDat||0));
+      updateStats();
+      renderList();
+      document.getElementById('stats-bar').style.display = 'flex';
+      document.getElementById('filter-bar').style.display = 'flex';
+    } catch {
+      document.getElementById('list-wrap').innerHTML = '<p class="text-danger text-center py-4">Không tải được dữ liệu!</p>';
+    }
+  });
+
+  function updateStats() {
+    document.getElementById('st-total').textContent   = allDons.length;
+    document.getElementById('st-done').textContent    = allDons.filter(d => d.trangThai === 'Đã hoàn thành').length;
+    document.getElementById('st-pending').textContent = allDons.filter(d => d.trangThai === 'Chờ xác nhận').length;
+    document.getElementById('st-cancel').textContent  = allDons.filter(d => d.trangThai === 'Đã hủy').length;
+    const pts = allDons.reduce((s,d) => s + (d.diemThuong||0), 0);
+    document.getElementById('st-points').textContent  = pts;
+  }
+
+  function renderList() {
+    const filter = document.getElementById('filter-tt-lich').value;
+    const data   = filter ? allDons.filter(d => d.trangThai === filter) : allDons;
+    const wrap   = document.getElementById('list-wrap');
+    if (data.length === 0) {
+      wrap.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-xmark"></i><h5>Không có đơn nào</h5><p>Hãy đặt sân để bắt đầu!</p><a href="danh-sach-san.html" class="btn btn-primary">Đặt sân ngay</a></div>`;
+      return;
+    }
+    wrap.innerHTML = data.map(don => {
+      const iconClass = statusClass(don.trangThai);
+      const icon      = statusIcon(don.trangThai);
+      const ngay = don.ngayDa ? formatDate2(don.ngayDa) : '—';
+      const gio  = [(don.gioBatDau||'').substring(0,5), (don.gioKetThuc||'').substring(0,5)].filter(Boolean).join(' - ');
+      const canCancel = don.trangThai === 'Chờ xác nhận';
+      return `
+      <div class="history-card">
+        <div class="history-icon ${iconClass}">${icon}</div>
+        <div class="flex-grow-1">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+            <div>
+              <h6 class="fw-bold mb-1">${don.tenSan || '—'}</h6>
+              <p class="text-muted mb-1" style="font-size:14px"><i class="fas fa-calendar me-1"></i>${ngay} &nbsp;|&nbsp; <i class="fas fa-clock me-1"></i>${gio}</p>
+              <p class="text-muted mb-0" style="font-size:13px">Mã đơn: <code>${don.maDon}</code></p>
             </div>
+            <div class="text-end">
+              <div class="badge-tt ${iconClass} mb-1">${don.trangThai || '—'}</div>
+              <div class="fw-bold text-primary">${formatCurrency(don.tienSan)}</div>
+              ${don.diemThuong ? `<div class="text-success" style="font-size:12px">+${don.diemThuong} điểm</div>` : ''}
+            </div>
+          </div>
+          ${canCancel ? `<button class="btn btn-outline-danger btn-sm mt-2" onclick="huyDon('${don.maDon}')"><i class="fas fa-times me-1"></i>Hủy đơn</button>` : ''}
         </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../static/user/js/main.js"></script>
+      </div>`;
+    }).join('');
+  }
+
+  async function huyDon(maDon) {
+    if (!confirm('Xác nhận hủy đơn ' + maDon + '?')) return;
+    try {
+      const res = await fetch(API_BASE + '/api/dondatsan/' + maDon + '/trang-thai?trangThai=Đã hủy', { method: 'PATCH' });
+      if (!res.ok) throw new Error();
+      const idx = allDons.findIndex(d => d.maDon === maDon);
+      if (idx >= 0) allDons[idx].trangThai = 'Đã hủy';
+      updateStats();
+      renderList();
+    } catch {
+      alert('Không hủy được đơn!');
+    }
+  }
+
+  function statusClass(tt) {
+    if (!tt) return 'pending';
+    const t = tt.toLowerCase();
+    if (t.includes('xác nhận') && !t.includes('chờ')) return 'confirmed';
+    if (t.includes('hoàn thành')) return 'done';
+    if (t.includes('hủy')) return 'cancelled';
+    return 'pending';
+  }
+  function statusIcon(tt) {
+    const c = statusClass(tt);
+    const map = {confirmed:'<i class="fas fa-check"></i>',done:'<i class="fas fa-trophy"></i>',cancelled:'<i class="fas fa-times"></i>',pending:'<i class="fas fa-clock"></i>'};
+    return map[c] || map.pending;
+  }
+  function formatDate2(d) {
+    if (!d) return '—';
+    const p = String(d).split('-');
+    return p.length === 3 ? p[2]+'/'+p[1]+'/'+p[0] : d;
+  }
+</script>
 </body>
 </html>

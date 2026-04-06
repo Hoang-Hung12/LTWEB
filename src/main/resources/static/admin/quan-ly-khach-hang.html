@@ -7,113 +7,334 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../admin/css/style.css">
+    <style>
+        .rank-gold{color:#f5c518}.rank-silver{color:#b0c4de}.rank-bronze{color:#cd7f32}
+    </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <div class="sidebar-header"><i class="fas fa-futbol me-2"></i> ARENAX ADMIN</div>
-    <ul class="nav flex-column mt-3">
-        <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="quan-ly-don-dat.html"><i class="fas fa-calendar-check"></i> Quản lý đơn đặt</a></li>
-        <li class="nav-item"><a class="nav-link" href="lap-hoa-don.html"><i class="fas fa-file-invoice-dollar"></i> Lập hóa đơn</a></li>
-        <li class="nav-item"><a class="nav-link" href="quan-ly-san.html"><i class="fas fa-flag"></i> Quản lý sân</a></li>
-        <li class="nav-item"><a class="nav-link active" href="quan-ly-khach-hang.html"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
-        <li class="nav-item"><a class="nav-link" href="thong-ke-doanh-thu.html"><i class="fas fa-chart-line"></i> Thống kê doanh thu</a></li>
-    </ul>
+  <div class="sidebar-header"><i class="fas fa-futbol me-2"></i>ARENAX ADMIN</div>
+  <ul class="nav flex-column mt-3">
+    <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" href="quan-ly-don-dat.html"><i class="fas fa-calendar-check"></i>Quản lý đơn đặt</a></li>
+    <li class="nav-item"><a class="nav-link" href="lap-hoa-don.html"><i class="fas fa-file-invoice-dollar"></i>Lập hóa đơn</a></li>
+    <li class="nav-item"><a class="nav-link" href="quan-ly-san.html"><i class="fas fa-flag"></i>Quản lý sân</a></li>
+    <li class="nav-item"><a class="nav-link active" href="quan-ly-khach-hang.html"><i class="fas fa-users"></i>Quản lý khách hàng</a></li>
+    <li class="nav-item"><a class="nav-link" href="thong-ke-doanh-thu.html"><i class="fas fa-chart-line"></i>Thống kê doanh thu</a></li>
+  </ul>
 </div>
 
 <div class="main-content">
-    <div class="top-header">
-        <div class="text-secondary fw-bold fs-5">Quản lý Khách Hàng & Thành Viên</div>
-        <div class="d-flex align-items-center gap-2">
-            <div class="text-end lh-1">
-                <div class="fw-bold small">Hoàng Xuân Hưng</div>
-                <div class="text-muted" style="font-size: 0.75rem;">Admin</div>
-            </div>
-            <div class="avatar">H</div>
-        </div>
+  <div class="top-header">
+    <div class="text-secondary fw-bold fs-5">Quản lý Khách Hàng &amp; Thành Viên</div>
+    <div class="d-flex align-items-center gap-2">
+      <div class="text-end lh-1">
+        <div class="fw-bold small">Admin</div>
+        <div class="text-muted" style="font-size:.75rem">Quản trị viên</div>
+      </div>
+      <div class="avatar">A</div>
     </div>
+  </div>
 
-    <div class="page-section">
-        <div class="card-custom">
-            <div class="card-custom-header">
-                <div class="card-title"><i class="fas fa-users me-2"></i>Danh sách Thành Viên</div>
-                <div class="d-flex gap-2">
-                    <div class="input-group input-group-sm" style="width: 250px;">
-                        <input type="text" class="form-control" placeholder="Tìm tên, email, SĐT...">
-                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                    </div>
-                    <button class="btn btn-primary btn-sm fw-bold"><i class="fas fa-plus me-1"></i> Thêm khách</button>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th class="ps-4">STT</th>
-                            <th>Họ và tên</th>
-                            <th>Số điện thoại</th>
-                            <th>Email</th>
-                            <th>Điểm tích lũy</th>
-                            <th>Hạng TV</th>
-                            <th class="text-end pe-4">Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="ps-4">1</td>
-                            <td class="fw-bold">Nguyễn Văn A</td>
-                            <td>0912.345.678</td>
-                            <td>nguyenvana@gmail.com</td>
-                            <td><strong class="text-primary">1,250</strong></td>
-                            <td><i class="fas fa-crown rank-gold me-1"></i> Vàng</td>
-                            <td class="text-end pe-4">
-                                <button class="btn btn-icon btn-edit me-1" title="Sửa thông tin"><i class="fas fa-pen"></i></button>
-                                <button class="btn btn-icon btn-delete" title="Xóa tài khoản"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="ps-4">2</td>
-                            <td class="fw-bold">Trần Thị B</td>
-                            <td>0988.777.666</td>
-                            <td>tranthib@gmail.com</td>
-                            <td><strong>450</strong></td>
-                            <td><i class="fas fa-medal rank-silver me-1"></i> Bạc</td>
-                            <td class="text-end pe-4">
-                                <button class="btn btn-icon btn-edit me-1"><i class="fas fa-pen"></i></button>
-                                <button class="btn btn-icon btn-delete"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="ps-4">3</td>
-                            <td class="fw-bold">Lê Văn C</td>
-                            <td>0333.444.555</td>
-                            <td>levanc@gmail.com</td>
-                            <td><strong>100</strong></td>
-                            <td><i class="fas fa-medal rank-bronze me-1"></i> Đồng</td>
-                            <td class="text-end pe-4">
-                                <button class="btn btn-icon btn-edit me-1"><i class="fas fa-pen"></i></button>
-                                <button class="btn btn-icon btn-delete"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
-                 <small class="text-muted">Hiển thị 3 / 150 khách hàng</small>
-                 <nav>
-                    <ul class="pagination pagination-sm mb-0">
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    </ul>
-                </nav>
-            </div>
+  <div class="page-section">
+    <div class="card-custom">
+      <div class="card-custom-header">
+        <div class="card-title"><i class="fas fa-users me-2"></i>Danh sách Thành Viên <span class="badge bg-secondary ms-1" id="kh-count">0</span></div>
+        <div class="d-flex gap-2">
+          <input type="text" class="form-control form-control-sm" id="search-kh" style="width:240px" placeholder="Tìm tên, email, SĐT..." oninput="applyFilter()">
+          <select class="form-select form-select-sm" id="filter-hang" style="width:140px" onchange="applyFilter()">
+            <option value="">Tất cả hạng</option>
+            <option value="Vàng">Vàng</option>
+            <option value="Bạc">Bạc</option>
+            <option value="Đồng">Đồng</option>
+          </select>
+          <button class="btn btn-primary btn-sm fw-bold" onclick="openAddKH()">
+            <i class="fas fa-plus me-1"></i>Thêm khách
+          </button>
         </div>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th class="ps-4">STT</th>
+              <th>Họ và tên</th>
+              <th>Số điện thoại</th>
+              <th>Email</th>
+              <th>Điểm tích lũy</th>
+              <th>Hạng TV</th>
+              <th class="text-end pe-4">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="kh-tbody">
+            <tr><td colspan="7" class="text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i>Đang tải...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
+        <small class="text-muted" id="kh-info">Đang tải...</small>
+        <div id="pagination" class="d-flex gap-1"></div>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- MODAL THÊM -->
+<div class="modal fade" id="addKHModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Thêm Khách Hàng Mới</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="add-kh-err" class="alert alert-danger py-2 d-none"></div>
+        <div class="mb-3"><label class="form-label small text-muted fw-bold">HỌ VÀ TÊN <span class="text-danger">*</span></label>
+          <input class="form-control" id="akh-hoten" placeholder="Nguyễn Văn A"></div>
+        <div class="mb-3"><label class="form-label small text-muted fw-bold">SỐ ĐIỆN THOẠI <span class="text-danger">*</span></label>
+          <input class="form-control" id="akh-sdt" placeholder="0912345678"></div>
+        <div class="mb-3"><label class="form-label small text-muted fw-bold">EMAIL</label>
+          <input class="form-control" id="akh-email" type="email" placeholder="email@gmail.com"></div>
+        <div class="mb-3"><label class="form-label small text-muted fw-bold">MẬT KHẨU <span class="text-danger">*</span></label>
+          <input class="form-control" id="akh-pw" type="password" placeholder="Mật khẩu mặc định"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+        <button class="btn btn-primary" id="btn-add-kh" onclick="saveKH()"><i class="fas fa-save me-1"></i>Lưu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SỬA -->
+<div class="modal fade" id="editKHModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Cập Nhật Khách Hàng</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="edit-kh-err" class="alert alert-danger py-2 d-none"></div>
+        <input type="hidden" id="ekh-ma">
+        <div class="mb-3"><label class="form-label small text-muted fw-bold">HỌ VÀ TÊN</label>
+          <input class="form-control" id="ekh-hoten"></div>
+        <div class="mb-3"><label class="form-label small text-muted fw-bold">SỐ ĐIỆN THOẠI</label>
+          <input class="form-control" id="ekh-sdt"></div>
+        <div class="mb-3"><label class="form-label small text-muted fw-bold">EMAIL</label>
+          <input class="form-control" id="ekh-email" type="email"></div>
+        <div class="mb-3"><label class="form-label small text-muted fw-bold">ĐIỂM TÍCH LŨY</label>
+          <input class="form-control" id="ekh-diem" type="number" min="0"></div>
+        <div class="mb-3"><label class="form-label small text-muted fw-bold">HẠNG THÀNH VIÊN</label>
+          <select class="form-select" id="ekh-hang">
+            <option value="Đồng">Đồng</option>
+            <option value="Bạc">Bạc</option>
+            <option value="Vàng">Vàng</option>
+          </select>
+        </div>
+        <div class="mb-3"><label class="form-label small text-muted fw-bold">ĐỔI MẬT KHẨU (để trống nếu không đổi)</label>
+          <input class="form-control" id="ekh-pw" type="password" placeholder="Nhập mật khẩu mới..."></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+        <button class="btn btn-primary" id="btn-edit-kh" onclick="updateKH()"><i class="fas fa-save me-1"></i>Cập nhật</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL XÓA -->
+<div class="modal fade" id="deleteKHModal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold text-danger"><i class="fas fa-trash me-2"></i>Xóa khách hàng</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body pt-2">Xóa khách hàng <strong id="del-kh-name"></strong>? Không thể hoàn tác.</div>
+      <div class="modal-footer border-0">
+        <button class="btn btn-light btn-sm" data-bs-dismiss="modal">Hủy</button>
+        <button class="btn btn-danger btn-sm" id="btn-del-kh">Xóa</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../admin/js/script.js"></script>
+<script>
+  const API   = 'http://localhost:8080';
+  let allKH   = [];
+  let editMaTK = null;
+  let deleteMaTK = null;
+
+  const PAGE_SIZE = 10;
+  let currentPage = 1;
+
+  document.addEventListener('DOMContentLoaded', loadKH);
+
+  async function loadKH() {
+    try {
+      const res = await fetch(API + '/api/taikhoan');
+      const all = await res.json();
+      allKH = all.filter(u => (u.vaiTro||'').toUpperCase() !== 'ADMIN');
+      applyFilter();
+    } catch {
+      document.getElementById('kh-tbody').innerHTML = '<tr><td colspan="7" class="text-center text-danger py-4">Lỗi kết nối server!</td></tr>';
+    }
+  }
+
+  function applyFilter() {
+    const q    = (document.getElementById('search-kh').value||'').toLowerCase();
+    const hang = document.getElementById('filter-hang').value;
+    const data = allKH.filter(k => {
+      const matchQ = !q ||
+        (k.hoTen||'').toLowerCase().includes(q) ||
+        (k.sdt||'').includes(q) ||
+        (k.email||'').toLowerCase().includes(q);
+      const matchH = !hang || k.hangThanhVien === hang;
+      return matchQ && matchH;
+    });
+    document.getElementById('kh-count').textContent = data.length;
+    currentPage = 1;
+    renderTable(data);
+  }
+
+  function renderTable(data) {
+    const start = (currentPage-1)*PAGE_SIZE;
+    const page  = data.slice(start, start+PAGE_SIZE);
+    document.getElementById('kh-info').textContent = `Hiển thị ${start+1}–${Math.min(start+page.length,data.length)} / ${data.length} khách hàng`;
+    const rankIcon = h => {
+      if (!h) return '';
+      const l = h.toLowerCase();
+      if (l.includes('vàng')||l.includes('vang')) return `<i class="fas fa-crown rank-gold me-1"></i>`;
+      if (l.includes('bạc')||l.includes('bac'))   return `<i class="fas fa-medal rank-silver me-1"></i>`;
+      return `<i class="fas fa-medal rank-bronze me-1"></i>`;
+    };
+    document.getElementById('kh-tbody').innerHTML = page.length === 0
+      ? '<tr><td colspan="7" class="text-center text-muted py-4">Không có khách hàng nào.</td></tr>'
+      : page.map((k, i) => `
+        <tr>
+          <td class="ps-4">${start+i+1}</td>
+          <td class="fw-bold">${k.hoTen||'—'}</td>
+          <td>${k.sdt||'—'}</td>
+          <td>${k.email||'—'}</td>
+          <td><strong class="text-primary">${(k.diemTichLuy||0).toLocaleString('vi-VN')}</strong></td>
+          <td>${rankIcon(k.hangThanhVien)}${k.hangThanhVien||'Đồng'}</td>
+          <td class="text-end pe-4">
+            <button class="btn btn-icon btn-edit me-1" onclick="openEdit('${k.maTK}')" title="Sửa"><i class="fas fa-pen"></i></button>
+            <button class="btn btn-icon btn-delete" onclick="openDelete('${k.maTK}','${k.hoTen}')" title="Xóa"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>`).join('');
+
+    // Pagination
+    const pages = Math.ceil(data.length / PAGE_SIZE);
+    const pag   = document.getElementById('pagination');
+    pag.innerHTML = '';
+    for (let p = 1; p <= pages; p++) {
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-sm ' + (p === currentPage ? 'btn-primary' : 'btn-outline-secondary');
+      btn.textContent = p;
+      btn.onclick = () => { currentPage = p; renderTable(data); };
+      pag.appendChild(btn);
+    }
+  }
+
+  function openAddKH() {
+    ['akh-hoten','akh-sdt','akh-email','akh-pw'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('add-kh-err').classList.add('d-none');
+    new bootstrap.Modal(document.getElementById('addKHModal')).show();
+  }
+
+  async function saveKH() {
+    const err  = document.getElementById('add-kh-err');
+    const btn  = document.getElementById('btn-add-kh');
+    const dto  = {
+      hoTen:   document.getElementById('akh-hoten').value.trim(),
+      sdt:     document.getElementById('akh-sdt').value.trim(),
+      email:   document.getElementById('akh-email').value.trim(),
+      matKhau: document.getElementById('akh-pw').value
+    };
+    err.classList.add('d-none');
+    if (!dto.hoTen || !dto.sdt || !dto.matKhau) { err.textContent = 'Vui lòng điền đầy đủ!'; err.classList.remove('d-none'); return; }
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Đang lưu...';
+    try {
+      const res = await fetch(API + '/api/taikhoan/register', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(dto) });
+      if (!res.ok) { const m = await res.text(); throw new Error(m); }
+      await loadKH();
+      bootstrap.Modal.getInstance(document.getElementById('addKHModal')).hide();
+      showToast('Thêm khách hàng thành công!', 'success');
+    } catch(e) { err.textContent = 'Lỗi: ' + (e.message||'Thử lại!'); err.classList.remove('d-none'); }
+    finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save me-1"></i>Lưu'; }
+  }
+
+  function openEdit(maTK) {
+    const kh = allKH.find(k => k.maTK === maTK);
+    if (!kh) return;
+    editMaTK = maTK;
+    document.getElementById('ekh-ma').value    = kh.maTK;
+    document.getElementById('ekh-hoten').value = kh.hoTen||'';
+    document.getElementById('ekh-sdt').value   = kh.sdt||'';
+    document.getElementById('ekh-email').value = kh.email||'';
+    document.getElementById('ekh-diem').value  = kh.diemTichLuy||0;
+    document.getElementById('ekh-hang').value  = kh.hangThanhVien||'Đồng';
+    document.getElementById('ekh-pw').value    = '';
+    document.getElementById('edit-kh-err').classList.add('d-none');
+    new bootstrap.Modal(document.getElementById('editKHModal')).show();
+  }
+
+  async function updateKH() {
+    const err = document.getElementById('edit-kh-err');
+    const btn = document.getElementById('btn-edit-kh');
+    const pw  = document.getElementById('ekh-pw').value;
+    const dto = {
+      hoTen:        document.getElementById('ekh-hoten').value.trim(),
+      sdt:          document.getElementById('ekh-sdt').value.trim(),
+      email:        document.getElementById('ekh-email').value.trim(),
+      diemTichLuy:  parseInt(document.getElementById('ekh-diem').value)||0,
+      hangThanhVien:document.getElementById('ekh-hang').value
+    };
+    if (pw) dto.matKhau = pw;
+    err.classList.add('d-none');
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Đang lưu...';
+    try {
+      const res = await fetch(API + '/api/taikhoan/' + editMaTK, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(dto) });
+      if (!res.ok) { const m = await res.text(); throw new Error(m); }
+      await loadKH();
+      bootstrap.Modal.getInstance(document.getElementById('editKHModal')).hide();
+      showToast('Cập nhật thành công!', 'success');
+    } catch(e) { err.textContent = 'Lỗi: ' + (e.message||'Thử lại!'); err.classList.remove('d-none'); }
+    finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save me-1"></i>Cập nhật'; }
+  }
+
+  function openDelete(maTK, hoTen) {
+    deleteMaTK = maTK;
+    document.getElementById('del-kh-name').textContent = hoTen;
+    document.getElementById('btn-del-kh').onclick = confirmDeleteKH;
+    new bootstrap.Modal(document.getElementById('deleteKHModal')).show();
+  }
+
+  async function confirmDeleteKH() {
+    const btn = document.getElementById('btn-del-kh');
+    btn.disabled = true; btn.textContent = 'Đang xóa...';
+    try {
+      const res = await fetch(API + '/api/taikhoan/' + deleteMaTK, { method:'DELETE' });
+      if (!res.ok) throw new Error(await res.text());
+      await loadKH();
+      bootstrap.Modal.getInstance(document.getElementById('deleteKHModal')).hide();
+      showToast('Đã xóa khách hàng!', 'danger');
+    } catch(e) { alert('Lỗi: ' + (e.message||'Thử lại!')); }
+    finally { btn.disabled = false; btn.textContent = 'Xóa'; }
+  }
+
+  function showToast(msg, type) {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;min-width:260px';
+    t.innerHTML = `<div class="alert alert-${type==='success'?'success':'danger'} shadow-sm mb-0">${msg}</div>`;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+  }
+</script>
 </body>
 </html>

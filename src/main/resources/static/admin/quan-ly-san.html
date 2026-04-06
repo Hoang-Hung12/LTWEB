@@ -11,165 +11,386 @@
 <body>
 
 <div class="sidebar">
-    <div class="sidebar-header"><i class="fas fa-futbol me-2"></i> ARENAX ADMIN</div>
-    <ul class="nav flex-column mt-3">
-        <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="quan-ly-don-dat.html"><i class="fas fa-calendar-check"></i> Quản lý đơn đặt</a></li>
-        <li class="nav-item"><a class="nav-link" href="lap-hoa-don.html"><i class="fas fa-file-invoice-dollar"></i> Lập hóa đơn</a></li>
-        <li class="nav-item"><a class="nav-link active" href="quan-ly-san.html"><i class="fas fa-flag"></i> Quản lý sân</a></li>
-        <li class="nav-item"><a class="nav-link" href="quan-ly-khach-hang.html"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
-        <li class="nav-item"><a class="nav-link" href="thong-ke-doanh-thu.html"><i class="fas fa-chart-line"></i> Thống kê doanh thu</a></li>
-    </ul>
+  <div class="sidebar-header"><i class="fas fa-futbol me-2"></i>ARENAX ADMIN</div>
+  <ul class="nav flex-column mt-3">
+    <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" href="quan-ly-don-dat.html"><i class="fas fa-calendar-check"></i>Quản lý đơn đặt</a></li>
+    <li class="nav-item"><a class="nav-link" href="lap-hoa-don.html"><i class="fas fa-file-invoice-dollar"></i>Lập hóa đơn</a></li>
+    <li class="nav-item"><a class="nav-link active" href="quan-ly-san.html"><i class="fas fa-flag"></i>Quản lý sân</a></li>
+    <li class="nav-item"><a class="nav-link" href="quan-ly-khach-hang.html"><i class="fas fa-users"></i>Quản lý khách hàng</a></li>
+    <li class="nav-item"><a class="nav-link" href="thong-ke-doanh-thu.html"><i class="fas fa-chart-line"></i>Thống kê doanh thu</a></li>
+  </ul>
 </div>
 
 <div class="main-content">
-    <div class="top-header">
-        <div class="text-secondary fw-bold fs-5">Quản lý Sân Bóng</div>
-        <div class="d-flex align-items-center gap-2">
-            <div class="text-end lh-1">
-                <div class="fw-bold small">Hoàng Xuân Hưng</div>
-                <div class="text-muted" style="font-size: 0.75rem;">Admin</div>
-            </div>
-            <div class="avatar">H</div>
-        </div>
+  <div class="top-header">
+    <div class="text-secondary fw-bold fs-5">Quản lý Sân Bóng</div>
+    <div class="d-flex align-items-center gap-2">
+      <div class="text-end lh-1">
+        <div class="fw-bold small">Admin</div>
+        <div class="text-muted" style="font-size:.75rem">Quản trị viên</div>
+      </div>
+      <div class="avatar">A</div>
     </div>
+  </div>
 
-    <div class="page-section">
-        <div class="card-custom">
-            <div class="card-custom-header">
-                <div class="card-title">Danh sách Sân bóng</div>
-                <div class="d-flex gap-2">
-                    <div class="input-group input-group-sm" style="width: 250px;">
-                        <input type="text" class="form-control" placeholder="Tìm sân...">
-                        <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
-                    </div>
-                    <button class="btn btn-primary btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#addPitchModal">
-                        <i class="fas fa-plus me-1"></i> Thêm sân mới
-                    </button>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th class="ps-4">ID</th>
-                            <th>Tên sân</th>
-                            <th>Loại sân</th>
-                            <th>Giá tiền (1.5h)</th>
-                            <th>Trạng thái</th>
-                            <th class="text-end pe-4">Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="ps-4">SB01</td>
-                            <td><strong>Sân A - Khu KTX</strong></td>
-                            <td>Sân 7 người</td>
-                            <td>300.000 đ</td>
-                            <td><span class="badge-soft badge-soft-success">EMPTY</span></td>
-                            <td class="text-end pe-4">
-                                <button class="btn btn-icon btn-edit me-1" onclick="editPitch('SB01')"><i class="fas fa-pen"></i></button>
-                                <button class="btn btn-icon btn-delete" onclick="deleteItem('Sân A')"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="ps-4">SB02</td>
-                            <td><strong>Sân B - SVĐ</strong></td>
-                            <td>Sân 5 người</td>
-                            <td>200.000 đ</td>
-                            <td><span class="badge-soft badge-soft-danger">ORDERD</span></td>
-                            <td class="text-end pe-4">
-                                <button class="btn btn-icon btn-edit me-1" onclick="editPitch('SB02')"><i class="fas fa-pen"></i></button>
-                                <button class="btn btn-icon btn-delete" onclick="deleteItem('Sân B')"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="ps-4">SB03</td>
-                            <td><strong>Sân C - Canteen</strong></td>
-                            <td>Sân 5 người</td>
-                            <td>220.000 đ</td>
-                            <td><span class="badge-soft badge-soft-warning">USING</span></td>
-                            <td class="text-end pe-4">
-                                <button class="btn btn-icon btn-edit me-1" onclick="editPitch('SB03')"><i class="fas fa-pen"></i></button>
-                                <button class="btn btn-icon btn-delete" onclick="deleteItem('Sân C')"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+  <div class="page-section">
+    <div class="card-custom">
+      <div class="card-custom-header">
+        <div class="card-title">Danh sách Sân bóng <span class="badge bg-secondary ms-1" id="san-count">0</span></div>
+        <div class="d-flex gap-2">
+          <div class="input-group input-group-sm" style="width:250px">
+            <input type="text" class="form-control" id="search-input" placeholder="Tìm tên sân..." oninput="applyFilter()">
+            <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+          </div>
+          <select class="form-select form-select-sm" id="filter-loai-admin" style="width:150px" onchange="applyFilter()">
+            <option value="">Tất cả loại</option>
+          </select>
+          <button class="btn btn-primary btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#addPitchModal" onclick="resetAddForm()">
+            <i class="fas fa-plus me-1"></i>Thêm sân mới
+          </button>
         </div>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th class="ps-4">Mã sân</th>
+              <th>Tên sân</th>
+              <th>Loại sân</th>
+              <th>Địa chỉ</th>
+              <th>Giá thuê (1.5h)</th>
+              <th>Trạng thái</th>
+              <th class="text-end pe-4">Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="san-tbody">
+            <tr><td colspan="7" class="text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i>Đang tải...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 
+<!-- MODAL THÊM SÂN -->
 <div class="modal fade" id="addPitchModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold">Thêm Sân Bóng Mới</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">TÊN SÂN</label>
-                        <input type="text" class="form-control" placeholder="Ví dụ: Sân E - Khu mới">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">LOẠI SÂN</label>
-                        <select class="form-select">
-                            <option>Sân 5 người</option>
-                            <option>Sân 7 người</option>
-                            <option>Sân 11 người</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">GIÁ TIỀN / 90 PHÚT</label>
-                        <input type="number" class="form-control" placeholder="300000">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-primary">Lưu lại</button>
-            </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Thêm Sân Bóng Mới</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="add-error" class="alert alert-danger py-2 d-none"></div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">TÊN SÂN <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="add-ten" placeholder="VD: Sân E - Khu mới">
         </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">ĐỊA CHỈ</label>
+          <input type="text" class="form-control" id="add-diachi" placeholder="VD: Khu A, Học viện PTIT">
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">LOẠI SÂN <span class="text-danger">*</span></label>
+          <select class="form-select" id="add-loai"></select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">GIÁ THUÊ / 90 PHÚT <span class="text-danger">*</span></label>
+          <input type="number" class="form-control" id="add-gia" placeholder="300000" min="0">
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">MÔ TẢ</label>
+          <textarea class="form-control" id="add-mota" rows="2" placeholder="Mô tả tiện ích sân..."></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">TIỆN ÍCH (phân cách bằng dấu phẩy)</label>
+          <input type="text" class="form-control" id="add-tieních" placeholder="Wifi, Gửi xe, Nước uống">
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">URL ẢNH CHÍNH</label>
+          <input type="text" class="form-control" id="add-anh" placeholder="https://...">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" id="btn-add-save" onclick="saveSan()">
+          <i class="fas fa-save me-1"></i>Lưu lại
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
+<!-- MODAL SỬA SÂN -->
 <div class="modal fade" id="editPitchModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold">Cập Nhật Thông Tin Sân</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">MÃ SÂN</label>
-                        <input type="text" class="form-control bg-light" value="SB01" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">TÊN SÂN</label>
-                        <input type="text" class="form-control" value="Sân A - Khu KTX">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">TRẠNG THÁI</label>
-                        <div class="form-check form-switch mt-2">
-                            <input class="form-check-input" type="checkbox" id="maintenanceSwitch">
-                            <label class="form-check-label" for="maintenanceSwitch">Đang bảo trì/Sửa chữa</label>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Cập nhật</button>
-            </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Cập Nhật Thông Tin Sân</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="edit-error" class="alert alert-danger py-2 d-none"></div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">MÃ SÂN</label>
+          <input type="text" class="form-control bg-light" id="edit-ma" readonly>
         </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">TÊN SÂN</label>
+          <input type="text" class="form-control" id="edit-ten">
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">ĐỊA CHỈ</label>
+          <input type="text" class="form-control" id="edit-diachi">
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">LOẠI SÂN</label>
+          <select class="form-select" id="edit-loai"></select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">GIÁ THUÊ / 90 PHÚT</label>
+          <input type="number" class="form-control" id="edit-gia" min="0">
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">MÔ TẢ</label>
+          <textarea class="form-control" id="edit-mota" rows="2"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">TIỆN ÍCH</label>
+          <input type="text" class="form-control" id="edit-tieních">
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">URL ẢNH CHÍNH</label>
+          <input type="text" class="form-control" id="edit-anh">
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-muted small fw-bold">TRẠNG THÁI</label>
+          <select class="form-select" id="edit-tt">
+            <option value="EMPTY">Còn trống</option>
+            <option value="ORDERD">Đã đặt</option>
+            <option value="MAINTENANCE">Bảo trì</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" id="btn-edit-save" onclick="updateSan()">
+          <i class="fas fa-save me-1"></i>Cập nhật
+        </button>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- MODAL XÁC NHẬN XÓA -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold text-danger"><i class="fas fa-trash me-2"></i>Xóa sân</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body pt-2">
+        Bạn có chắc muốn xóa <strong id="delete-san-name"></strong>? Thao tác này không thể hoàn tác.
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-danger btn-sm" id="btn-confirm-delete">Xóa</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../admin/js/script.js"></script>
+<script>
+  const API = 'http://localhost:8080';
+  let allSans   = [];
+  let loaiList  = [];
+  let editMaSan = null;
+  let deleteMaSan = null;
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadLoaiSan();
+    await loadSans();
+  });
+
+  async function loadLoaiSan() {
+    try {
+      const res = await fetch(API + '/api/loaisan');
+      loaiList  = await res.json();
+      const opts = loaiList.map(ls => `<option value="${ls.maLoaiSan}">${ls.tenLoaiSan||'Sân '+ls.soNguoi+' người'}</option>`).join('');
+      ['add-loai','edit-loai'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '<option value="">-- Chọn loại sân --</option>' + opts;
+      });
+      const filter = document.getElementById('filter-loai-admin');
+      if (filter) filter.innerHTML = '<option value="">Tất cả loại</option>' + opts;
+    } catch(e) { console.warn(e); }
+  }
+
+  async function loadSans() {
+    try {
+      const res = await fetch(API + '/api/san');
+      allSans   = await res.json();
+      applyFilter();
+    } catch {
+      document.getElementById('san-tbody').innerHTML = '<tr><td colspan="7" class="text-center text-danger py-4">Lỗi kết nối server!</td></tr>';
+    }
+  }
+
+  function applyFilter() {
+    const q    = (document.getElementById('search-input').value || '').toLowerCase();
+    const loai = document.getElementById('filter-loai-admin').value;
+    const data = allSans.filter(s => {
+      const matchQ = !q || (s.tenSan||'').toLowerCase().includes(q) || (s.maSan||'').toLowerCase().includes(q);
+      const matchL = !loai || s.maLoaiSan === loai;
+      return matchQ && matchL;
+    });
+    document.getElementById('san-count').textContent = data.length;
+    renderTable(data);
+  }
+
+  function renderTable(data) {
+    const statusMap = { EMPTY:'badge-soft-success', ORDERD:'badge-soft-danger', MAINTENANCE:'badge-soft-warning' };
+    const labelMap  = { EMPTY:'Còn trống', ORDERD:'Đang dùng', MAINTENANCE:'Bảo trì' };
+    document.getElementById('san-tbody').innerHTML = data.length === 0
+      ? '<tr><td colspan="7" class="text-center text-muted py-4">Không có sân nào.</td></tr>'
+      : data.map(s => `
+        <tr>
+          <td class="ps-4"><code>${s.maSan}</code></td>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              ${s.anhChinh ? `<img src="${s.anhChinh}" style="width:40px;height:30px;object-fit:cover;border-radius:4px" onerror="this.style.display='none'">` : ''}
+              <strong>${s.tenSan}</strong>
+            </div>
+          </td>
+          <td>${s.tenLoaiSan||'—'}</td>
+          <td>${s.diaChi||'—'}</td>
+          <td><strong>${Number(s.giaThue||0).toLocaleString('vi-VN')}đ</strong></td>
+          <td><span class="badge-soft ${statusMap[s.trangThai]||'badge-soft-secondary'}">${labelMap[s.trangThai]||s.trangThai||'—'}</span></td>
+          <td class="text-end pe-4">
+            <button class="btn btn-icon btn-edit me-1" onclick="openEdit('${s.maSan}')" title="Sửa"><i class="fas fa-pen"></i></button>
+            <button class="btn btn-icon btn-delete" onclick="openDelete('${s.maSan}','${s.tenSan}')" title="Xóa"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>`).join('');
+  }
+
+  function resetAddForm() {
+    ['add-ten','add-diachi','add-gia','add-mota','add-tieních','add-anh'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('add-loai').selectedIndex = 0;
+    document.getElementById('add-error').classList.add('d-none');
+  }
+
+  async function saveSan() {
+    const ten  = document.getElementById('add-ten').value.trim();
+    const loai = document.getElementById('add-loai').value;
+    const gia  = parseFloat(document.getElementById('add-gia').value);
+    const err  = document.getElementById('add-error');
+    err.classList.add('d-none');
+    if (!ten || !loai || !gia) { err.textContent = 'Vui lòng điền tên sân, loại sân và giá thuê!'; err.classList.remove('d-none'); return; }
+    const dto = {
+      tenSan:   ten,
+      diaChi:   document.getElementById('add-diachi').value.trim(),
+      maLoaiSan:loai,
+      giaThue:  gia,
+      moTa:     document.getElementById('add-mota').value.trim(),
+      tienIch:  document.getElementById('add-tieních').value.trim(),
+      anhChinh: document.getElementById('add-anh').value.trim(),
+      trangThai:'EMPTY'
+    };
+    const btn = document.getElementById('btn-add-save');
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Đang lưu...';
+    try {
+      const res = await fetch(API + '/api/san', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(dto) });
+      if (!res.ok) { const msg = await res.text(); throw new Error(msg); }
+      const newSan = await res.json();
+      allSans.push(newSan);
+      applyFilter();
+      bootstrap.Modal.getInstance(document.getElementById('addPitchModal')).hide();
+      showToast('Thêm sân thành công!', 'success');
+    } catch(e) { err.textContent = 'Lỗi: ' + (e.message||'Vui lòng thử lại!'); err.classList.remove('d-none'); }
+    finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save me-1"></i>Lưu lại'; }
+  }
+
+  function openEdit(maSan) {
+    const san = allSans.find(s => s.maSan === maSan);
+    if (!san) return;
+    editMaSan = maSan;
+    document.getElementById('edit-ma').value     = san.maSan;
+    document.getElementById('edit-ten').value    = san.tenSan || '';
+    document.getElementById('edit-diachi').value = san.diaChi || '';
+    document.getElementById('edit-gia').value    = san.giaThue || '';
+    document.getElementById('edit-mota').value   = san.moTa || '';
+    document.getElementById('edit-tieních').value= san.tienIch || '';
+    document.getElementById('edit-anh').value    = san.anhChinh || '';
+    document.getElementById('edit-tt').value     = san.trangThai || 'EMPTY';
+    const loaiEl = document.getElementById('edit-loai');
+    if (loaiEl) loaiEl.value = san.maLoaiSan || '';
+    document.getElementById('edit-error').classList.add('d-none');
+    new bootstrap.Modal(document.getElementById('editPitchModal')).show();
+  }
+
+  async function updateSan() {
+    const err = document.getElementById('edit-error');
+    err.classList.add('d-none');
+    const dto = {
+      tenSan:    document.getElementById('edit-ten').value.trim(),
+      diaChi:    document.getElementById('edit-diachi').value.trim(),
+      maLoaiSan: document.getElementById('edit-loai').value,
+      giaThue:   parseFloat(document.getElementById('edit-gia').value),
+      moTa:      document.getElementById('edit-mota').value.trim(),
+      tienIch:   document.getElementById('edit-tieních').value.trim(),
+      anhChinh:  document.getElementById('edit-anh').value.trim(),
+      trangThai: document.getElementById('edit-tt').value
+    };
+    const btn = document.getElementById('btn-edit-save');
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Đang lưu...';
+    try {
+      const res = await fetch(API + '/api/san/' + editMaSan, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(dto) });
+      if (!res.ok) throw new Error(await res.text());
+      const updated = await res.json();
+      const idx = allSans.findIndex(s => s.maSan === editMaSan);
+      if (idx >= 0) allSans[idx] = updated;
+      applyFilter();
+      bootstrap.Modal.getInstance(document.getElementById('editPitchModal')).hide();
+      showToast('Cập nhật sân thành công!', 'success');
+    } catch(e) { err.textContent = 'Lỗi: ' + (e.message||'Vui lòng thử lại!'); err.classList.remove('d-none'); }
+    finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save me-1"></i>Cập nhật'; }
+  }
+
+  function openDelete(maSan, tenSan) {
+    deleteMaSan = maSan;
+    document.getElementById('delete-san-name').textContent = tenSan;
+    document.getElementById('btn-confirm-delete').onclick = confirmDelete;
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+  }
+
+  async function confirmDelete() {
+    const btn = document.getElementById('btn-confirm-delete');
+    btn.disabled = true; btn.textContent = 'Đang xóa...';
+    try {
+      const res = await fetch(API + '/api/san/' + deleteMaSan, { method:'DELETE' });
+      if (!res.ok) throw new Error(await res.text());
+      allSans = allSans.filter(s => s.maSan !== deleteMaSan);
+      applyFilter();
+      bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+      showToast('Đã xóa sân thành công!', 'danger');
+    } catch(e) { alert('Lỗi xóa sân: ' + (e.message||'Vui lòng thử lại!')); }
+    finally { btn.disabled = false; btn.textContent = 'Xóa'; }
+  }
+
+  function showToast(msg, type) {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;min-width:260px';
+    t.innerHTML = `<div class="alert alert-${type==='success'?'success':'danger'} shadow-sm mb-0">${msg}</div>`;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+  }
+</script>
 </body>
 </html>

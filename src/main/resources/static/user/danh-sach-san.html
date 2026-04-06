@@ -1,123 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách sân</title>
+    <title>Danh sách sân - ArenaX</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../user/css/style.css">
     <link rel="stylesheet" href="../user/css/danh-sach-san.css">
+    <style>
+        .user-menu-btn{background:transparent;border:1px solid rgba(255,255,255,.3);border-radius:25px;color:#fff;padding:5px 14px;cursor:pointer;display:flex;align-items:center;gap:8px}
+        .user-avatar{width:32px;height:32px;background:#0d6efd;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
+        .user-info-text{line-height:1.2;text-align:left}
+        .user-info-text .u-name{font-weight:600;font-size:14px}
+        .user-info-text .u-sub{font-size:11px;color:#adb5bd}
+        .rank-badge{font-size:11px;background:rgba(255,255,255,.15);border-radius:12px;padding:2px 8px}
+        .page-header{background:#fff;border-bottom:1px solid #e5e7eb;padding:16px 0;margin-bottom:20px}
+        .filter-box{display:flex;gap:10px;flex-wrap:wrap}
+        .loading-spinner{text-align:center;padding:40px;color:#666;width:100%}
+    </style>
 </head>
 <body>
-    <nav class = "navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
-        <div class = "container">
-            <a class = "navbar-brand fw-bold" href = "#"><i class = "fas fa-futbol me-2"></i>ARENAX</a>
-            <button class = "navbar-toggler" type = "button" data-bs-toggler = "collapse" data-bs-target = "#navbarNav">
-                <span class = "navbar-toggler-icon"></span>
-            </button>
-            <div class = "collapse navbar-collapse" id = navbarNav>
-                <ul class = "navbar-nav ms-auto align-items-center">
-                    <li class = "nav-item"><a class = "nav-link" href = "index.html">Trang chủ</a></li>
-                    <li class = "nav-item"><a class = "nav-link active" href = "danh-sach-san.html">Danh sách sân</a></li>
-                    <li class = "nav-item"><a class = "nav-link" href = "lich-su-dat-san.html">Lịch sử đặt</a></li>
-                    <li class = "nav-item ms-2"><a class = "btn btn-primary btn-sm rounded-pill px-3" href="login.html">Đăng nhập</a></li>
-                </ul>
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-futbol me-2"></i>ARENAX</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+        <li class="nav-item"><a class="nav-link active" href="danh-sach-san.html">Danh sách sân</a></li>
+        <li class="nav-item"><a class="nav-link" href="lich-su-dat-san.html">Lịch sử đặt</a></li>
+        <li class="nav-item ms-2" id="nav-login-item">
+          <a class="btn btn-primary btn-sm px-3 rounded-pill" href="login.html">Đăng nhập</a>
+        </li>
+        <li class="nav-item ms-2 dropdown" id="nav-user-item" style="display:none">
+          <button class="user-menu-btn dropdown-toggle" data-bs-toggle="dropdown">
+            <div class="user-avatar" id="nav-user-avatar">U</div>
+            <div class="user-info-text">
+              <div class="u-name" id="nav-user-name">Khách</div>
+              <div class="u-sub"><span id="nav-user-points">0 điểm</span>&nbsp;·&nbsp;<span class="rank-badge" id="nav-user-rank"></span></div>
             </div>
-        </div>
-    </nav>
-    <div class = "page-header">
-        <div class = "container d-flex justify-content-between align-items-center">
-            <h3 class = "fw-bold border-start border-4 border-primary ps-3 mb-100">Danh sách sân</h3>
-            <div class = "filter-box">
-                <select class = "form-select" style="width:200px">
-                    <option>Sắp xếp: Giá thấp đến cao</option>
-                    <option> Sắp xếp: Giá cao đến thấp</option>
-                </select>
-                <select class = "form-select" style = "width:150px">
-                    <option>Loại sân: Tất cả</option>
-                    <option>Sân 5 người</option>
-                    <option>Sân 7 người</option>
-                </select>
-                <select class = "form-select" style = "width:150px">
-                    <option>Trạng thái: Tất cả</option>
-                    <option>Còn trống</option>
-                    <option>Đã đặt</option>
-                    <option>Bảo trì</option>
-                </select>
-            </div>
-        </div>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="lich-su-dat-san.html"><i class="fas fa-history me-2"></i>Lịch sử đặt sân</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
-    <div class = "container py-4">
-        <div class = "row">
-            <div class = "col-md-4">
-                <div class = "card pitch-card">
-                    <img src = "../../static/user/images/san1.avif" class = "pitch-img card-img-top" alt = "San 1">
-                    <div class = "card-body">
-                        <div class = "d-flex justify-content-between mb-2">
-                            <span class = "badge bg-info text-dark">Sân 7 người</span>
-                            <span class = "badge bg-success"><i class = "fas fa-check-circle me-1"></i>còn trống</span>
-                        </div>
-                        <h5 class = "card-title fw-bold">Sân A - Khu ktx</h5>
-                        <p class = "card-text text-muted"><i class = "fas fa-map-marker-alt me-2"></i>Khu A</p>
-                        <div class ="d-flex justify-content-between align-items-center mt-3">
-                            <div class = "pitch-price">200.000đ<span class = "text-muted fs-6 fw-normal">/1h</span></div>
-                            <button class = " btn btn-outline-primary btn-sm">Xem chi tiết</button>
-                        </div>
-                        <div class = "card-footer bg-white border-0 pb-3">
-                            <button class = "btn btn-primary w-100 fw-bold">Đặt ngay</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class = "col-md-4">
-                <div class = "card pitch-card">
-                    <img src = "../../static/user/images/san2.avif" class = "pitch-img card-img-top" alt = "San 2">
-                    <div class = "card-body">
-                        <div class = "d-flex justify-content-between mb-2">
-                            <span class = "badge bg-info text-dark">Sân 5 người</span>
-                            <span class = "badge bg-success"><i class = "fas fa-check-circle me-1"></i>Còn trống</span>
-                        </div>
-                        <h5 class = "card-title fw-bold">Sân B</h5>
-                        <p class = "card-text text-muted"><i class = "fas fa-map-marker-alt me-2"></i>Khu B</p>
-                        <div class = "d-flex justify-content-between align-items-center mt-3">
-                            <div class = "pitch-price">300.000đ<span class = "text-muted fs-6 fw-normal">/1h</span></div>
-                            <button class = "btn btn-outline-primary btn-sm">Xem chi tiết</button>
-                        </div>
-                        <div class = "card-footer bg-white border-0 pb-3">
-                            <button class ="btn btn-primary w-100 fw-bold">Đặt ngay</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class = "col-md-4">
-                <div class = "card pitch-card">
-                    <img src = "../../static/user/images/san3.jpg" class = "pitch-img card-img-top" alt = "San 3">
-                    <div class = "card-body">
-                        <div class = "d-flex justify-content-between mb-2">
-                            <span class ="badge bg-warning text-dark">Sân 5 người</span>
-                            <span class = "badge bg-danger"><i class = "fas fa-check-circle me-1"></i>Đã đặt</span>
-                        </div>
-                        <h5 class = "card-title fw-bold">Sân C</h5>
-                        <p class = "card-text text-muted"><i class = "fas fa-map-marker-alt me-2"></i>Khu C</p>
-                        <div class = "d-flex justify-content-between align-items-center mt-3">
-                            <div class = "pitch-price">250.000đ<span class = "text-muted fs-6 fw-normal">/1h</span></div>
-                            <button class = "btn btn-outline-primary btn-sm">Xem chi tiết</button>
-                        </div>
-                        <div class = "card-footer bg-white border-0 pb-3">
-                            <button class = "btn btn-secondary w-100 fw-bold">Đặt ngay</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <h3 class="fw-bold border-start border-4 border-primary ps-3 mb-0">Danh sách sân</h3>
+    <div class="filter-box">
+      <select class="form-select form-select-sm" id="filter-loai" style="width:170px" onchange="applyFilters()">
+        <option value="">Tất cả loại sân</option>
+      </select>
+      <select class="form-select form-select-sm" id="filter-tt" style="width:160px" onchange="applyFilters()">
+        <option value="">Tất cả trạng thái</option>
+        <option value="EMPTY">Còn trống</option>
+        <option value="MAINTENANCE">Bảo trì</option>
+      </select>
+      <select class="form-select form-select-sm" id="filter-sort" style="width:190px" onchange="applyFilters()">
+        <option value="default">Sắp xếp mặc định</option>
+        <option value="asc">Giá: Thấp → Cao</option>
+        <option value="desc">Giá: Cao → Thấp</option>
+      </select>
     </div>
-    <footer class = "bg-dark text-white text-center py-4 mt-5">
-        <div class = "container">
-            <p class = "mb-0">&copy; 2026 ARENAX football management.</p>
-        </div>
-    </footer>
-    <scrip src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></scrip>
-    <script src="../../static/user/js/main.js"></script>
+  </div>
+</div>
+
+<div class="container py-4">
+  <div class="row" id="san-list">
+    <div class="loading-spinner"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Đang tải danh sách sân...</p></div>
+  </div>
+</div>
+
+<footer class="bg-dark text-white text-center py-4 mt-5">
+  <div class="container"><p class="mb-0">&copy; 2026 ARENAX Football Management.</p></div>
+</footer>
+
+<!-- Modal chi tiết -->
+<div class="modal-overlay" id="detailModal" onclick="if(event.target===this)closeModal()">
+  <div class="custom-modal">
+    <i class="fas fa-times modal-close" onclick="closeModal()"></i>
+    <div class="modal-left">
+      <img id="modal-san-img" src="" alt="" style="width:100%;height:200px;object-fit:cover;border-radius:8px;margin-bottom:16px">
+      <h2 class="modal-title" id="modal-san-title"></h2>
+      <p class="modal-loc"><i class="fas fa-map-marker-alt text-danger me-2"></i><span id="modal-san-diachi"></span></p>
+      <p><span class="badge bg-info text-dark" id="modal-san-loai"></span></p>
+      <hr>
+      <h5 class="mb-3 fw-bold">Tiện ích</h5>
+      <div class="amenities" id="modal-san-tieních"></div>
+      <h5 class="mb-2 fw-bold mt-4">Mô tả</h5>
+      <p class="modal-desc" id="modal-san-mota"></p>
+    </div>
+    <div class="modal-right">
+      <div class="price-box"><h3 id="modal-san-gia"></h3><span>/ 1.5h</span></div>
+      <hr>
+      <ul class="benefits">
+        <li><i class="fas fa-check text-success"></i> Giữ sân ngay lập tức</li>
+        <li><i class="fas fa-check text-success"></i> Đặt cọc online chỉ 30%</li>
+        <li><i class="fas fa-check text-success"></i> Hoàn cọc nếu hủy trước 24h</li>
+      </ul>
+      <button class="btn btn-primary w-100 fw-bold py-2 mt-2" id="modal-btn-dat">ĐẶT LỊCH NGAY</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../user/js/auth.js"></script>
+<script>
+  let allSans = [];
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const user = getCurrentUser();
+    if (user) {
+      const av = document.getElementById('nav-user-avatar');
+      if (av) av.textContent = (user.hoTen || 'U')[0].toUpperCase();
+    }
+    loadLoaiSan(document.getElementById('filter-loai'));
+    loadSans();
+  });
+
+  async function loadSans() {
+    const list = document.getElementById('san-list');
+    try {
+      const res  = await fetch(API_BASE + '/api/san');
+      if (!res.ok) throw new Error();
+      allSans = await res.json();
+      applyFilters();
+    } catch {
+      list.innerHTML = '<p class="text-danger text-center py-4 col-12"><i class="fas fa-exclamation-triangle me-2"></i>Không kết nối được server!</p>';
+    }
+  }
+
+  function applyFilters() {
+    const loai = document.getElementById('filter-loai').value;
+    const tt   = document.getElementById('filter-tt').value;
+    const sort = document.getElementById('filter-sort').value;
+    let data = [...allSans];
+    if (loai) data = data.filter(s => s.maLoaiSan === loai);
+    if (tt)   data = data.filter(s => (s.trangThai || '').toUpperCase() === tt.toUpperCase());
+    if (sort === 'asc')  data.sort((a,b) => (a.giaThue||0) - (b.giaThue||0));
+    if (sort === 'desc') data.sort((a,b) => (b.giaThue||0) - (a.giaThue||0));
+    const list = document.getElementById('san-list');
+    list.innerHTML = data.length === 0
+      ? '<p class="text-muted text-center py-4 col-12">Không có sân phù hợp.</p>'
+      : data.map(buildSanCard).join('');
+  }
+</script>
 </body>
 </html>
