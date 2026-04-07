@@ -1,110 +1,487 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARENAX Admin - Đơn đặt</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../admin/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARENAX Admin - Quản lý đơn đặt</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../admin/css/style.css">
+  <style>
+    .status-cho   { background:#fff3cd;color:#856404 }
+    .status-xacnhan { background:#d1e7dd;color:#0f5132 }
+    .status-hoantat { background:#cfe2ff;color:#084298 }
+    .status-huy   { background:#f8d7da;color:#842029 }
+    .status-badge { padding:5px 10px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap }
+    .detail-modal-bg { display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:3000;align-items:center;justify-content:center;padding:20px }
+    .detail-modal-bg.show { display:flex }
+    .detail-box { background:#fff;border-radius:14px;padding:28px;max-width:520px;width:100%;box-shadow:0 16px 48px rgba(0,0,0,.2);animation:fadeUp .25s ease }
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .det-row { display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f0f0f0;font-size:14px }
+    .det-row:last-child { border-bottom:none }
+  </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <div class="sidebar-header"><i class="fas fa-futbol me-2"></i> ARENAX ADMIN</div>
-    <ul class="nav flex-column mt-3">
-        <li class="nav-item"><a class="nav-link " href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link active" href="quan-ly-don-dat.html"><i class="fas fa-calendar-check"></i> Quản lý đơn đặt</a></li>
-        <li class="nav-item"><a class="nav-link" href="lap-hoa-don.html"><i class="fas fa-file-invoice-dollar"></i> Lập hóa đơn</a></li>
-        <li class="nav-item"><a class="nav-link" href="quan-ly-san.html"><i class="fas fa-flag"></i> Quản lý sân</a></li>
-        <li class="nav-item"><a class="nav-link" href="quan-ly-khach-hang.html"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
-        <li class="nav-item"><a class="nav-link" href="thong-ke-doanh-thu.html"><i class="fas fa-chart-line"></i> Thống kê doanh thu</a></li>
-    </ul>
+  <div class="sidebar-header"><i class="fas fa-futbol me-2"></i>ARENAX ADMIN</div>
+  <ul class="nav flex-column mt-3">
+    <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link active" href="quan-ly-don-dat.html"><i class="fas fa-calendar-check"></i> Quản lý đơn đặt</a></li>
+    <li class="nav-item"><a class="nav-link" href="lap-hoa-don.html"><i class="fas fa-file-invoice-dollar"></i> Lập hóa đơn</a></li>
+    <li class="nav-item"><a class="nav-link" href="quan-ly-san.html"><i class="fas fa-flag"></i> Quản lý sân</a></li>
+    <li class="nav-item"><a class="nav-link" href="quan-ly-khach-hang.html"><i class="fas fa-users"></i> Quản lý khách hàng</a></li>
+    <li class="nav-item"><a class="nav-link" href="thong-ke-doanh-thu.html"><i class="fas fa-chart-line"></i> Thống kê doanh thu</a></li>
+  </ul>
 </div>
 
 <div class="main-content">
-    <div class="top-header">
-        <div class="text-secondary fw-bold fs-5">Quản lý Đơn Đặt Sân</div>
-        <div class="d-flex align-items-center gap-2">
-            <div class="text-end lh-1">
-                <div class="fw-bold small">Hoàng Xuân Hưng</div>
-                <div class="text-muted" style="font-size: 0.75rem;">Admin</div>
-            </div>
-            <div class="avatar">H</div>
+  <div class="top-header">
+    <div class="text-secondary fw-bold fs-5">Quản lý Đơn Đặt Sân</div>
+    <div class="d-flex align-items-center gap-2">
+      <div class="text-end lh-1">
+        <div class="fw-bold small" id="admin-name">Admin</div>
+        <div class="text-muted" style="font-size:.75rem">Quản trị viên</div>
+      </div>
+      <div class="avatar">A</div>
+    </div>
+  </div>
+
+  <div class="page-section">
+    <!-- Thẻ tóm tắt -->
+    <div class="row g-3 mb-4" id="stat-cards">
+      <div class="col-6 col-md-3">
+        <div class="card-custom p-3 border-start border-4 border-warning">
+          <div class="text-secondary small fw-bold text-uppercase">Chờ duyệt</div>
+          <div class="fs-3 fw-bold mt-1 text-dark" id="cnt-cho">—</div>
         </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card-custom p-3 border-start border-4 border-success">
+          <div class="text-secondary small fw-bold text-uppercase">Đã xác nhận</div>
+          <div class="fs-3 fw-bold mt-1 text-dark" id="cnt-xn">—</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card-custom p-3 border-start border-4 border-primary">
+          <div class="text-secondary small fw-bold text-uppercase">Hoàn thành</div>
+          <div class="fs-3 fw-bold mt-1 text-dark" id="cnt-ht">—</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card-custom p-3 border-start border-4 border-danger">
+          <div class="text-secondary small fw-bold text-uppercase">Đã hủy</div>
+          <div class="fs-3 fw-bold mt-1 text-dark" id="cnt-huy">—</div>
+        </div>
+      </div>
     </div>
 
-    <div class="page-section">
-        <div class="card-custom">
-            <div class="card-custom-header">
-                <div class="card-title">Danh sách Đơn Đặt</div>
-                <div class="d-flex gap-2">
-                    <select class="form-select form-select-sm" style="width: 150px;">
-                        <option>Tất cả trạng thái</option>
-                        <option>Chờ duyệt</option>
-                        <option>Đã xác nhận</option>
-                    </select>
-                    <div class="input-group input-group-sm" style="width: 200px;">
-                        <input type="text" class="form-control" placeholder="Mã đơn / SĐT...">
-                        <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
-                    </div>
-                    <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Tạo đơn</button>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th class="ps-4">Mã Đơn</th>
-                            <th>Khách hàng</th>
-                            <th>Sân & Giờ</th>
-                            <th>Tiền cọc</th>
-                            <th>Trạng thái</th>
-                            <th class="text-end pe-4">Xử lý</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="ps-4 fw-bold text-primary">#ORD01</td>
-                            <td>
-                                <div class="fw-bold">Nguyễn Văn A</div>
-                                <div class="small text-muted">0912.333.444</div>
-                            </td>
-                            <td>
-                                <div>Sân A (7 người)</div>
-                                <div class="small text-primary">12/02 - 17:30</div>
-                            </td>
-                            <td class="text-danger fw-bold">100.000đ</td>
-                            <td><span class="badge-soft badge-soft-warning">Chờ duyệt</span></td>
-                            <td class="text-end pe-4">
-                                <button class="btn btn-success btn-sm me-1" title="Xác nhận cọc"><i class="fas fa-check"></i> Duyệt</button>
-                                <button class="btn btn-outline-danger btn-sm" title="Hủy đơn"><i class="fas fa-times"></i> Hủy</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="ps-4 fw-bold text-primary">#ORD02</td>
-                            <td>
-                                <div>Trần Thị B</div>
-                                <div class="small text-muted">0988.777.666</div>
-                            </td>
-                            <td>
-                                <div>Sân 5 (B)</div>
-                                <div class="small text-primary">12/02 - 19:00</div>
-                            </td>
-                            <td class="text-danger fw-bold">50.000đ</td>
-                            <td><span class="badge-soft badge-soft-success">Đã duyệt</span></td>
-                            <td class="text-end pe-4">
-                                <button class="btn btn-light btn-sm text-primary" title="Chi tiết"><i class="fas fa-eye"></i> Xem</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="card-custom">
+      <div class="card-custom-header">
+        <div class="card-title"><i class="fas fa-list me-2"></i>Danh sách Đơn Đặt <span class="badge bg-secondary ms-1" id="don-count">0</span></div>
+        <div class="d-flex gap-2 flex-wrap">
+          <select class="form-select form-select-sm" id="filter-tt" style="width:160px" onchange="applyFilter()">
+            <option value="">Tất cả trạng thái</option>
+            <option value="Chờ duyệt">Chờ duyệt</option>
+            <option value="Đã xác nhận">Đã xác nhận</option>
+            <option value="Đã hoàn thành">Đã hoàn thành</option>
+            <option value="Đã hủy">Đã hủy</option>
+          </select>
+          <div class="input-group input-group-sm" style="width:210px">
+            <input type="text" class="form-control" id="search-don" placeholder="Mã đơn / tên KH / SĐT..." oninput="applyFilter()">
+            <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+          </div>
         </div>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th class="ps-4">Mã Đơn</th>
+              <th>Khách hàng</th>
+              <th>Sân &amp; Thời gian</th>
+              <th>Tiền sân</th>
+              <th>Tiền cọc</th>
+              <th>Trạng thái</th>
+              <th class="text-end pe-4">Xử lý</th>
+            </tr>
+          </thead>
+          <tbody id="don-tbody">
+            <tr><td colspan="7" class="text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i>Đang tải...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3 px-4">
+        <small class="text-muted" id="page-info">Đang tải...</small>
+        <div id="pagination" class="d-flex gap-1 flex-wrap"></div>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- MODAL CHI TIẾT ĐƠN -->
+<div class="detail-modal-bg" id="detailModal">
+  <div class="detail-box">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h5 class="fw-bold mb-0"><i class="fas fa-file-alt me-2 text-primary"></i>Chi tiết đơn đặt</h5>
+      <button class="btn btn-sm btn-light" onclick="closeDetail()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="det-row"><span class="text-muted">Mã đơn:</span><strong id="d-ma" class="text-primary font-monospace"></strong></div>
+    <div class="det-row"><span class="text-muted">Khách hàng:</span><strong id="d-kh"></strong></div>
+    <div class="det-row"><span class="text-muted">Sân:</span><strong id="d-san"></strong></div>
+    <div class="det-row"><span class="text-muted">Ngày đá:</span><strong id="d-ngay"></strong></div>
+    <div class="det-row"><span class="text-muted">Khung giờ:</span><strong id="d-gio"></strong></div>
+    <div class="det-row"><span class="text-muted">Tiền sân:</span><strong id="d-tien" class="text-danger"></strong></div>
+    <div class="det-row"><span class="text-muted">Tiền cọc (30%):</span><strong id="d-coc" class="text-success"></strong></div>
+    <div class="det-row"><span class="text-muted">Điểm thưởng:</span><strong id="d-diem"></strong></div>
+    <div class="det-row"><span class="text-muted">Trạng thái:</span><span id="d-tt"></span></div>
+    <div class="det-row"><span class="text-muted">Ngày đặt:</span><span id="d-ngaydat"></span></div>
+    <div class="d-flex gap-2 mt-4" id="d-actions"></div>
+  </div>
+</div>
+
+<!-- MODAL TẠO ĐƠN -->
+<div class="modal fade" id="createModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold"><i class="fas fa-plus me-2"></i>Tạo đơn đặt sân</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="create-err" class="alert alert-danger py-2 d-none"></div>
+        <div class="mb-3">
+          <label class="form-label small text-muted fw-bold">MÃ KHÁCH HÀNG <span class="text-danger">*</span></label>
+          <input class="form-control" id="c-makh" placeholder="VD: TK002">
+        </div>
+        <div class="mb-3">
+          <label class="form-label small text-muted fw-bold">SÂN <span class="text-danger">*</span></label>
+          <select class="form-select" id="c-san"><option value="">-- Chọn sân --</option></select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label small text-muted fw-bold">NGÀY ĐÁ <span class="text-danger">*</span></label>
+          <input type="date" class="form-control" id="c-ngay">
+        </div>
+        <div class="row g-2">
+          <div class="col-6 mb-3">
+            <label class="form-label small text-muted fw-bold">GIỜ BẮT ĐẦU</label>
+            <select class="form-select" id="c-bd">
+              <option value="06:00:00">06:00</option><option value="07:30:00">07:30</option>
+              <option value="09:00:00">09:00</option><option value="10:30:00">10:30</option>
+              <option value="13:00:00">13:00</option><option value="14:30:00">14:30</option>
+              <option value="16:00:00">16:00</option><option value="17:30:00">17:30</option>
+              <option value="19:00:00">19:00</option><option value="20:30:00">20:30</option>
+            </select>
+          </div>
+          <div class="col-6 mb-3">
+            <label class="form-label small text-muted fw-bold">GIỜ KẾT THÚC</label>
+            <select class="form-select" id="c-kt">
+              <option value="07:30:00">07:30</option><option value="09:00:00">09:00</option>
+              <option value="10:30:00">10:30</option><option value="12:00:00">12:00</option>
+              <option value="14:30:00">14:30</option><option value="16:00:00">16:00</option>
+              <option value="17:30:00">17:30</option><option value="19:00:00">19:00</option>
+              <option value="20:30:00">20:30</option><option value="22:00:00">22:00</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label small text-muted fw-bold">MÃ KHUYẾN MÃI (tùy chọn)</label>
+          <input class="form-control" id="c-km" placeholder="VD: ARENAX10">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+        <button class="btn btn-primary" id="btn-create" onclick="submitCreate()">
+          <i class="fas fa-save me-1"></i>Tạo đơn
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../admin/script.js"></script>
+<script src="../admin/js/script.js"></script>
+<script>
+  const API      = 'http://localhost:8080';
+  const PAGE_SIZE = 10;
+  let allDons    = [];
+  let filtered   = [];
+  let currentPage = 1;
+  let viewingDon = null;
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadDons();
+    await loadSansForCreate();
+    // Set ngày mặc định là hôm nay
+    document.getElementById('c-ngay').value = new Date().toISOString().split('T')[0];
+  });
+
+  async function loadDons() {
+    try {
+      const res  = await fetch(API + '/api/dondatsan');
+      allDons    = await res.json();
+      allDons.sort((a,b) => new Date(b.ngayDat||0) - new Date(a.ngayDat||0));
+      updateStatCards();
+      applyFilter();
+    } catch {
+      document.getElementById('don-tbody').innerHTML =
+        '<tr><td colspan="7" class="text-center text-danger py-4"><i class="fas fa-wifi-slash me-2"></i>Lỗi kết nối server!</td></tr>';
+    }
+  }
+
+  function updateStatCards() {
+    document.getElementById('cnt-cho').textContent  = allDons.filter(d => d.trangThai === 'Chờ duyệt').length;
+    document.getElementById('cnt-xn').textContent   = allDons.filter(d => d.trangThai === 'Đã xác nhận').length;
+    document.getElementById('cnt-ht').textContent   = allDons.filter(d => d.trangThai === 'Đã hoàn thành').length;
+    document.getElementById('cnt-huy').textContent  = allDons.filter(d => d.trangThai === 'Đã hủy').length;
+  }
+
+  function applyFilter() {
+    const tt  = document.getElementById('filter-tt').value;
+    const q   = (document.getElementById('search-don').value||'').toLowerCase();
+    filtered  = allDons.filter(d => {
+      const matchTT = !tt || d.trangThai === tt;
+      const matchQ  = !q  || (d.maDon||'').toLowerCase().includes(q)
+                           || (d.tenKhachHang||'').toLowerCase().includes(q)
+                           || (d.sdtKhachHang||'').includes(q)
+                           || (d.tenSan||'').toLowerCase().includes(q);
+      return matchTT && matchQ;
+    });
+    document.getElementById('don-count').textContent = filtered.length;
+    currentPage = 1;
+    renderTable();
+  }
+
+  function renderTable() {
+    const total  = filtered.length;
+    const pages  = Math.ceil(total / PAGE_SIZE);
+    const start  = (currentPage - 1) * PAGE_SIZE;
+    const data   = filtered.slice(start, start + PAGE_SIZE);
+    document.getElementById('page-info').textContent =
+      total === 0 ? 'Không có đơn nào' : `Hiển thị ${start+1}–${Math.min(start+data.length,total)} / ${total} đơn`;
+
+    const tbody = document.getElementById('don-tbody');
+    tbody.innerHTML = data.length === 0
+      ? '<tr><td colspan="7" class="text-center text-muted py-4">Không có đơn phù hợp.</td></tr>'
+      : data.map(d => {
+          const ttClass = statusClass(d.trangThai);
+          const ngay   = d.ngayDa ? fmtDate(d.ngayDa) : '—';
+          const gio    = [(d.gioBatDau||'').substring(0,5),(d.gioKetThuc||'').substring(0,5)].join(' - ');
+          const actions = buildActions(d);
+          return `<tr>
+            <td class="ps-4"><strong class="text-primary font-monospace" style="cursor:pointer" onclick="viewDon('${d.maDon}')">${d.maDon}</strong></td>
+            <td>
+              <div class="fw-bold">${d.tenKhachHang||'—'}</div>
+              <div class="small text-muted">${d.sdtKhachHang||d.maKH||'—'}</div>
+            </td>
+            <td>
+              <div>${d.tenSan||d.maSan||'—'}</div>
+              <div class="small text-primary"><i class="fas fa-calendar me-1"></i>${ngay} &nbsp;<i class="fas fa-clock me-1"></i>${gio}</div>
+            </td>
+            <td class="text-danger fw-bold">${fmtMoney(d.tienSan)}</td>
+            <td class="text-success fw-bold">${fmtMoney(d.tienCoc)}</td>
+            <td><span class="status-badge ${ttClass}">${d.trangThai||'—'}</span></td>
+            <td class="text-end pe-4">${actions}</td>
+          </tr>`;
+        }).join('');
+
+    renderPagination(pages);
+  }
+
+  function buildActions(d) {
+    const tt = (d.trangThai||'');
+    let html = `<button class="btn btn-light btn-sm me-1" onclick="viewDon('${d.maDon}')" title="Chi tiết"><i class="fas fa-eye"></i></button>`;
+    if (tt === 'Chờ duyệt') {
+      html += `<button class="btn btn-success btn-sm me-1" onclick="updateTT('${d.maDon}','Đã xác nhận')" title="Duyệt"><i class="fas fa-check"></i> Duyệt</button>`;
+      html += `<button class="btn btn-outline-danger btn-sm" onclick="updateTT('${d.maDon}','Đã hủy')" title="Hủy"><i class="fas fa-times"></i> Hủy</button>`;
+    } else if (tt === 'Đã xác nhận') {
+      html += `<button class="btn btn-primary btn-sm me-1" onclick="updateTT('${d.maDon}','Đã hoàn thành')" title="Hoàn thành"><i class="fas fa-flag-checkered"></i> Xong</button>`;
+      html += `<button class="btn btn-outline-danger btn-sm" onclick="updateTT('${d.maDon}','Đã hủy')" title="Hủy"><i class="fas fa-times"></i> Hủy</button>`;
+    }
+    return html;
+  }
+
+  function statusClass(tt) {
+    if (!tt) return 'status-cho';
+    const t = tt.toLowerCase();
+    if (t.includes('chờ'))  return 'status-cho';
+    if (t.includes('hủy'))  return 'status-huy';
+    if (t.includes('hoàn')) return 'status-hoantat';
+    if (t.includes('xác'))  return 'status-xacnhan';
+    return 'status-cho';
+  }
+
+  function renderPagination(pages) {
+    const pag = document.getElementById('pagination');
+    if (pages <= 1) { pag.innerHTML = ''; return; }
+    let html = '';
+    html += `<button class="btn btn-sm btn-outline-secondary" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}><i class="fas fa-chevron-left"></i></button>`;
+    for (let p = 1; p <= pages; p++) {
+      if (pages > 7 && p > 2 && p < pages-1 && Math.abs(p-currentPage) > 1) {
+        if (p===3||p===pages-2) html += `<button class="btn btn-sm btn-outline-secondary" disabled>…</button>`;
+        continue;
+      }
+      html += `<button class="btn btn-sm ${p===currentPage?'btn-primary':'btn-outline-secondary'}" onclick="goPage(${p})">${p}</button>`;
+    }
+    html += `<button class="btn btn-sm btn-outline-secondary" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}><i class="fas fa-chevron-right"></i></button>`;
+    pag.innerHTML = html;
+  }
+
+  function goPage(p) {
+    const pages = Math.ceil(filtered.length / PAGE_SIZE);
+    if (p < 1 || p > pages) return;
+    currentPage = p;
+    renderTable();
+  }
+
+  async function updateTT(maDon, trangThai) {
+    const confirm_msg = trangThai === 'Đã hủy'
+      ? `Xác nhận HỦY đơn ${maDon}?`
+      : `Xác nhận cập nhật đơn ${maDon} → "${trangThai}"?`;
+    if (!confirm(confirm_msg)) return;
+    try {
+      const res = await fetch(
+        `${API}/api/dondatsan/${encodeURIComponent(maDon)}/trang-thai?trangThai=${encodeURIComponent(trangThai)}`,
+        { method: 'PATCH' }
+      );
+      if (!res.ok) throw new Error(await res.text());
+      const updated = await res.json();
+      const idx = allDons.findIndex(d => d.maDon === maDon);
+      if (idx >= 0) allDons[idx] = updated;
+      updateStatCards();
+      applyFilter();
+      showToast(`Đã cập nhật đơn ${maDon} → ${trangThai}`, trangThai === 'Đã hủy' ? 'danger' : 'success');
+      if (viewingDon && viewingDon.maDon === maDon) viewDon(maDon);
+    } catch(e) {
+      alert('Lỗi: ' + (e.message||'Vui lòng thử lại!'));
+    }
+  }
+
+  function viewDon(maDon) {
+    const d = allDons.find(x => x.maDon === maDon);
+    if (!d) return;
+    viewingDon = d;
+    document.getElementById('d-ma').textContent      = d.maDon;
+    document.getElementById('d-kh').textContent      = (d.tenKhachHang||'—') + (d.sdtKhachHang ? ' · ' + d.sdtKhachHang : '');
+    document.getElementById('d-san').textContent     = d.tenSan || d.maSan || '—';
+    document.getElementById('d-ngay').textContent    = d.ngayDa ? fmtDate(d.ngayDa) : '—';
+    document.getElementById('d-gio').textContent     = [(d.gioBatDau||'').substring(0,5),(d.gioKetThuc||'').substring(0,5)].join(' – ');
+    document.getElementById('d-tien').textContent    = fmtMoney(d.tienSan);
+    document.getElementById('d-coc').textContent     = fmtMoney(d.tienCoc);
+    document.getElementById('d-diem').textContent    = (d.diemThuong||0) + ' điểm';
+    document.getElementById('d-tt').innerHTML        = `<span class="status-badge ${statusClass(d.trangThai)}">${d.trangThai||'—'}</span>`;
+    document.getElementById('d-ngaydat').textContent = d.ngayDat ? new Date(d.ngayDat).toLocaleString('vi-VN') : '—';
+
+    // Actions trong modal
+    const actDiv = document.getElementById('d-actions');
+    actDiv.innerHTML = '';
+    const tt = d.trangThai || '';
+    if (tt === 'Chờ duyệt') {
+      actDiv.innerHTML = `
+        <button class="btn btn-success flex-fill" onclick="updateTT('${d.maDon}','Đã xác nhận');closeDetail()">
+          <i class="fas fa-check me-1"></i>Duyệt
+        </button>
+        <button class="btn btn-outline-danger flex-fill" onclick="updateTT('${d.maDon}','Đã hủy');closeDetail()">
+          <i class="fas fa-times me-1"></i>Hủy
+        </button>`;
+    } else if (tt === 'Đã xác nhận') {
+      actDiv.innerHTML = `
+        <button class="btn btn-primary flex-fill" onclick="updateTT('${d.maDon}','Đã hoàn thành');closeDetail()">
+          <i class="fas fa-flag-checkered me-1"></i>Hoàn thành
+        </button>
+        <button class="btn btn-outline-danger flex-fill" onclick="updateTT('${d.maDon}','Đã hủy');closeDetail()">
+          <i class="fas fa-times me-1"></i>Hủy
+        </button>`;
+    } else {
+      actDiv.innerHTML = `<button class="btn btn-secondary flex-fill" onclick="closeDetail()">Đóng</button>`;
+    }
+
+    document.getElementById('detailModal').classList.add('show');
+  }
+
+  function closeDetail() {
+    document.getElementById('detailModal').classList.remove('show');
+    viewingDon = null;
+  }
+  document.getElementById('detailModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeDetail(); });
+
+  async function loadSansForCreate() {
+    try {
+      const res  = await fetch(API + '/api/san');
+      const sans = await res.json();
+      const sel  = document.getElementById('c-san');
+      sel.innerHTML = '<option value="">-- Chọn sân --</option>';
+      sans.filter(s => (s.trangThai||'').toUpperCase() !== 'MAINTENANCE')
+          .forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.maSan;
+            opt.textContent = s.tenSan + ' – ' + fmtMoney(s.giaThue) + '/1.5h';
+            sel.appendChild(opt);
+          });
+    } catch {}
+  }
+
+  async function submitCreate() {
+    const err  = document.getElementById('create-err');
+    const btn  = document.getElementById('btn-create');
+    const maKH = document.getElementById('c-makh').value.trim();
+    const maSan= document.getElementById('c-san').value;
+    const ngay = document.getElementById('c-ngay').value;
+    const bd   = document.getElementById('c-bd').value;
+    const kt   = document.getElementById('c-kt').value;
+    const km   = document.getElementById('c-km').value.trim();
+    err.classList.add('d-none');
+    if (!maKH||!maSan||!ngay||!bd||!kt) {
+      err.textContent = 'Vui lòng điền đầy đủ thông tin!';
+      err.classList.remove('d-none');
+      return;
+    }
+    if (bd >= kt) {
+      err.textContent = 'Giờ bắt đầu phải nhỏ hơn giờ kết thúc!';
+      err.classList.remove('d-none');
+      return;
+    }
+    const dto = { maKH, maSan, ngayDa: ngay, gioBatDau: bd, gioKetThuc: kt };
+    if (km) dto.maCodeKhuyenMai = km;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Đang tạo...';
+    try {
+      const res = await fetch(API + '/api/dondatsan', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(dto)
+      });
+      if (!res.ok) { const m = await res.text(); throw new Error(m); }
+      const newDon = await res.json();
+      allDons.unshift(newDon);
+      updateStatCards();
+      applyFilter();
+      bootstrap.Modal.getInstance(document.getElementById('createModal')).hide();
+      showToast('Tạo đơn ' + newDon.maDon + ' thành công!', 'success');
+    } catch(e) {
+      err.textContent = 'Lỗi: ' + (e.message||'Vui lòng thử lại!');
+      err.classList.remove('d-none');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-save me-1"></i>Tạo đơn';
+    }
+  }
+
+  // Helpers
+  function fmtDate(d) {
+    if (!d) return '—';
+    const p = String(d).split('-');
+    return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : d;
+  }
+  function fmtMoney(n) {
+    if (n == null) return '—';
+    return Number(n).toLocaleString('vi-VN') + 'đ';
+  }
+  function showToast(msg, type='success') {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;min-width:280px';
+    t.innerHTML = `<div class="alert alert-${type==='success'?'success':'danger'} shadow mb-0">${msg}</div>`;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+  }
+</script>
 </body>
 </html>

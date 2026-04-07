@@ -1,83 +1,236 @@
+/* ============================================================
+   ARENAX - Global User CSS
+   ============================================================ */
+
 /* --- CÀI ĐẶT CHUNG --- */
-body { 
-    font-family: 'Segoe UI', sans-serif; 
-    background-color: #f4f6f9; 
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f6f9;
 }
 
-/* --- NAVBAR QUẢN LÝ ACTIVE --- */
-.navbar { 
-    background-color: #212529 !important; 
-    padding: 15px 0; 
+/* --- NAVBAR --- */
+.navbar {
+    background-color: #212529 !important;
+    padding: 15px 0;
 }
-.navbar-brand { 
-    color: #fff !important; 
-    font-weight: bold; 
-    font-size: 24px; 
+.navbar-brand {
+    color: #fff !important;
+    font-weight: bold;
+    font-size: 24px;
 }
-.navbar-nav .nav-link { 
-    color: #ccc !important; 
+.navbar-nav .nav-link {
+    color: #ccc !important;
     transition: all 0.3s ease;
 }
-/* Hiệu ứng khi được trỏ vào hoặc đang active */
 .navbar-nav .nav-link:hover,
-.navbar-nav .nav-link.active { 
-    color: #0d6efd !important; 
+.navbar-nav .nav-link.active {
+    color: #0d6efd !important;
     font-weight: bold;
-    text-shadow: 0 0 8px rgba(13,110,253,0.4); /* Làm sáng bừng chữ */
+    text-shadow: 0 0 8px rgba(13,110,253,0.4);
 }
 
-.btn-login { 
-    background-color: #0d6efd; 
-    color: white; 
-    border-radius: 20px; 
-    padding: 5px 20px; 
-    text-decoration: none; 
-}
-
-/* --- CARD SÂN BÓNG (Dùng chung nhiều trang) --- */
-.pitch-card { 
-    border: none; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
-    border-radius: 8px; 
-    overflow: hidden; 
-    margin-bottom: 30px; 
-    transition: transform 0.3s;
+/* --- CARD SÂN BÓNG --- */
+.pitch-card {
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 .pitch-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
 }
-.pitch-card img, .pitch-img { 
-    height: 220px; 
-    object-fit: cover; 
-    width: 100%; 
-    border-top-left-radius: var(--bs-card-border-radius);
-    border-top-right-radius: var(--bs-card-border-radius);
+.pitch-card img,
+.pitch-img {
+    height: 220px;
+    object-fit: cover;
+    width: 100%;
 }
-.pitch-body { 
-    padding: 20px; 
-}
-.price-tag, .pitch-price { 
-    color: #d32f2f; 
-    font-weight: bold; 
-    font-size: 1.1rem; 
-}
-.badge-custom { 
-    position: absolute; 
-    top: 15px; 
-    right: 15px; 
-    background: #28a745; 
-    color: white; 
-    padding: 5px 15px; 
-    border-radius: 20px; 
+.price-tag,
+.pitch-price {
+    color: #d32f2f;
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
-/* --- BOX TÌM KIẾM CHUNG --- */
+/* --- BOX TÌM KIẾM --- */
 .search-box {
-    background: rgba(255, 255, 255, 0.9); 
-    padding: 30px; 
-    border-radius: 10px;
-    max-width: 900px; 
-    margin: 20px auto 0; 
+    background: rgba(255,255,255,0.95);
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 900px;
+    margin: 20px auto 0;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
+
+/* ============================================================
+   MODAL CHI TIẾT SÂN  (dùng cho index.html & danh-sach-san.html)
+   ============================================================ */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+/* Khi JS set style="display:flex" */
+.modal-overlay[style*="flex"],
+.modal-overlay.active {
+    display: flex !important;
+}
+
+.custom-modal {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 900px;
+    width: 100%;
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+    max-height: 90vh;
+    position: relative;
+    animation: modalIn 0.25s ease;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+}
+@keyframes modalIn {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #6c757d;
+    z-index: 10;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background .2s;
+}
+.modal-close:hover { background: #f1f3f5; color: #212529; }
+
+.modal-left {
+    flex: 1;
+    padding: 28px;
+    overflow-y: auto;
+}
+.modal-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.modal-loc   { color: #6c757d; margin-bottom: 8px; }
+.modal-desc  { color: #555; line-height: 1.6; }
+
+.modal-right {
+    width: 280px;
+    flex-shrink: 0;
+    padding: 28px;
+    background: #f8f9fa;
+    border-left: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+}
+
+.price-box {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+.price-box h3 {
+    color: #d32f2f;
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.6rem;
+}
+.price-box span { color: #6c757d; }
+
+.benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.benefits li {
+    padding: 7px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #e9ecef;
+}
+.benefits li:last-child { border-bottom: none; }
+
+.amenities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+.amenity {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+/* Responsive modal */
+@media (max-width: 640px) {
+    .custom-modal { flex-direction: column; max-height: 95vh; }
+    .modal-right  { width: 100%; border-left: none; border-top: 1px solid #e9ecef; }
+}
+
+/* ============================================================
+   HERO SECTION (index.html)
+   ============================================================ */
+.hero-section {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    color: #fff;
+    padding: 80px 0 60px;
+    position: relative;
+    overflow: hidden;
+}
+.hero-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1600&q=60') center/cover;
+    opacity: 0.15;
+}
+.hero-section > * { position: relative; z-index: 1; }
+
+/* ============================================================
+   PAGINATION chung
+   ============================================================ */
+.pagination-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+.pagination-wrap .page-btn {
+    min-width: 38px;
+    height: 38px;
+    border: 1px solid #dee2e6;
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: .15s;
+    padding: 0 10px;
+}
+.pagination-wrap .page-btn:hover  { border-color: #0d6efd; color: #0d6efd; }
+.pagination-wrap .page-btn.active { background: #0d6efd; color: #fff; border-color: #0d6efd; }
+.pagination-wrap .page-btn:disabled { opacity: .4; cursor: not-allowed; }
