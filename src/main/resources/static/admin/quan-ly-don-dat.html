@@ -430,13 +430,8 @@
     document.getElementById('d-tt').innerHTML        = `<span class="status-badge ${statusClass(d.trangThai)}">${d.trangThai||'—'}</span>`;
     document.getElementById('d-ngaydat').textContent = d.ngayDat ? new Date(d.ngayDat).toLocaleString('vi-VN') : '—';
     const proofWrap = document.getElementById('d-proof-wrap');
-    if (d.chungTuThanhToan) {
-      document.getElementById('d-proof').src = d.chungTuThanhToan;
-      document.getElementById('d-proof-link').href = d.chungTuThanhToan;
-      proofWrap.style.display = 'block';
-    } else {
-      proofWrap.style.display = 'none';
-    }
+    proofWrap.style.display = 'none';
+    loadProofByDon(d.maDon);
 
     // Actions trong modal
     const actDiv = document.getElementById('d-actions');
@@ -560,6 +555,25 @@
     t.innerHTML = `<div class="alert alert-${type==='success'?'success':'danger'} shadow mb-0">${msg}</div>`;
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 3000);
+  }
+  async function loadProofByDon(maDon) {
+    const proofWrap = document.getElementById('d-proof-wrap');
+    const imgEl = document.getElementById('d-proof');
+    const linkEl = document.getElementById('d-proof-link');
+    try {
+      const res = await fetch(`${API}/api/dondatsan/${encodeURIComponent(maDon)}/chung-tu`);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      if (!data.chungTuThanhToan) {
+        proofWrap.style.display = 'none';
+        return;
+      }
+      imgEl.src = data.chungTuThanhToan;
+      linkEl.href = data.chungTuThanhToan;
+      proofWrap.style.display = 'block';
+    } catch (_) {
+      proofWrap.style.display = 'none';
+    }
   }
   function askConfirm(msg) {
     return new Promise(resolve => {

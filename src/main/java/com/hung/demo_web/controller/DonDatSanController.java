@@ -75,4 +75,11 @@ public class DonDatSanController {
             @RequestParam String maAdmin) {
         return ResponseEntity.ok(donDatSanService.xacNhanThanhToan(maDon, maAdmin));
     }
+
+    @GetMapping("/{maDon}/chung-tu")
+    public ResponseEntity<Map<String, String>> getChungTuThanhToan(@PathVariable String maDon) {
+        Map<String, String> res = new HashMap<>();
+        res.put("chungTuThanhToan", donDatSanService.layChungTuThanhToan(maDon));
+        return ResponseEntity.ok(res);
+    }
 }

@@ -10,4 +10,5 @@ public interface DonDatSanService {
     DonDatSanDto taoDonDatSan(DonDatSanDto dto);
     DonDatSanDto capNhatTrangThai(String maDon, String trangThai);
     DonDatSanDto xacNhanThanhToan(String maDon, String maAdmin);
+    String layChungTuThanhToan(String maDon);
 }

@@ -20,7 +20,7 @@ public class DonDatSanServiceImpl implements DonDatSanService {
     @Autowired private TaiKhoanRepository taiKhoanRepository;
     @Autowired private KhuyenMaiRepository khuyenMaiRepository;
 
-    private DonDatSanDto mapToDTO(DonDatSan entity) {
+    private DonDatSanDto mapToDTO(DonDatSan entity, boolean includeProof) {
         DonDatSanDto dto = new DonDatSanDto();
         dto.setMaDon(entity.getMaDon());
         dto.setNgayDat(entity.getNgayDat());
@@ -40,7 +40,7 @@ public class DonDatSanServiceImpl implements DonDatSanService {
         }
         dto.setPhuongThucThanhToan(entity.getPhuongThucThanhToan());
         dto.setDaThanhToanCoc(Boolean.TRUE.equals(entity.getDaXacNhanThanhToan()));
-        dto.setChungTuThanhToan(entity.getChungTuThanhToan());
+        dto.setChungTuThanhToan(includeProof ? entity.getChungTuThanhToan() : null);
         dto.setMaAdminXacNhanThanhToan(entity.getMaAdminXacNhanThanhToan());
         dto.setThoiGianXacNhanThanhToan(entity.getThoiGianXacNhanThanhToan());
         return dto;
@@ -48,12 +48,12 @@ public class DonDatSanServiceImpl implements DonDatSanService {
 
     @Override
     public List<DonDatSanDto> getAllDonDat() {
-        return donDatSanRepository.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+        return donDatSanRepository.findAll().stream().map(e -> mapToDTO(e, false)).collect(Collectors.toList());
     }
 
     @Override
     public List<DonDatSanDto> getLichSuDatSan(String maKH) {
-        return donDatSanRepository.findByKhachHang_maTK(maKH).stream().map(this::mapToDTO).collect(Collectors.toList());
+        return donDatSanRepository.findByKhachHang_maTK(maKH).stream().map(e -> mapToDTO(e, false)).collect(Collectors.toList());
     }
 
     @Override
@@ -141,7 +141,7 @@ public class DonDatSanServiceImpl implements DonDatSanService {
         entity.setTienCoc(tongTienSan * 0.3);
         entity.setDiemThuong((int) (tongTienSan / 10000));
 
-        return mapToDTO(donDatSanRepository.save(entity));
+        return mapToDTO(donDatSanRepository.save(entity), false);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class DonDatSanServiceImpl implements DonDatSanService {
             entity.setDaXacNhanThanhToan(true);
         }
         entity.setTrangThai(trangThai);
-        return mapToDTO(donDatSanRepository.save(entity));
+        return mapToDTO(donDatSanRepository.save(entity), false);
     }
 
     @Override
@@ -168,7 +168,14 @@ public class DonDatSanServiceImpl implements DonDatSanService {
         entity.setTrangThai("Chờ duyệt");
         entity.setMaAdminXacNhanThanhToan(maAdmin);
         entity.setThoiGianXacNhanThanhToan(new java.sql.Timestamp(System.currentTimeMillis()));
-        return mapToDTO(donDatSanRepository.save(entity));
+        return mapToDTO(donDatSanRepository.save(entity), false);
+    }
+
+    @Override
+    public String layChungTuThanhToan(String maDon) {
+        DonDatSan entity = donDatSanRepository.findById(Objects.requireNonNull(maDon))
+                .orElseThrow(() -> new KhongTimThay("Không tìm thấy đơn"));
+        return entity.getChungTuThanhToan();
     }
 
     private void validatePromoByMemberLevel(KhuyenMai km, TaiKhoan khach) {
