@@ -37,7 +37,7 @@
     <div class="text-secondary fw-bold fs-5">Lập Hóa Đơn &amp; Thanh Toán</div>
     <div class="d-flex align-items-center gap-2">
       <div class="text-end lh-1">
-        <div class="fw-bold small">Admin ARENAX</div>
+        <div class="fw-bold small" id="admin-name">Admin ARENAX</div>
         <div class="text-muted" style="font-size:.75rem">Quản trị viên</div>
       </div>
       <div class="avatar">A</div>
@@ -177,6 +177,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../admin/js/admin-auth.js"></script>
 <script src="../admin/js/script.js"></script>
 <script>
   const API   = 'http://localhost:8080';
@@ -272,11 +273,13 @@
 
   async function xuatHoaDon() {
     if (!selectedDon) return;
+    const admin = JSON.parse(localStorage.getItem('arenax_user') || '{}');
+    const maAdmin = admin.maTK || 'TK001';
     const btn = document.getElementById('btn-xuat');
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Đang xuất...';
     try {
-      const res = await fetch(`${API}/api/hoadon/xuat?maDon=${encodeURIComponent(selectedDon.maDon)}&maQLLap=TK001`, {
+      const res = await fetch(`${API}/api/hoadon/xuat?maDon=${encodeURIComponent(selectedDon.maDon)}&maQLLap=${encodeURIComponent(maAdmin)}`, {
         method: 'POST'
       });
       if (!res.ok) { const m = await res.text(); throw new Error(m); }
@@ -285,13 +288,19 @@
       document.getElementById('inv-ngaylap').textContent = 'Ngày lập: ' + new Date(hd.ngayLap).toLocaleDateString('vi-VN');
       const succ = document.getElementById('hd-success');
       succ.textContent = `✅ Xuất hóa đơn ${hd.maHoaDon} thành công! Tổng thanh toán: ${fmtMoney(hd.tongThanhToan)}`;
+      succ.classList.remove('alert-danger');
+      succ.classList.add('alert-success');
       succ.classList.remove('d-none');
       // Update local list
       const idx = allDons.findIndex(d => d.maDon === selectedDon.maDon);
       if (idx >= 0) { allDons[idx].trangThai = 'Đã hoàn thành'; selectedDon = allDons[idx]; }
       filterDons();
     } catch(e) {
-      alert('Lỗi xuất hóa đơn: ' + (e.message||'Thử lại!'));
+      const succ = document.getElementById('hd-success');
+      succ.textContent = 'Lỗi xuất hóa đơn: ' + (e.message||'Thử lại!');
+      succ.classList.remove('d-none');
+      succ.classList.remove('alert-success');
+      succ.classList.add('alert-danger');
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<i class="fas fa-file-invoice-dollar me-1"></i>Xuất Hóa Đơn';

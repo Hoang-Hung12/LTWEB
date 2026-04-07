@@ -68,4 +68,11 @@ public class DonDatSanController {
             @RequestParam String trangThai) {
         return ResponseEntity.ok(donDatSanService.capNhatTrangThai(maDon, trangThai));
     }
+
+    @PatchMapping("/{maDon}/xac-nhan-thanh-toan")
+    public ResponseEntity<DonDatSanDto> xacNhanThanhToan(
+            @PathVariable String maDon,
+            @RequestParam String maAdmin) {
+        return ResponseEntity.ok(donDatSanService.xacNhanThanhToan(maDon, maAdmin));
+    }
 }

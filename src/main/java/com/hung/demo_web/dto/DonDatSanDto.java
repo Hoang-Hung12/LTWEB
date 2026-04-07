@@ -20,6 +20,11 @@ public class DonDatSanDto {
     private String maSan;
     private String tenSan;
     private String maCodeKhuyenMai;
+    private String phuongThucThanhToan;
+    private Boolean daThanhToanCoc;
+    private String chungTuThanhToan;
+    private String maAdminXacNhanThanhToan;
+    private Timestamp thoiGianXacNhanThanhToan;
     public String getMaDon(){
         return maDon; 
     }
@@ -115,5 +120,35 @@ public class DonDatSanDto {
     }
     public void setMaCodeKhuyenMai(String maCodeKhuyenMai){ 
         this.maCodeKhuyenMai = maCodeKhuyenMai; 
+    }
+    public String getPhuongThucThanhToan(){
+        return phuongThucThanhToan;
+    }
+    public void setPhuongThucThanhToan(String phuongThucThanhToan){
+        this.phuongThucThanhToan = phuongThucThanhToan;
+    }
+    public Boolean getDaThanhToanCoc(){
+        return daThanhToanCoc;
+    }
+    public void setDaThanhToanCoc(Boolean daThanhToanCoc){
+        this.daThanhToanCoc = daThanhToanCoc;
+    }
+    public String getChungTuThanhToan() {
+        return chungTuThanhToan;
+    }
+    public void setChungTuThanhToan(String chungTuThanhToan) {
+        this.chungTuThanhToan = chungTuThanhToan;
+    }
+    public String getMaAdminXacNhanThanhToan() {
+        return maAdminXacNhanThanhToan;
+    }
+    public void setMaAdminXacNhanThanhToan(String maAdminXacNhanThanhToan) {
+        this.maAdminXacNhanThanhToan = maAdminXacNhanThanhToan;
+    }
+    public Timestamp getThoiGianXacNhanThanhToan() {
+        return thoiGianXacNhanThanhToan;
+    }
+    public void setThoiGianXacNhanThanhToan(Timestamp thoiGianXacNhanThanhToan) {
+        this.thoiGianXacNhanThanhToan = thoiGianXacNhanThanhToan;
     }
 }

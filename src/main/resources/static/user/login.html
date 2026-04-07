@@ -68,7 +68,12 @@
 
   // Nếu đã đăng nhập thì redirect thẳng
   document.addEventListener('DOMContentLoaded', () => {
-    if (getCurrentUser()) window.location.href = 'index.html';
+    const existing = getCurrentUser();
+    if (existing) {
+      window.location.href = (existing.vaiTro || '').toUpperCase() === 'ADMIN'
+        ? '../admin/dashboard.html'
+        : 'index.html';
+    }
   });
 
   async function doLogin() {
@@ -88,7 +93,11 @@
       setCurrentUser(user);
       const redirect = sessionStorage.getItem('arenax_redirect');
       sessionStorage.removeItem('arenax_redirect');
-      window.location.href = redirect || 'index.html';
+      if ((user.vaiTro || '').toUpperCase() === 'ADMIN') {
+        window.location.href = '../admin/dashboard.html';
+      } else {
+        window.location.href = redirect || 'index.html';
+      }
     } catch { showErr(err, 'Không kết nối được server!'); }
     finally { btn.disabled = false; btn.textContent = 'ĐĂNG NHẬP'; }
   }

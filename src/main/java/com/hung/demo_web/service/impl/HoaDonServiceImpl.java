@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class HoaDonServiceImpl implements HoaDonService {
@@ -44,13 +45,13 @@ public class HoaDonServiceImpl implements HoaDonService {
             throw new LoiThaoTac("Đơn này đã có hóa đơn rồi!");
         }
 
-        DonDatSan donDat = donDatSanRepository.findById(maDon)
+        DonDatSan donDat = donDatSanRepository.findById(Objects.requireNonNull(maDon))
                 .orElseThrow(() -> new KhongTimThay("Không tìm thấy Đơn đặt sân"));
-        TaiKhoan admin = taiKhoanRepository.findById(maQLLap)
+        TaiKhoan admin = taiKhoanRepository.findById(Objects.requireNonNull(maQLLap))
                 .orElseThrow(() -> new KhongTimThay("Không tìm thấy Admin"));
 
-        if (!donDat.getTrangThai().equals("Hoàn thành")) {
-            throw new LoiThaoTac("Đơn đặt sân chưa hoàn thành, không thể xuất hóa đơn!");
+        if (!"Đã xác nhận".equals(donDat.getTrangThai()) && !"Đã hoàn thành".equals(donDat.getTrangThai())) {
+            throw new LoiThaoTac("Đơn đặt sân chưa sẵn sàng để xuất hóa đơn!");
         }
 
         // Tính tổng tiền dịch vụ
@@ -65,27 +66,18 @@ public class HoaDonServiceImpl implements HoaDonService {
         double tongThanhToan = donDat.getTienSan() + tongTienDV - tienCoc;
         if (tongThanhToan < 0) tongThanhToan = 0;
 
-        // SỬA: Thêm kiểm tra null trước khi cộng điểm để tránh NullPointerException
-        // Lý do: cột DiemTichLuy và DiemThuong trong DB có thể là NULL
-        // → getDiemTichLuy() + getDiemThuong() = null + null → crash
+        // Điểm thưởng đã được cộng ngay tại thời điểm đặt sân.
         TaiKhoan khach = donDat.getKhachHang();
-        int diemHienTai = khach.getDiemTichLuy() != null ? khach.getDiemTichLuy() : 0;
-        int diemThuong  = donDat.getDiemThuong()  != null ? donDat.getDiemThuong()  : 0;
-        int tongDiem    = diemHienTai + diemThuong;
-
+        int diemHienTai = khach.getDiemTichLuy() == null ? 0 : khach.getDiemTichLuy();
+        int diemThuong = donDat.getDiemThuong() == null ? 0 : donDat.getDiemThuong();
+        int tongDiem = diemHienTai + diemThuong;
         khach.setDiemTichLuy(tongDiem);
-
-        // SỬA: Thêm logic tự động cập nhật HangThanhVien sau khi cộng điểm
-        // Lý do: code cũ chỉ cộng điểm nhưng không bao giờ nâng hạng → sai nghiệp vụ
-        if      (tongDiem >= 500) khach.setHangThanhVien("Kim Cương");
-        else if (tongDiem >= 200) khach.setHangThanhVien("Vàng");
-        else if (tongDiem >= 100) khach.setHangThanhVien("Bạc");
-        else                      khach.setHangThanhVien("Đồng");
-
+        if (tongDiem >= 1000) khach.setHangThanhVien("Vàng");
+        else if (tongDiem >= 500) khach.setHangThanhVien("Bạc");
+        else khach.setHangThanhVien("Đồng");
         taiKhoanRepository.save(khach);
 
-        // Cập nhật trạng thái đơn → Đã thanh toán
-        donDat.setTrangThai("Đã thanh toán");
+        donDat.setTrangThai("Đã hoàn thành");
         donDatSanRepository.save(donDat);
 
         // Tạo hóa đơn

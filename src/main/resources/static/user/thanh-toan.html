@@ -25,6 +25,10 @@
         .btn-submit:disabled{background:#9ca3af;cursor:not-allowed}
         .points-box{background:#f8f9fa;border-radius:8px;padding:12px 16px;margin-top:12px;display:flex;justify-content:space-between;align-items:center}
         .promo-box{display:flex;gap:8px;margin-top:8px}
+        .pay-card{border:1px solid #e5e7eb;border-radius:10px;padding:12px;cursor:pointer}
+        .pay-card.active{border-color:#0d6efd;background:#eff6ff}
+        .qr-box{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin-top:12px}
+        .qr-img{width:180px;height:180px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0}
 
         /* Modal hóa đơn */
         .invoice-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;align-items:center;justify-content:center;padding:20px}
@@ -49,6 +53,7 @@
 
 <div class="checkout-container">
   <h1 class="page-title">Xác nhận đặt sân</h1>
+  <div id="notice-wrap"></div>
   <div id="loading-info" class="text-center py-5"><i class="fas fa-spinner fa-spin fa-2x text-primary"></i><p class="mt-2">Đang tải thông tin sân...</p></div>
   <div id="main-content" style="display:none">
     <div class="row">
@@ -76,6 +81,7 @@
             <button class="btn btn-dark" onclick="applyPromo()">Áp dụng</button>
           </div>
           <div id="promo-msg" class="mt-2 small"></div>
+          <div id="promo-list" class="mt-2 small text-muted"></div>
 
           <div class="points-box" id="points-box" style="display:none">
             <div>
@@ -84,6 +90,55 @@
             </div>
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" id="use-points" style="width:40px;height:20px;cursor:pointer" onchange="recalcTotal()">
+            </div>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3 class="box-title">3. Thanh toán đặt cọc</h3>
+          <div class="row g-2">
+            <div class="col-md-6">
+              <div class="pay-card" id="pay-cash" onclick="selectPayment('TIEN_MAT')">
+                <strong><i class="fas fa-money-bill-wave me-1 text-success"></i>Tiền mặt</strong>
+                <div class="small text-muted mt-1">Phần còn lại trả tiền mặt tại sân; <strong>bắt buộc chuyển khoản cọc 30%</strong> trước (QR bên dưới).</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="pay-card" id="pay-bank" onclick="selectPayment('CHUYEN_KHOAN')">
+                <strong><i class="fas fa-building-columns me-1 text-primary"></i>Chuyển khoản</strong>
+                <div class="small text-muted mt-1">Thanh toán <strong>toàn bộ</strong> qua tài khoản ngân hàng — quét QR VietQR.</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" id="confirm-deposit" onchange="validateSubmitBtn()">
+            <label class="form-check-label" for="confirm-deposit" id="confirm-deposit-label">
+              Tôi xác nhận đã chuyển khoản đúng số tiền và nội dung hiển thị bên dưới.
+            </label>
+          </div>
+          <div class="mt-3">
+            <label class="form-label fw-bold">Ảnh chứng từ chuyển khoản <span class="text-danger">*</span></label>
+            <input type="file" class="form-control" id="payment-proof-file" accept="image/*" onchange="handleProofFile(event)">
+            <div class="small text-muted mt-1">Bắt buộc tải ảnh biên lai để admin xác nhận thanh toán.</div>
+            <div id="proof-preview-wrap" class="mt-2" style="display:none">
+              <img id="proof-preview" alt="Chứng từ thanh toán" style="max-width:220px;border-radius:8px;border:1px solid #e5e7eb">
+            </div>
+          </div>
+          <div class="qr-box">
+            <div class="small text-muted mb-2">
+              <strong>Ngân hàng:</strong> MB Bank (Quân đội) ·
+              <strong>Số TK:</strong> 0965775144 ·
+              <strong>Chủ TK:</strong> HOANG XUAN HUNG
+            </div>
+            <div class="d-flex flex-wrap align-items-center gap-3">
+              <img id="bank-qr-img" class="qr-img" alt="Mã QR VietQR MB Bank"
+                   src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=ARENAX">
+              <div>
+                <div class="fw-bold mb-1"><i class="fas fa-qrcode me-1"></i>Mã QR chuyển khoản (VietQR)</div>
+                <div class="small text-muted mb-1" id="qr-guide">Chọn phương thức để xem số tiền cần chuyển khoản.</div>
+                <div class="small"><strong>Số tiền QR:</strong> <span id="qr-amount">—</span></div>
+                <div class="small text-muted mt-1">Nội dung CK: <span id="qr-content" class="font-monospace">—</span></div>
+              </div>
             </div>
           </div>
         </div>
@@ -108,7 +163,7 @@
           <div class="summary-row summary-total"><span>Tổng cộng:</span><span id="bill-total">—</span></div>
           <div class="summary-deposit">Cọc trước (30%): <span id="bill-coc" style="font-size:18px;font-weight:700">—</span></div>
           <button class="btn-submit" id="btn-submit" onclick="submitDat()" disabled>
-            <i class="fas fa-calendar-check me-2"></i>XÁC NHẬN ĐẶT SÂN
+            <i class="fas fa-wallet me-2"></i>THANH TOÁN CỌC &amp; ĐẶT SÂN
           </button>
           <p class="text-center mt-2 text-muted" style="font-size:13px">Bạn sẽ nhận được <strong id="bill-diem-thuong">0</strong> điểm sau trận.</p>
         </div>
@@ -158,13 +213,42 @@
   let promoInfo    = null;
   let basePrice    = 0;
   let finalPrice   = 0;
+  let selectedPayment = '';
+  let proofImageBase64 = '';
+  /** Fallback nếu ảnh VietQR không tải được */
+  const QR_FALLBACK = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=ARENAX%20MB%200965775144';
+
+  const VIETQR = {
+    bankId: 'MB',
+    accountNo: '0965775144',
+    accountName: 'HOANG XUAN HUNG',
+    template: 'compact2'
+  };
+
+  function buildVietQrImageUrl(amountVnd, addInfo) {
+    const amt = Math.max(0, Math.round(Number(amountVnd) || 0));
+    const info = (addInfo || 'ARENAX DAT SAN').replace(/\s+/g, ' ').trim().slice(0, 80);
+    const base = `https://img.vietqr.io/image/${VIETQR.bankId}-${VIETQR.accountNo}-${VIETQR.template}.jpg`;
+    const q = new URLSearchParams();
+    if (amt > 0) q.set('amount', String(amt));
+    q.set('addInfo', info);
+    q.set('accountName', VIETQR.accountName);
+    return `${base}?${q.toString()}`;
+  }
+
+  function buildTransferContent() {
+    const maSan = sessionStorage.getItem('arenax_maSan') || '';
+    const ngay = (document.getElementById('pick-ngay') && document.getElementById('pick-ngay').value) || '';
+    const compact = ngay.replace(/-/g, '');
+    return `ARENAX ${maSan} ${compact}`.trim().slice(0, 80);
+  }
 
   document.addEventListener('DOMContentLoaded', async () => {
     const user = getCurrentUser();
     if (!user) { window.location.href = 'login.html'; return; }
 
     const maSan = sessionStorage.getItem('arenax_maSan');
-    if (!maSan) { alert('Không có thông tin sân!'); history.back(); return; }
+    if (!maSan) { showNotice('Không có thông tin sân để đặt!', 'danger'); history.back(); return; }
 
     document.getElementById('pick-ngay').value = new Date().toISOString().split('T')[0];
     document.getElementById('pick-ngay').min   = new Date().toISOString().split('T')[0];
@@ -190,6 +274,12 @@
       document.getElementById('main-content').style.display = 'block';
 
       await loadGioTrong();
+      await loadPromotions();
+      document.getElementById('bank-qr-img').addEventListener('error', function vietQrFallback() {
+        if (this.dataset.fallbackApplied === '1') return;
+        this.dataset.fallbackApplied = '1';
+        this.src = QR_FALLBACK;
+      });
       recalcTotal();
     } catch {
       document.getElementById('loading-info').innerHTML = '<p class="text-danger">Không tải được thông tin sân!</p>';
@@ -212,7 +302,7 @@
 
     selectedSlot = null;
     document.getElementById('bill-gio').textContent = '—';
-    document.getElementById('btn-submit').disabled  = true;
+    validateSubmitBtn();
 
     wrap.innerHTML = SLOTS.map((sl, i) => {
       const isDone = booked.some(b => {
@@ -224,13 +314,75 @@
     }).join('');
   }
 
+  async function loadPromotions() {
+    try {
+      const res = await fetch(API_BASE + '/api/khuyenmai');
+      if (!res.ok) return;
+      const list = await res.json();
+      const active = list.filter(k => k.trangThai === 1);
+      if (!active.length) return;
+      document.getElementById('promo-list').innerHTML = '<div><strong>Mã đang áp dụng:</strong> ' +
+        active.map(k => `<span class="badge bg-light text-dark border me-1">${k.maCode}</span>`).join('') + '</div>';
+    } catch (_) {}
+  }
+
   function selectSlot(idx) {
     document.querySelectorAll('.slot').forEach(el => el.classList.remove('selected'));
     document.getElementById('slot-' + idx).classList.add('selected');
     selectedSlot = SLOTS[idx];
     document.getElementById('bill-gio').textContent = selectedSlot.bd + ' - ' + selectedSlot.kt;
-    document.getElementById('btn-submit').disabled  = false;
+    validateSubmitBtn();
     recalcTotal();
+  }
+
+  function selectPayment(method) {
+    selectedPayment = method;
+    document.getElementById('pay-cash').classList.toggle('active', method === 'TIEN_MAT');
+    document.getElementById('pay-bank').classList.toggle('active', method === 'CHUYEN_KHOAN');
+    const lbl = document.getElementById('confirm-deposit-label');
+    const btn = document.getElementById('btn-submit');
+    if (method === 'TIEN_MAT') {
+      lbl.textContent = 'Tôi đã chuyển khoản đủ số tiền cọc (30%) theo QR và nội dung chuyển khoản.';
+      btn.innerHTML = '<i class="fas fa-wallet me-2"></i>ĐÃ CHUYỂN KHOẢN CỌC &amp; ĐẶT SÂN';
+    } else if (method === 'CHUYEN_KHOAN') {
+      lbl.textContent = 'Tôi đã chuyển khoản đủ tổng tiền đơn theo QR và nội dung chuyển khoản.';
+      btn.innerHTML = '<i class="fas fa-building-columns me-2"></i>CHUYỂN KHOẢN TOÀN BỘ &amp; ĐẶT SÂN';
+    }
+    updateQrInfo();
+    validateSubmitBtn();
+  }
+
+  function validateSubmitBtn() {
+    const ok = !!selectedSlot
+      && !!selectedPayment
+      && document.getElementById('confirm-deposit').checked
+      && !!proofImageBase64;
+    document.getElementById('btn-submit').disabled = !ok;
+  }
+
+  function handleProofFile(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) {
+      proofImageBase64 = '';
+      document.getElementById('proof-preview-wrap').style.display = 'none';
+      validateSubmitBtn();
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      showNotice('Chỉ chấp nhận file ảnh chứng từ.', 'warning');
+      event.target.value = '';
+      proofImageBase64 = '';
+      validateSubmitBtn();
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      proofImageBase64 = String(reader.result || '');
+      document.getElementById('proof-preview').src = proofImageBase64;
+      document.getElementById('proof-preview-wrap').style.display = 'block';
+      validateSubmitBtn();
+    };
+    reader.readAsDataURL(file);
   }
 
   async function applyPromo() {
@@ -241,7 +393,9 @@
       const res = await fetch(API_BASE + '/api/khuyenmai/check/' + code);
       if (!res.ok) throw new Error();
       promoInfo = await res.json();
-      msg.innerHTML = '<span class="text-success"><i class="fas fa-check me-1"></i>Mã hợp lệ: ' + (promoInfo.tenKhuyenMai || code) + '</span>';
+      const ruleText = getPromoRuleText(promoInfo.maCode);
+      msg.innerHTML = '<span class="text-success"><i class="fas fa-check me-1"></i>Mã hợp lệ: ' + (promoInfo.tenKhuyenMai || code) + '</span>' +
+        (ruleText ? `<div class="text-muted mt-1">${ruleText}</div>` : '');
       document.getElementById('promo-row').style.display = 'flex';
     } catch {
       promoInfo = null;
@@ -249,6 +403,14 @@
       document.getElementById('promo-row').style.display = 'none';
     }
     recalcTotal();
+  }
+
+  function getPromoRuleText(code) {
+    const c = (code || '').toUpperCase();
+    if (c.startsWith('VIP')) return 'Điều kiện: từ 1000 điểm tích lũy trở lên.';
+    if (c.startsWith('VANG')) return 'Điều kiện: thành viên hạng Vàng.';
+    if (c.startsWith('BAC')) return 'Điều kiện: từ 500 điểm tích lũy trở lên.';
+    return '';
   }
 
   function recalcTotal() {
@@ -280,12 +442,43 @@
     document.getElementById('bill-total').textContent = formatCurrency(price);
     document.getElementById('bill-coc').textContent   = formatCurrency(Math.round(price * 0.3));
     document.getElementById('bill-diem-thuong').textContent = Math.floor(price / 10000);
+    updateQrInfo();
+  }
+
+  function updateQrInfo() {
+    const coc = Math.round(finalPrice * 0.3);
+    const isBank = selectedPayment === 'CHUYEN_KHOAN';
+    const soTien = isBank ? finalPrice : coc;
+    const guide = !selectedPayment
+      ? 'Chọn Tiền mặt (cọc 30%) hoặc Chuyển khoản (toàn bộ) để hiện QR VietQR đúng số tiền.'
+      : isBank
+        ? 'Quét QR VietQR — số tiền = tổng đơn (thanh toán trước qua ngân hàng).'
+        : 'Quét QR VietQR — số tiền = cọc 30% (bắt buộc trước khi đặt; phần còn lại trả tiền mặt tại sân).';
+    document.getElementById('qr-guide').textContent = guide;
+    document.getElementById('qr-amount').textContent = selectedPayment ? formatCurrency(soTien) : '—';
+    const content = buildTransferContent();
+    document.getElementById('qr-content').textContent = content || '—';
+    const img = document.getElementById('bank-qr-img');
+    if (!selectedPayment || finalPrice <= 0) {
+      img.src = QR_FALLBACK;
+      return;
+    }
+    img.src = buildVietQrImageUrl(soTien, content);
   }
 
   async function submitDat() {
     const user  = getCurrentUser();
     const maSan = sessionStorage.getItem('arenax_maSan');
-    if (!selectedSlot) { alert('Vui lòng chọn khung giờ!'); return; }
+    if (!selectedSlot) { showNotice('Vui lòng chọn khung giờ!', 'warning'); return; }
+    if (!selectedPayment) { showNotice('Vui lòng chọn phương thức thanh toán!', 'warning'); return; }
+    if (!document.getElementById('confirm-deposit').checked) {
+      showNotice('Vui lòng tích xác nhận đã chuyển khoản đúng số tiền và nội dung.', 'warning');
+      return;
+    }
+    if (!proofImageBase64) {
+      showNotice('Vui lòng tải ảnh chứng từ chuyển khoản để gửi admin duyệt.', 'warning');
+      return;
+    }
 
     const ngay  = document.getElementById('pick-ngay').value;
     const dto   = {
@@ -295,12 +488,15 @@
       gioKetThuc: selectedSlot.kt + ':00',
       diemSuDung: document.getElementById('use-points').checked
           ? Math.floor((user.diemTichLuy || 0) / 100) * 100 : 0,
-      maCodeKhuyenMai: promoInfo ? promoInfo.maCode : null
+      maCodeKhuyenMai: promoInfo ? promoInfo.maCode : null,
+      phuongThucThanhToan: selectedPayment,
+      daThanhToanCoc: true,
+      chungTuThanhToan: proofImageBase64
     };
 
     const btn = document.getElementById('btn-submit');
     btn.disabled    = true;
-    btn.innerHTML   = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...';
+      btn.innerHTML   = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý thanh toán...';
 
     try {
       const res = await fetch(API_BASE + '/api/dondatsan', {
@@ -313,11 +509,14 @@
         throw new Error(err);
       }
       const don = await res.json();
-      showInvoice(don);
+      showNotice(`Đã gửi yêu cầu đặt sân ${don.maDon}. Vui lòng chờ admin xác nhận thanh toán trước khi đơn được duyệt.`, 'success');
+      setTimeout(() => { window.location.href = 'lich-su-dat-san.html'; }, 1200);
     } catch(e) {
-      alert('Lỗi đặt sân: ' + (e.message || 'Vui lòng thử lại!'));
+      showNotice('Lỗi đặt sân: ' + (e.message || 'Vui lòng thử lại!'), 'danger');
       btn.disabled  = false;
-      btn.innerHTML = '<i class="fas fa-calendar-check me-2"></i>XÁC NHẬN ĐẶT SÂN';
+      btn.innerHTML = selectedPayment === 'CHUYEN_KHOAN'
+        ? '<i class="fas fa-building-columns me-2"></i>CHUYỂN KHOẢN TOÀN BỘ &amp; ĐẶT SÂN'
+        : '<i class="fas fa-wallet me-2"></i>ĐÃ CHUYỂN KHOẢN CỌC &amp; ĐẶT SÂN';
     }
   }
 
@@ -335,12 +534,16 @@
     document.getElementById('inv-diem').textContent     = (don.diemThuong || 0) + ' điểm';
     document.getElementById('invoiceModal').classList.add('show');
 
-    // Cập nhật điểm user trong localStorage
-    if (don.diemThuong) {
-      const u = getCurrentUser();
-      u.diemTichLuy = (u.diemTichLuy || 0) + don.diemThuong;
-      setCurrentUser(u);
-    }
+    // Điểm tích lũy sẽ được cộng khi hóa đơn hoàn tất ở phía admin.
+  }
+
+  function showNotice(msg, type = 'info') {
+    document.getElementById('notice-wrap').innerHTML = `
+      <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        ${msg}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    `;
   }
 
   function formatDate(d) {

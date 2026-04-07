@@ -40,6 +40,22 @@ public class DonDatSan {
     @Column(name = "TrangThai")
     private String trangThai;
 
+    @Column(name = "PhuongThucThanhToan")
+    private String phuongThucThanhToan;
+
+    @Column(name = "DaXacNhanThanhToan")
+    private Boolean daXacNhanThanhToan;
+
+    @Lob
+    @Column(name = "ChungTuThanhToan", columnDefinition = "LONGTEXT")
+    private String chungTuThanhToan;
+
+    @Column(name = "MaAdminXacNhanThanhToan")
+    private String maAdminXacNhanThanhToan;
+
+    @Column(name = "ThoiGianXacNhanThanhToan")
+    private Timestamp thoiGianXacNhanThanhToan;
+
     @ManyToOne
     @JoinColumn(name = "MaKM")
     @JsonIgnore
@@ -84,6 +100,21 @@ public class DonDatSan {
 
     public String getTrangThai() { return trangThai; }
     public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
+
+    public String getPhuongThucThanhToan() { return phuongThucThanhToan; }
+    public void setPhuongThucThanhToan(String phuongThucThanhToan) { this.phuongThucThanhToan = phuongThucThanhToan; }
+
+    public Boolean getDaXacNhanThanhToan() { return daXacNhanThanhToan; }
+    public void setDaXacNhanThanhToan(Boolean daXacNhanThanhToan) { this.daXacNhanThanhToan = daXacNhanThanhToan; }
+
+    public String getChungTuThanhToan() { return chungTuThanhToan; }
+    public void setChungTuThanhToan(String chungTuThanhToan) { this.chungTuThanhToan = chungTuThanhToan; }
+
+    public String getMaAdminXacNhanThanhToan() { return maAdminXacNhanThanhToan; }
+    public void setMaAdminXacNhanThanhToan(String maAdminXacNhanThanhToan) { this.maAdminXacNhanThanhToan = maAdminXacNhanThanhToan; }
+
+    public Timestamp getThoiGianXacNhanThanhToan() { return thoiGianXacNhanThanhToan; }
+    public void setThoiGianXacNhanThanhToan(Timestamp thoiGianXacNhanThanhToan) { this.thoiGianXacNhanThanhToan = thoiGianXacNhanThanhToan; }
 
     public KhuyenMai getKhuyenMai() { return khuyenMai; }
     public void setKhuyenMai(KhuyenMai khuyenMai) { this.khuyenMai = khuyenMai; }

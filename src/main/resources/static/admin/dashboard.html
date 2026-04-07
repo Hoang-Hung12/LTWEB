@@ -34,7 +34,7 @@
     <div class="text-secondary fw-bold fs-5">Dashboard Tổng Quan</div>
     <div class="d-flex align-items-center gap-2">
       <div class="text-end lh-1">
-        <div class="fw-bold small">Admin ARENAX</div>
+        <div class="fw-bold small" id="admin-name">Admin ARENAX</div>
         <div class="text-muted" style="font-size:.75rem">Quản trị viên</div>
       </div>
       <div class="avatar">A</div>
@@ -162,6 +162,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../admin/js/admin-auth.js"></script>
 <script src="../admin/js/script.js"></script>
 <script>
   const API = 'http://localhost:8080';
@@ -176,13 +177,14 @@
       const dons = await res.json();
       dons.sort((a,b) => new Date(b.ngayDat||0) - new Date(a.ngayDat||0));
 
+      const choTT = dons.filter(d => d.trangThai === 'Chờ xác nhận thanh toán').length;
       const cho  = dons.filter(d => d.trangThai === 'Chờ duyệt').length;
       const xn   = dons.filter(d => d.trangThai === 'Đã xác nhận').length;
       const ht   = dons.filter(d => d.trangThai === 'Đã hoàn thành').length;
       const huy  = dons.filter(d => d.trangThai === 'Đã hủy').length;
 
       document.getElementById('kpi-total').textContent   = dons.length;
-      document.getElementById('kpi-pending').textContent = cho;
+      document.getElementById('kpi-pending').textContent = choTT;
 
       // Doanh thu
       const donHT   = dons.filter(d => d.trangThai === 'Đã hoàn thành');
@@ -197,8 +199,8 @@
       new Chart(document.getElementById('donutChart'), {
         type: 'doughnut',
         data: {
-          labels: ['Chờ duyệt','Đã xác nhận','Hoàn thành','Đã hủy'],
-          datasets: [{ data:[cho,xn,ht,huy], backgroundColor:['#fbbf24','#22c55e','#3b82f6','#ef4444'], borderWidth:2 }]
+          labels: ['Chờ xác nhận TT','Chờ duyệt','Đã xác nhận','Hoàn thành','Đã hủy'],
+          datasets: [{ data:[choTT,cho,xn,ht,huy], backgroundColor:['#fb7185','#fbbf24','#22c55e','#3b82f6','#ef4444'], borderWidth:2 }]
         },
         options: { plugins:{ legend:{ position:'bottom',labels:{font:{size:12}} } }, cutout:'65%' }
       });

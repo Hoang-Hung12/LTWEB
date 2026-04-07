@@ -85,7 +85,8 @@
   <div class="d-flex gap-2 mb-3" id="filter-bar" style="display:none!important">
     <select class="form-select form-select-sm" id="filter-tt-lich" style="width:180px" onchange="renderList()">
       <option value="">Tất cả trạng thái</option>
-      <option value="Chờ xác nhận">Chờ xác nhận</option>
+      <option value="Chờ xác nhận thanh toán">Chờ xác nhận thanh toán</option>
+      <option value="Chờ duyệt">Chờ duyệt</option>
       <option value="Đã xác nhận">Đã xác nhận</option>
       <option value="Đã hoàn thành">Đã hoàn thành</option>
       <option value="Đã hủy">Đã hủy</option>
@@ -129,7 +130,8 @@
   function updateStats() {
     document.getElementById('st-total').textContent   = allDons.length;
     document.getElementById('st-done').textContent    = allDons.filter(d => d.trangThai === 'Đã hoàn thành').length;
-    document.getElementById('st-pending').textContent = allDons.filter(d => d.trangThai === 'Chờ xác nhận').length;
+    document.getElementById('st-pending').textContent = allDons.filter(d =>
+      d.trangThai === 'Chờ xác nhận thanh toán' || d.trangThai === 'Chờ duyệt').length;
     document.getElementById('st-cancel').textContent  = allDons.filter(d => d.trangThai === 'Đã hủy').length;
     const pts = allDons.reduce((s,d) => s + (d.diemThuong||0), 0);
     document.getElementById('st-points').textContent  = pts;
@@ -148,7 +150,7 @@
       const icon      = statusIcon(don.trangThai);
       const ngay = don.ngayDa ? formatDate2(don.ngayDa) : '—';
       const gio  = [(don.gioBatDau||'').substring(0,5), (don.gioKetThuc||'').substring(0,5)].filter(Boolean).join(' - ');
-      const canCancel = don.trangThai === 'Chờ xác nhận';
+      const canCancel = don.trangThai === 'Chờ xác nhận thanh toán' || don.trangThai === 'Chờ duyệt';
       return `
       <div class="history-card">
         <div class="history-icon ${iconClass}">${icon}</div>

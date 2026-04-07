@@ -9,6 +9,7 @@ import com.hung.demo_web.service.DonDatSanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,11 +32,17 @@ public class DonDatSanServiceImpl implements DonDatSanService {
         dto.setTrangThai(entity.getTrangThai());
         dto.setMaKH(entity.getKhachHang().getMaTK());
         dto.setTenKhachHang(entity.getKhachHang().getHoTen());
+        dto.setSdtKhachHang(entity.getKhachHang().getSdt());
         dto.setMaSan(entity.getSan().getMaSan());
         dto.setTenSan(entity.getSan().getTenSan());
         if (entity.getKhuyenMai() != null) {
             dto.setMaCodeKhuyenMai(entity.getKhuyenMai().getMaCode());
         }
+        dto.setPhuongThucThanhToan(entity.getPhuongThucThanhToan());
+        dto.setDaThanhToanCoc(Boolean.TRUE.equals(entity.getDaXacNhanThanhToan()));
+        dto.setChungTuThanhToan(entity.getChungTuThanhToan());
+        dto.setMaAdminXacNhanThanhToan(entity.getMaAdminXacNhanThanhToan());
+        dto.setThoiGianXacNhanThanhToan(entity.getThoiGianXacNhanThanhToan());
         return dto;
     }
 
@@ -52,15 +59,22 @@ public class DonDatSanServiceImpl implements DonDatSanService {
     @Override
     @org.springframework.transaction.annotation.Transactional
     public DonDatSanDto taoDonDatSan(DonDatSanDto dto) {
+        String pttt = dto.getPhuongThucThanhToan() == null ? "" : dto.getPhuongThucThanhToan().trim().toUpperCase();
+        if (!pttt.equals("TIEN_MAT") && !pttt.equals("CHUYEN_KHOAN")) {
+            throw new LoiThaoTac("Vui lòng chọn phương thức thanh toán hợp lệ!");
+        }
+        if (!Boolean.TRUE.equals(dto.getDaThanhToanCoc())) {
+            throw new LoiThaoTac("Cần thanh toán cọc trước khi đặt sân!");
+        }
 
         // Validate giờ
         if (dto.getGioBatDau().isAfter(dto.getGioKetThuc()) || dto.getGioBatDau().equals(dto.getGioKetThuc())) {
             throw new LoiThaoTac("Giờ bắt đầu phải nhỏ hơn giờ kết thúc!");
         }
 
-        TaiKhoan khach = taiKhoanRepository.findById(dto.getMaKH())
+        TaiKhoan khach = taiKhoanRepository.findById(Objects.requireNonNull(dto.getMaKH()))
                 .orElseThrow(() -> new KhongTimThay("Không tìm thấy Khách hàng"));
-        San san = sanRepository.findById(dto.getMaSan())
+        San san = sanRepository.findById(Objects.requireNonNull(dto.getMaSan()))
                 .orElseThrow(() -> new KhongTimThay("Không tìm thấy Sân bóng"));
 
         // Kiểm tra trùng giờ
@@ -88,6 +102,7 @@ public class DonDatSanServiceImpl implements DonDatSanService {
             if (km.getTrangThai() == 0 || km.getNgayHetHan().isBefore(java.time.LocalDate.now())) {
                 throw new LoiThaoTac("Mã khuyến mãi đã hết hạn hoặc bị khóa!");
             }
+            validatePromoByMemberLevel(km, khach);
             if (km.getLoaiKhuyenMai().equalsIgnoreCase("PhanTram")) {
                 tongTienSan -= tongTienSan * (km.getGiaTri() / 100.0);
             } else if (km.getLoaiKhuyenMai().equalsIgnoreCase("SoTien")) {
@@ -116,7 +131,10 @@ public class DonDatSanServiceImpl implements DonDatSanService {
         entity.setNgayDa(dto.getNgayDa());
         entity.setGioBatDau(dto.getGioBatDau());
         entity.setGioKetThuc(dto.getGioKetThuc());
-        entity.setTrangThai("Chờ duyệt");
+        entity.setTrangThai("Chờ xác nhận thanh toán");
+        entity.setPhuongThucThanhToan(pttt);
+        entity.setDaXacNhanThanhToan(false);
+        entity.setChungTuThanhToan(dto.getChungTuThanhToan());
         entity.setKhachHang(khach);
         entity.setSan(san);
         entity.setTienSan(tongTienSan);
@@ -129,9 +147,42 @@ public class DonDatSanServiceImpl implements DonDatSanService {
     @Override
     @org.springframework.transaction.annotation.Transactional
     public DonDatSanDto capNhatTrangThai(String maDon, String trangThai) {
-        DonDatSan entity = donDatSanRepository.findById(maDon)
+        DonDatSan entity = donDatSanRepository.findById(Objects.requireNonNull(maDon))
                 .orElseThrow(() -> new KhongTimThay("Không tìm thấy đơn"));
+        if ("Chờ duyệt".equalsIgnoreCase(trangThai) && !Boolean.TRUE.equals(entity.getDaXacNhanThanhToan())) {
+            entity.setDaXacNhanThanhToan(true);
+        }
         entity.setTrangThai(trangThai);
         return mapToDTO(donDatSanRepository.save(entity));
+    }
+
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public DonDatSanDto xacNhanThanhToan(String maDon, String maAdmin) {
+        DonDatSan entity = donDatSanRepository.findById(Objects.requireNonNull(maDon))
+                .orElseThrow(() -> new KhongTimThay("Không tìm thấy đơn"));
+        if (!"Chờ xác nhận thanh toán".equals(entity.getTrangThai())) {
+            throw new LoiThaoTac("Đơn không ở trạng thái chờ xác nhận thanh toán.");
+        }
+        entity.setDaXacNhanThanhToan(true);
+        entity.setTrangThai("Chờ duyệt");
+        entity.setMaAdminXacNhanThanhToan(maAdmin);
+        entity.setThoiGianXacNhanThanhToan(new java.sql.Timestamp(System.currentTimeMillis()));
+        return mapToDTO(donDatSanRepository.save(entity));
+    }
+
+    private void validatePromoByMemberLevel(KhuyenMai km, TaiKhoan khach) {
+        String code = km.getMaCode() == null ? "" : km.getMaCode().toUpperCase();
+        String rank = khach.getHangThanhVien() == null ? "" : khach.getHangThanhVien().toUpperCase();
+        int diem = khach.getDiemTichLuy() == null ? 0 : khach.getDiemTichLuy();
+        if (code.startsWith("VIP") && diem < 1000) {
+            throw new LoiThaoTac("Mã này yêu cầu tối thiểu 1000 điểm tích lũy.");
+        }
+        if (code.startsWith("VANG") && !rank.contains("VÀNG")) {
+            throw new LoiThaoTac("Mã này chỉ áp dụng cho hạng Vàng.");
+        }
+        if (code.startsWith("BAC") && diem < 500) {
+            throw new LoiThaoTac("Mã này yêu cầu tối thiểu 500 điểm tích lũy.");
+        }
     }
 }

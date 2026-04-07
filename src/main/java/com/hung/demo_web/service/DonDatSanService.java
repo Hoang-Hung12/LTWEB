@@ -9,4 +9,5 @@ public interface DonDatSanService {
     List<DonDatSanDto> getLichSuDatSan(String maKH);
     DonDatSanDto taoDonDatSan(DonDatSanDto dto);
     DonDatSanDto capNhatTrangThai(String maDon, String trangThai);
+    DonDatSanDto xacNhanThanhToan(String maDon, String maAdmin);
 }
