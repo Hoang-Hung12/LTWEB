@@ -112,8 +112,10 @@
           <input type="text" class="form-control" id="add-tieních" placeholder="Wifi, Gửi xe, Nước uống">
         </div>
         <div class="mb-3">
-          <label class="form-label text-muted small fw-bold">URL ẢNH CHÍNH</label>
-          <input type="text" class="form-control" id="add-anh" placeholder="https://...">
+          <label class="form-label text-muted small fw-bold">ẢNH CHÍNH</label>
+          <select class="form-select" id="add-anh" onchange="updateAnhPreview('add-anh')"></select>
+          <div class="form-text">Chọn ảnh có sẵn trong hệ thống thay vì nhập URL bên ngoài.</div>
+          <img id="add-anh-preview" class="img-fluid mt-2 rounded" style="max-height:160px;display:none;object-fit:cover;" />
         </div>
       </div>
       <div class="modal-footer">
@@ -165,8 +167,10 @@
           <input type="text" class="form-control" id="edit-tieních">
         </div>
         <div class="mb-3">
-          <label class="form-label text-muted small fw-bold">URL ẢNH CHÍNH</label>
-          <input type="text" class="form-control" id="edit-anh">
+          <label class="form-label text-muted small fw-bold">ẢNH CHÍNH</label>
+          <select class="form-select" id="edit-anh" onchange="updateAnhPreview('edit-anh')"></select>
+          <div class="form-text">Chọn ảnh có sẵn trong hệ thống thay vì nhập URL bên ngoài.</div>
+          <img id="edit-anh-preview" class="img-fluid mt-2 rounded" style="max-height:160px;display:none;object-fit:cover;" />
         </div>
         <div class="mb-3">
           <label class="form-label text-muted small fw-bold">TRẠNG THÁI</label>
@@ -214,6 +218,7 @@
   const API = 'http://localhost:8080';
   let allSans   = [];
   let loaiList  = [];
+  let availableAnh = [];
   let editMaSan = null;
   let deleteMaSan = null;
   const PAGE_SIZE_SAN = 10;
@@ -222,6 +227,7 @@
 
   document.addEventListener('DOMContentLoaded', async () => {
     await loadLoaiSan();
+    await loadAnhSan();
     await loadSans();
   });
 
@@ -237,6 +243,40 @@
       const filter = document.getElementById('filter-loai-admin');
       if (filter) filter.innerHTML = '<option value="">Tất cả loại</option>' + opts;
     } catch(e) { console.warn(e); }
+  }
+
+  async function loadAnhSan() {
+    try {
+      const res = await fetch(API + '/api/anhsan');
+      availableAnh = await res.json();
+      renderAnhOptions();
+    } catch(e) {
+      console.warn('Không thể tải ảnh sân có sẵn', e);
+    }
+  }
+
+  function renderAnhOptions() {
+    const opts = ['<option value="">-- Chọn ảnh có sẵn --</option>']
+      .concat(availableAnh.map(a => `<option value="${a.duongDanAnh}">${a.maAnh} — ${a.duongDanAnh}</option>`))
+      .join('');
+    ['add-anh','edit-anh'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = opts;
+    });
+  }
+
+  function updateAnhPreview(selectId) {
+    const select = document.getElementById(selectId);
+    const preview = document.getElementById(selectId + '-preview');
+    if (!select || !preview) return;
+    const value = select.value;
+    if (!value) {
+      preview.style.display = 'none';
+      preview.src = '';
+      return;
+    }
+    preview.src = value;
+    preview.style.display = 'block';
   }
 
   async function loadSans() {
@@ -300,10 +340,13 @@
   }
 
   function resetAddForm() {
-    ['add-ten','add-diachi','add-gia','add-mota','add-tieních','add-anh'].forEach(id => {
+    ['add-ten','add-diachi','add-gia','add-mota','add-tieních'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.value = '';
     });
+    const addAnh = document.getElementById('add-anh');
+    if (addAnh) addAnh.selectedIndex = 0;
+    updateAnhPreview('add-anh');
     document.getElementById('add-loai').selectedIndex = 0;
     document.getElementById('add-error').classList.add('d-none');
   }
@@ -350,6 +393,7 @@
     document.getElementById('edit-mota').value   = san.moTa || '';
     document.getElementById('edit-tieních').value= san.tienIch || '';
     document.getElementById('edit-anh').value    = san.anhChinh || '';
+    updateAnhPreview('edit-anh');
     document.getElementById('edit-tt').value     = san.trangThai || 'EMPTY';
     const loaiEl = document.getElementById('edit-loai');
     if (loaiEl) loaiEl.value = san.maLoaiSan || '';

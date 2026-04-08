@@ -24,4 +24,9 @@ public class AnhSanServiceImpl implements AnhSanService {
     public List<AnhSanDto> getAnhByMaSan(String maSan) {
         return anhSanRepository.findByMaSan_MaSan(maSan).stream().map(this::mapToDTO).collect(Collectors.toList());
     }
+
+    @Override
+    public List<AnhSanDto> getAllAnh() {
+        return anhSanRepository.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
 }

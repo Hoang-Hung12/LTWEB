@@ -15,7 +15,9 @@ import com.hung.demo_web.entity.LoaiSan;
 import com.hung.demo_web.entity.San;
 import com.hung.demo_web.exception.KhongTimThay;
 import com.hung.demo_web.exception.LoiThaoTac;
+import com.hung.demo_web.repository.DonDatDichVuRepository;
 import com.hung.demo_web.repository.DonDatSanRepository;
+import com.hung.demo_web.repository.HoaDonRepository;
 import com.hung.demo_web.repository.LoaiSanRepository;
 import com.hung.demo_web.repository.SanRepository;
 import com.hung.demo_web.service.SanService;
@@ -26,6 +28,8 @@ public class SanServiceimpl implements SanService {
     @Autowired private SanRepository sanRepository;
     @Autowired private LoaiSanRepository loaiSanRepository;
     @Autowired private DonDatSanRepository donDatSanRepository;
+    @Autowired private DonDatDichVuRepository donDatDichVuRepository;
+    @Autowired private HoaDonRepository hoaDonRepository;
 
     private SanDto mapToDto(San entity) {
         SanDto dto = new SanDto();
@@ -105,18 +109,24 @@ public class SanServiceimpl implements SanService {
 
         List<DonDatSan> donLienQuan = donDatSanRepository.findBySan_MaSan(maSan);
 
-        long donChuaHuy = donLienQuan.stream()
-                .filter(d -> !"Đã hủy".equalsIgnoreCase(d.getTrangThai()))
+        long activeDon = donLienQuan.stream()
+                .filter(d -> !"Đã hủy".equalsIgnoreCase(d.getTrangThai()) && !"Đã hoàn thành".equalsIgnoreCase(d.getTrangThai()))
                 .count();
 
-        if (donChuaHuy > 0) {
+        if (activeDon > 0) {
             throw new LoiThaoTac(
-                "Không thể xóa sân \"" + entity.getTenSan() + "\" vì đang có " + donChuaHuy +
-                " đơn đặt chưa hủy. Hãy hủy toàn bộ đơn đặt của sân này trước."
+                "Không thể xóa sân \"" + entity.getTenSan() + "\" vì đang có " + activeDon +
+                " đơn đặt sân đang hoạt động. Vui lòng hoàn thành hoặc hủy những đơn này trước khi xóa sân."
             );
         }
 
-        // Xóa các đơn đã hủy (tránh FK constraint)
+        // Nếu chỉ còn các đơn đã hoàn thành / đã hủy, xóa các dữ liệu phụ thuộc trước để tránh lỗi ràng buộc FK.
+        for (DonDatSan don : donLienQuan) {
+            if (don.getMaDon() != null) {
+                hoaDonRepository.deleteByDonDatSan_MaDon(don.getMaDon());
+                donDatDichVuRepository.deleteById_maDon(don.getMaDon());
+            }
+        }
         if (!donLienQuan.isEmpty()) {
             donDatSanRepository.deleteAll(donLienQuan);
         }

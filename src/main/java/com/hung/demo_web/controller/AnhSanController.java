@@ -21,4 +21,10 @@ public class AnhSanController {
     public ResponseEntity<List<AnhSanDto>> getAnhBySan(@PathVariable String maSan) {
         return ResponseEntity.ok(anhSanService.getAnhByMaSan(maSan));
     }
+
+    // API trả về tất cả ảnh sân trong hệ thống, dùng để chọn ảnh có sẵn thay vì nhập URL bên ngoài.
+    @GetMapping
+    public ResponseEntity<List<AnhSanDto>> getAllAnh() {
+        return ResponseEntity.ok(anhSanService.getAllAnh());
+    }
 }

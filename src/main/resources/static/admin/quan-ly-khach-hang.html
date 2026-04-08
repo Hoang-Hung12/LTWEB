@@ -59,6 +59,7 @@
           <thead>
             <tr>
               <th class="ps-4">STT</th>
+              <th>Mã khách</th>
               <th>Họ và tên</th>
               <th>Số điện thoại</th>
               <th>Email</th>
@@ -68,7 +69,7 @@
             </tr>
           </thead>
           <tbody id="kh-tbody">
-            <tr><td colspan="7" class="text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i>Đang tải...</td></tr>
+            <tr><td colspan="8" class="text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i>Đang tải...</td></tr>
           </tbody>
         </table>
       </div>
@@ -183,7 +184,7 @@
       allKH = all.filter(u => (u.vaiTro||'').toUpperCase() !== 'ADMIN');
       applyFilter();
     } catch {
-      document.getElementById('kh-tbody').innerHTML = '<tr><td colspan="7" class="text-center text-danger py-4">Lỗi kết nối server!</td></tr>';
+      document.getElementById('kh-tbody').innerHTML = '<tr><td colspan="8" class="text-center text-danger py-4">Lỗi kết nối server!</td></tr>';
     }
   }
 
@@ -192,6 +193,7 @@
     const hang = document.getElementById('filter-hang').value;
     const data = allKH.filter(k => {
       const matchQ = !q ||
+        (k.maTK||'').toLowerCase().includes(q) ||
         (k.hoTen||'').toLowerCase().includes(q) ||
         (k.sdt||'').includes(q) ||
         (k.email||'').toLowerCase().includes(q);
@@ -215,10 +217,11 @@
       return `<i class="fas fa-medal rank-bronze me-1"></i>`;
     };
     document.getElementById('kh-tbody').innerHTML = page.length === 0
-      ? '<tr><td colspan="7" class="text-center text-muted py-4">Không có khách hàng nào.</td></tr>'
+      ? '<tr><td colspan="8" class="text-center text-muted py-4">Không có khách hàng nào.</td></tr>'
       : page.map((k, i) => `
         <tr>
           <td class="ps-4">${start+i+1}</td>
+          <td><code>${k.maTK||'—'}</code></td>
           <td class="fw-bold">${k.hoTen||'—'}</td>
           <td>${k.sdt||'—'}</td>
           <td>${k.email||'—'}</td>

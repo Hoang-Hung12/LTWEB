@@ -1,10 +1,13 @@
 package com.hung.demo_web.service.impl;
 
 import com.hung.demo_web.dto.TaiKhoanDto;
+import com.hung.demo_web.entity.DonDatSan;
 import com.hung.demo_web.entity.TaiKhoan;
 import com.hung.demo_web.exception.KhongTimThay;
 import com.hung.demo_web.exception.LoiThaoTac;
+import com.hung.demo_web.repository.DonDatDichVuRepository;
 import com.hung.demo_web.repository.DonDatSanRepository;
+import com.hung.demo_web.repository.HoaDonRepository;
 import com.hung.demo_web.repository.TaiKhoanRepository;
 import com.hung.demo_web.service.TaiKhoanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
 
     @Autowired private TaiKhoanRepository repo;
     @Autowired private DonDatSanRepository donDatSanRepository;
+    @Autowired private DonDatDichVuRepository donDatDichVuRepository;
+    @Autowired private HoaDonRepository hoaDonRepository;
 
     private TaiKhoanDto mapToDTO(TaiKhoan entity) {
         TaiKhoanDto dto = new TaiKhoanDto();
@@ -97,13 +102,27 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
         TaiKhoan entity = repo.findById(maTK)
                 .orElseThrow(() -> new KhongTimThay("Không tìm thấy tài khoản: " + maTK));
 
-        // Kiểm tra có đơn đặt sân nào không — nếu có, báo lỗi rõ ràng
-        long soDon = donDatSanRepository.findByKhachHang_maTK(maTK).size();
-        if (soDon > 0) {
+        // Chỉ chặn xóa khi khách còn đơn đặt sân đang xử lý (không phải Đã hoàn thành / Đã hủy)
+        var allDon = donDatSanRepository.findByKhachHang_maTK(maTK);
+        long activeDon = allDon.stream()
+                .filter(d -> !"Đã hủy".equalsIgnoreCase(d.getTrangThai()) && !"Đã hoàn thành".equalsIgnoreCase(d.getTrangThai()))
+                .count();
+        if (activeDon > 0) {
             throw new LoiThaoTac(
-                "Không thể xóa khách hàng \"" + entity.getHoTen() + "\" vì đang có " + soDon +
-                " đơn đặt sân liên quan. Hãy hủy hoặc xóa toàn bộ đơn đặt sân của khách này trước."
+                "Không thể xóa khách hàng \"" + entity.getHoTen() + "\" vì đang có " + activeDon +
+                " đơn đặt sân đang hoạt động. Vui lòng hoàn thành hoặc hủy những đơn này trước khi xóa khách hàng."
             );
+        }
+
+        // Nếu chỉ còn các đơn đã hoàn thành / đã hủy, xóa các dữ liệu liên quan trước.
+        for (DonDatSan don : allDon) {
+            if (don.getMaDon() != null) {
+                hoaDonRepository.deleteByDonDatSan_MaDon(don.getMaDon());
+                donDatDichVuRepository.deleteById_maDon(don.getMaDon());
+            }
+        }
+        if (!allDon.isEmpty()) {
+            donDatSanRepository.deleteAll(allDon);
         }
 
         repo.delete(entity);
