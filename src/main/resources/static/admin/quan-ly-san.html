@@ -397,12 +397,20 @@
     btn.disabled = true; btn.textContent = 'Đang xóa...';
     try {
       const res = await fetch(API + '/api/san/' + deleteMaSan, { method:'DELETE' });
-      if (!res.ok) throw new Error(await res.text());
+      if (!res.ok) {
+        const raw = await res.text();
+        let msg = raw;
+        try { msg = JSON.parse(raw).message || raw; } catch {}
+        throw new Error(msg);
+      }
       allSans = allSans.filter(s => s.maSan !== deleteMaSan);
       applyFilter();
       bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
-      showToast('Đã xóa sân thành công!', 'danger');
-    } catch(e) { alert('Lỗi xóa sân: ' + (e.message||'Vui lòng thử lại!')); }
+      showToast('Đã xóa sân thành công!', 'success');
+    } catch(e) {
+      bootstrap.Modal.getInstance(document.getElementById('deleteModal'))?.hide();
+      showToast('⚠️ ' + (e.message||'Vui lòng thử lại!'), 'danger');
+    }
     finally { btn.disabled = false; btn.textContent = 'Xóa'; }
   }
 

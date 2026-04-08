@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hung.demo_web.dto.SanDto;
 import com.hung.demo_web.entity.DonDatSan;
@@ -97,9 +98,29 @@ public class SanServiceimpl implements SanService {
     }
 
     @Override
+    @Transactional
     public void deleteSan(String maSan) {
         San entity = sanRepository.findById(maSan)
                 .orElseThrow(() -> new KhongTimThay("Không tìm thấy sân: " + maSan));
+
+        List<DonDatSan> donLienQuan = donDatSanRepository.findBySan_MaSan(maSan);
+
+        long donChuaHuy = donLienQuan.stream()
+                .filter(d -> !"Đã hủy".equalsIgnoreCase(d.getTrangThai()))
+                .count();
+
+        if (donChuaHuy > 0) {
+            throw new LoiThaoTac(
+                "Không thể xóa sân \"" + entity.getTenSan() + "\" vì đang có " + donChuaHuy +
+                " đơn đặt chưa hủy. Hãy hủy toàn bộ đơn đặt của sân này trước."
+            );
+        }
+
+        // Xóa các đơn đã hủy (tránh FK constraint)
+        if (!donLienQuan.isEmpty()) {
+            donDatSanRepository.deleteAll(donLienQuan);
+        }
+
         sanRepository.delete(entity);
     }
 

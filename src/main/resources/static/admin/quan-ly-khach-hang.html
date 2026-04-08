@@ -314,11 +314,19 @@
     btn.disabled = true; btn.textContent = 'Đang xóa...';
     try {
       const res = await fetch(API + '/api/taikhoan/' + deleteMaTK, { method:'DELETE' });
-      if (!res.ok) throw new Error(await res.text());
+      if (!res.ok) {
+        const raw = await res.text();
+        let msg = raw;
+        try { msg = JSON.parse(raw).message || raw; } catch {}
+        throw new Error(msg);
+      }
       await loadKH();
       bootstrap.Modal.getInstance(document.getElementById('deleteKHModal')).hide();
-      showToast('Đã xóa khách hàng!', 'danger');
-    } catch(e) { alert('Lỗi: ' + (e.message||'Thử lại!')); }
+      showToast('Đã xóa khách hàng!', 'success');
+    } catch(e) {
+      bootstrap.Modal.getInstance(document.getElementById('deleteKHModal'))?.hide();
+      showToast('⚠️ ' + (e.message||'Thử lại!'), 'danger');
+    }
     finally { btn.disabled = false; btn.textContent = 'Xóa'; }
   }
 
