@@ -1,15 +1,15 @@
-// HÀM MỞ MODAL SỬA SÂN (Dùng trong file pitch.html)
+// Hằng số API dùng chung cho toàn bộ trang admin
+const API = 'http://localhost:8080';
+
+// HÀM MỞ MODAL SỬA SÂN
 function editPitch(id) {
     const myModal = new bootstrap.Modal(document.getElementById('editPitchModal'));
     myModal.show();
 }
 
-// HÀM MỞ MODAL XÓA SÂN (Dùng trong file pitch.html)
+// HÀM MỞ MODAL XÓA SÂN
 function deleteItem(name) {
     document.getElementById('deleteItemName').innerText = "Đang xóa: " + name;
     const myModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
     myModal.show();
 }
-
-// Script dùng chung admin: không vẽ chart cứng tại đây.
-// Từng trang dashboard/thống kê sẽ tự vẽ chart bằng dữ liệu API riêng.

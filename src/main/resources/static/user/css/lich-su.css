@@ -1,13 +1,102 @@
-.history-container { 
-    background: #fff; 
-    border-radius: 12px; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+/* ============================================
+   LỊCH SỬ ĐẶT SÂN — ARENAX
+   ============================================ */
+
+.page-header {
+    background: #fff;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1.2rem 0;
+    margin-bottom: 1.5rem;
 }
-.bg-success-light {
-    background-color: #d1e7dd !important; 
-    color: #0f5132 !important; 
+
+/* Stats bar */
+.stats-bar {
+    display: flex;
+    gap: 1rem;
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
 }
-.bg-warning-light {
-    background-color: #fff3cd !important; 
-    color: #854000 !important; 
+.stat-item {
+    flex: 1;
+    min-width: 90px;
+    text-align: center;
 }
+.stat-val {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #212529;
+}
+.stat-lbl {
+    font-size: .72rem;
+    color: #6c757d;
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+/* Filter bar */
+.filter-bar {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: 1rem;
+}
+
+/* History card */
+.history-card {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    margin-bottom: .75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+    border-left: 4px solid #dee2e6;
+    transition: box-shadow .2s;
+}
+.history-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.10); }
+
+/* icon trạng thái */
+.history-icon {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+.history-icon.pending   { background:#fff3cd; color:#856404; }
+.history-icon.confirmed { background:#d1e7dd; color:#0f5132; }
+.history-icon.done      { background:#cfe2ff; color:#084298; }
+.history-icon.cancelled { background:#f8d7da; color:#842029; }
+
+/* Badge trạng thái inline */
+.badge-tt {
+    display: inline-block;
+    padding: .25em .65em;
+    border-radius: 20px;
+    font-size: .75rem;
+    font-weight: 600;
+}
+.badge-tt.pending   { background:#fff3cd; color:#856404; }
+.badge-tt.confirmed { background:#d1e7dd; color:#0f5132; }
+.badge-tt.done      { background:#cfe2ff; color:#084298; }
+.badge-tt.cancelled { background:#f8d7da; color:#842029; }
+
+/* Border màu trái card */
+.history-card:has(.history-icon.pending)   { border-left-color: #fbbf24; }
+.history-card:has(.history-icon.confirmed) { border-left-color: #22c55e; }
+.history-card:has(.history-icon.done)      { border-left-color: #3b82f6; }
+.history-card:has(.history-icon.cancelled) { border-left-color: #ef4444; }
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: #6c757d;
+}
+.empty-state i { font-size: 3rem; margin-bottom: 1rem; opacity: .4; display: block; }
+.empty-state h5 { margin-bottom: .5rem; }
