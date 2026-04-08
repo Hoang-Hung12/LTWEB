@@ -16,16 +16,16 @@
       applyFilter();
     } catch (e) {
       console.error(e);
-      showServerAlert('KhÃ´ng táº£i Ä‘Æ°á»£c dá»¯ liá»‡u thá»‘ng kÃª tá»« server. Vui lÃ²ng thá»­ láº¡i.');
+      showServerAlert('Không tải được dữ liệu thống kê từ server. Vui lòng thử lại.');
       document.getElementById('detail-tbody').innerHTML =
-        '<tr><td colspan="5" class="text-center text-danger py-4">Lá»—i káº¿t ná»‘i server! <button class="btn btn-sm btn-outline-primary ms-2" onclick="location.reload()">Táº£i láº¡i</button></td></tr>';
+        '<tr><td colspan="5" class="text-center text-danger py-4">Lỗi kết nối server! <button class="btn btn-sm btn-outline-primary ms-2" onclick="location.reload()">Tải lại</button></td></tr>';
     }
   });
 
   function applyFilter() {
     const from = document.getElementById('date-from').value;
     const to   = document.getElementById('date-to').value;
-    let filtered = allDons.filter(d => d.trangThai === 'ÄÃ£ hoÃ n thÃ nh');
+    let filtered = allDons.filter(d => d.trangThai === 'Đã hoàn thành');
     if (from) filtered = filtered.filter(d => (d.ngayDa||'') >= from);
     if (to)   filtered = filtered.filter(d => (d.ngayDa||'') <= to);
     renderStats(filtered);
@@ -45,7 +45,7 @@
   function renderStats(data) {
     const total = data.reduce((s,d) => s + (d.tienSan||0), 0);
     const avg   = data.length ? total / data.length : 0;
-    const huy   = allDons.filter(d => d.trangThai === 'ÄÃ£ há»§y').length;
+    const huy   = allDons.filter(d => d.trangThai === 'Đã hủy').length;
     document.getElementById('stat-rev').textContent  = fmtMoney(total);
     document.getElementById('stat-done').textContent = data.length;
     document.getElementById('stat-avg').textContent  = fmtMoney(Math.round(avg));
@@ -75,7 +75,7 @@
       data: {
         labels,
         datasets: [{
-          label: 'Doanh thu (Ä‘)',
+          label: 'Doanh thu (đ)',
           data: values,
           backgroundColor: 'rgba(13,110,253,0.7)',
           borderColor: '#0d6efd',
@@ -106,7 +106,7 @@
     const rows = Object.entries(byDay).sort((a,b) => b[0].localeCompare(a[0]));
     const tbody = document.getElementById('detail-tbody');
     tbody.innerHTML = rows.length === 0
-      ? '<tr><td colspan="5" class="text-center text-muted py-4">KhÃ´ng cÃ³ dá»¯ liá»‡u trong khoáº£ng thá»i gian nÃ y.</td></tr>'
+      ? '<tr><td colspan="5" class="text-center text-muted py-4">Không có dữ liệu trong khoảng thời gian này.</td></tr>'
       : rows.map(([d, v]) => {
           const p = d.split('-');
           return `<tr>
@@ -114,7 +114,7 @@
             <td>${v.count}</td>
             <td class="text-primary fw-bold">${fmtMoney(v.tienSan)}</td>
             <td class="text-success fw-bold">${fmtMoney(v.tienCoc)}</td>
-            <td class="text-end pe-4">${v.diem.toLocaleString('vi-VN')} Ä‘iá»ƒm</td>
+            <td class="text-end pe-4">${v.diem.toLocaleString('vi-VN')} điểm</td>
           </tr>`;
         }).join('');
   }
@@ -122,12 +122,12 @@
   function renderTopSan(data) {
     const bySan = {};
     data.forEach(d => {
-      const key = d.tenSan || d.maSan || 'â€”';
+      const key = d.tenSan || d.maSan || '—';
       bySan[key] = (bySan[key]||0) + (d.tienSan||0);
     });
     const sorted = Object.entries(bySan).sort((a,b) => b[1]-a[1]).slice(0,5);
     document.getElementById('top-san-tbody').innerHTML = sorted.length === 0
-      ? '<tr><td colspan="2" class="text-center text-muted py-2">ChÆ°a cÃ³</td></tr>'
+      ? '<tr><td colspan="2" class="text-center text-muted py-2">Chưa có</td></tr>'
       : sorted.map(([name,rev]) => `<tr>
           <td class="ps-3 small">${name}</td>
           <td class="text-end pe-3 fw-bold small text-primary">${fmtMoney(rev)}</td>
@@ -137,11 +137,11 @@
   function exportCSV() {
     const from = document.getElementById('date-from').value;
     const to   = document.getElementById('date-to').value;
-    let filtered = allDons.filter(d => d.trangThai === 'ÄÃ£ hoÃ n thÃ nh');
+    let filtered = allDons.filter(d => d.trangThai === 'Đã hoàn thành');
     if (from) filtered = filtered.filter(d => (d.ngayDa||'') >= from);
     if (to)   filtered = filtered.filter(d => (d.ngayDa||'') <= to);
 
-    const rows = [['MÃ£ Ä‘Æ¡n','KhÃ¡ch hÃ ng','SÃ¢n','NgÃ y Ä‘Ã¡','Giá»','Tiá»n sÃ¢n','Tiá»n cá»c','Äiá»ƒm thÆ°á»Ÿng']];
+    const rows = [['Mã đơn','Khách hàng','Sân','Ngày đá','Giờ','Tiền sân','Tiền cọc','Điểm thưởng']];
     filtered.forEach(d => {
       rows.push([
         d.maDon, d.tenKhachHang||'', d.tenSan||'', d.ngayDa||'',
@@ -160,8 +160,8 @@
   }
 
   function fmtMoney(n) {
-    if (n == null) return 'â€”';
-    return Number(n).toLocaleString('vi-VN') + 'Ä‘';
+    if (n == null) return '—';
+    return Number(n).toLocaleString('vi-VN') + 'đ';
   }
   function showServerAlert(msg) {
     document.getElementById('server-alert').innerHTML = `
@@ -171,6 +171,3 @@
       </div>
     `;
   }
-</script>
-</body>
-

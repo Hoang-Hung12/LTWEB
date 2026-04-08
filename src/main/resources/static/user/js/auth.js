@@ -25,10 +25,7 @@ function renderNavbar() {
     const userItem  = document.getElementById('nav-user-item');
     if (!loginItem || !userItem) return;
     if (user) {
-        if ((user.vaiTro || '').toUpperCase() === 'ADMIN') {
-            window.location.href = '../admin/dashboard.html';
-            return;
-        }
+        // Admin xem trang user bình thường, không redirect
         loginItem.style.display = 'none';
         userItem.style.display  = 'block';
         const nameEl  = document.getElementById('nav-user-name');

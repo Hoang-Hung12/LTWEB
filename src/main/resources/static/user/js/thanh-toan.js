@@ -13,7 +13,7 @@
   let finalPrice   = 0;
   let selectedPayment = '';
   let proofImageBase64 = '';
-  /** Fallback náº¿u áº£nh VietQR khÃ´ng táº£i Ä‘Æ°á»£c */
+  /** Fallback nếu ảnh VietQR không tải được */
   const QR_FALLBACK = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=ARENAX%20MB%200965775144';
 
   const VIETQR = {
@@ -46,12 +46,12 @@
     if (!user) { window.location.href = 'login.html'; return; }
 
     const maSan = sessionStorage.getItem('arenax_maSan');
-    if (!maSan) { showNotice('KhÃ´ng cÃ³ thÃ´ng tin sÃ¢n Ä‘á»ƒ Ä‘áº·t!', 'danger'); history.back(); return; }
+    if (!maSan) { showNotice('Không có thông tin sân để đặt!', 'danger'); history.back(); return; }
 
     document.getElementById('pick-ngay').value = new Date().toISOString().split('T')[0];
     document.getElementById('pick-ngay').min   = new Date().toISOString().split('T')[0];
 
-    // Hiá»ƒn thá»‹ Ä‘iá»ƒm user
+    // Hiển thị điểm user
     if (user.diemTichLuy > 0) {
       document.getElementById('points-box').style.display = 'flex';
       document.getElementById('user-points-display').textContent = user.diemTichLuy;
@@ -80,7 +80,7 @@
       });
       recalcTotal();
     } catch {
-      document.getElementById('loading-info').innerHTML = '<p class="text-danger">KhÃ´ng táº£i Ä‘Æ°á»£c thÃ´ng tin sÃ¢n!</p>';
+      document.getElementById('loading-info').innerHTML = '<p class="text-danger">Không tải được thông tin sân!</p>';
     }
   });
 
@@ -89,7 +89,7 @@
     if (!ngay || !sanInfo) return;
     const maSan = sessionStorage.getItem('arenax_maSan');
     const wrap  = document.getElementById('time-slots-wrap');
-    wrap.innerHTML = '<p class="text-muted">Äang kiá»ƒm tra giá» trá»‘ng...</p>';
+    wrap.innerHTML = '<p class="text-muted">Đang kiểm tra giờ trống...</p>';
     document.getElementById('bill-ngay').textContent = formatDate(ngay);
 
     let booked = [];
@@ -99,7 +99,7 @@
     } catch {}
 
     selectedSlot = null;
-    document.getElementById('bill-gio').textContent = 'â€”';
+    document.getElementById('bill-gio').textContent = '—';
     validateSubmitBtn();
 
     wrap.innerHTML = SLOTS.map((sl, i) => {
@@ -107,7 +107,7 @@
         return sl.bd < b.gioKetThuc && sl.kt > b.gioBatDau;
       });
       return `<div class="slot${isDone ? ' booked' : ''}" id="slot-${i}" onclick="${isDone ? '' : 'selectSlot('+i+')'}">
-        ${sl.bd} - ${sl.kt}<br><small>${isDone ? 'ÄÃ£ Ä‘áº·t' : 'Trá»‘ng'}</small>
+        ${sl.bd} - ${sl.kt}<br><small>${isDone ? 'Đã đặt' : 'Trống'}</small>
       </div>`;
     }).join('');
   }
@@ -119,7 +119,7 @@
       const list = await res.json();
       const active = list.filter(k => k.trangThai === 1);
       if (!active.length) return;
-      document.getElementById('promo-list').innerHTML = '<div><strong>MÃ£ Ä‘ang Ã¡p dá»¥ng:</strong> ' +
+      document.getElementById('promo-list').innerHTML = '<div><strong>Mã đang áp dụng:</strong> ' +
         active.map(k => `<span class="badge bg-light text-dark border me-1">${k.maCode}</span>`).join('') + '</div>';
     } catch (_) {}
   }
@@ -140,11 +140,11 @@
     const lbl = document.getElementById('confirm-deposit-label');
     const btn = document.getElementById('btn-submit');
     if (method === 'TIEN_MAT') {
-      lbl.textContent = 'TÃ´i Ä‘Ã£ chuyá»ƒn khoáº£n Ä‘á»§ sá»‘ tiá»n cá»c (30%) theo QR vÃ  ná»™i dung chuyá»ƒn khoáº£n.';
-      btn.innerHTML = '<i class="fas fa-wallet me-2"></i>ÄÃƒ CHUYá»‚N KHOáº¢N Cá»ŒC &amp; Äáº¶T SÃ‚N';
+      lbl.textContent = 'Tôi đã chuyển khoản đủ số tiền cọc (30%) theo QR và nội dung chuyển khoản.';
+      btn.innerHTML = '<i class="fas fa-wallet me-2"></i>ĐÃ CHUYỂN KHOẢN CỌC &amp; ĐẶT SÂN';
     } else if (method === 'CHUYEN_KHOAN') {
-      lbl.textContent = 'TÃ´i Ä‘Ã£ chuyá»ƒn khoáº£n Ä‘á»§ tá»•ng tiá»n Ä‘Æ¡n theo QR vÃ  ná»™i dung chuyá»ƒn khoáº£n.';
-      btn.innerHTML = '<i class="fas fa-building-columns me-2"></i>CHUYá»‚N KHOáº¢N TOÃ€N Bá»˜ &amp; Äáº¶T SÃ‚N';
+      lbl.textContent = 'Tôi đã chuyển khoản đủ tổng tiền đơn theo QR và nội dung chuyển khoản.';
+      btn.innerHTML = '<i class="fas fa-building-columns me-2"></i>CHUYỂN KHOẢN TOÀN BỘ &amp; ĐẶT SÂN';
     }
     updateQrInfo();
     validateSubmitBtn();
@@ -167,7 +167,7 @@
       return;
     }
     if (!file.type.startsWith('image/')) {
-      showNotice('Chá»‰ cháº¥p nháº­n file áº£nh chá»©ng tá»«.', 'warning');
+      showNotice('Chỉ chấp nhận file ảnh chứng từ.', 'warning');
       event.target.value = '';
       proofImageBase64 = '';
       validateSubmitBtn();
@@ -186,18 +186,18 @@
   async function applyPromo() {
     const code = document.getElementById('promo-input').value.trim();
     const msg  = document.getElementById('promo-msg');
-    if (!code) { msg.innerHTML = '<span class="text-danger">Vui lÃ²ng nháº­p mÃ£!</span>'; return; }
+    if (!code) { msg.innerHTML = '<span class="text-danger">Vui lòng nhập mã!</span>'; return; }
     try {
       const res = await fetch(API_BASE + '/api/khuyenmai/check/' + code);
       if (!res.ok) throw new Error();
       promoInfo = await res.json();
       const ruleText = getPromoRuleText(promoInfo.maCode);
-      msg.innerHTML = '<span class="text-success"><i class="fas fa-check me-1"></i>MÃ£ há»£p lá»‡: ' + (promoInfo.tenKhuyenMai || code) + '</span>' +
+      msg.innerHTML = '<span class="text-success"><i class="fas fa-check me-1"></i>Mã hợp lệ: ' + (promoInfo.tenKhuyenMai || code) + '</span>' +
         (ruleText ? `<div class="text-muted mt-1">${ruleText}</div>` : '');
       document.getElementById('promo-row').style.display = 'flex';
     } catch {
       promoInfo = null;
-      msg.innerHTML = '<span class="text-danger"><i class="fas fa-times me-1"></i>MÃ£ khÃ´ng há»£p lá»‡ hoáº·c Ä‘Ã£ háº¿t háº¡n.</span>';
+      msg.innerHTML = '<span class="text-danger"><i class="fas fa-times me-1"></i>Mã không hợp lệ hoặc đã hết hạn.</span>';
       document.getElementById('promo-row').style.display = 'none';
     }
     recalcTotal();
@@ -205,9 +205,9 @@
 
   function getPromoRuleText(code) {
     const c = (code || '').toUpperCase();
-    if (c.startsWith('VIP')) return 'Äiá»u kiá»‡n: tá»« 1000 Ä‘iá»ƒm tÃ­ch lÅ©y trá»Ÿ lÃªn.';
-    if (c.startsWith('VANG')) return 'Äiá»u kiá»‡n: thÃ nh viÃªn háº¡ng VÃ ng.';
-    if (c.startsWith('BAC')) return 'Äiá»u kiá»‡n: tá»« 500 Ä‘iá»ƒm tÃ­ch lÅ©y trá»Ÿ lÃªn.';
+    if (c.startsWith('VIP')) return 'Điều kiện: từ 1000 điểm tích lũy trở lên.';
+    if (c.startsWith('VANG')) return 'Điều kiện: thành viên hạng Vàng.';
+    if (c.startsWith('BAC')) return 'Điều kiện: từ 500 điểm tích lũy trở lên.';
     return '';
   }
 
@@ -248,14 +248,14 @@
     const isBank = selectedPayment === 'CHUYEN_KHOAN';
     const soTien = isBank ? finalPrice : coc;
     const guide = !selectedPayment
-      ? 'Chá»n Tiá»n máº·t (cá»c 30%) hoáº·c Chuyá»ƒn khoáº£n (toÃ n bá»™) Ä‘á»ƒ hiá»‡n QR VietQR Ä‘Ãºng sá»‘ tiá»n.'
+      ? 'Chọn Tiền mặt (cọc 30%) hoặc Chuyển khoản (toàn bộ) để hiện QR VietQR đúng số tiền.'
       : isBank
-        ? 'QuÃ©t QR VietQR â€” sá»‘ tiá»n = tá»•ng Ä‘Æ¡n (thanh toÃ¡n trÆ°á»›c qua ngÃ¢n hÃ ng).'
-        : 'QuÃ©t QR VietQR â€” sá»‘ tiá»n = cá»c 30% (báº¯t buá»™c trÆ°á»›c khi Ä‘áº·t; pháº§n cÃ²n láº¡i tráº£ tiá»n máº·t táº¡i sÃ¢n).';
+        ? 'Quét QR VietQR — số tiền = tổng đơn (thanh toán trước qua ngân hàng).'
+        : 'Quét QR VietQR — số tiền = cọc 30% (bắt buộc trước khi đặt; phần còn lại trả tiền mặt tại sân).';
     document.getElementById('qr-guide').textContent = guide;
-    document.getElementById('qr-amount').textContent = selectedPayment ? formatCurrency(soTien) : 'â€”';
+    document.getElementById('qr-amount').textContent = selectedPayment ? formatCurrency(soTien) : '—';
     const content = buildTransferContent();
-    document.getElementById('qr-content').textContent = content || 'â€”';
+    document.getElementById('qr-content').textContent = content || '—';
     const img = document.getElementById('bank-qr-img');
     if (!selectedPayment || finalPrice <= 0) {
       img.src = QR_FALLBACK;
@@ -267,14 +267,14 @@
   async function submitDat() {
     const user  = getCurrentUser();
     const maSan = sessionStorage.getItem('arenax_maSan');
-    if (!selectedSlot) { showNotice('Vui lÃ²ng chá»n khung giá»!', 'warning'); return; }
-    if (!selectedPayment) { showNotice('Vui lÃ²ng chá»n phÆ°Æ¡ng thá»©c thanh toÃ¡n!', 'warning'); return; }
+    if (!selectedSlot) { showNotice('Vui lòng chọn khung giờ!', 'warning'); return; }
+    if (!selectedPayment) { showNotice('Vui lòng chọn phương thức thanh toán!', 'warning'); return; }
     if (!document.getElementById('confirm-deposit').checked) {
-      showNotice('Vui lÃ²ng tÃ­ch xÃ¡c nháº­n Ä‘Ã£ chuyá»ƒn khoáº£n Ä‘Ãºng sá»‘ tiá»n vÃ  ná»™i dung.', 'warning');
+      showNotice('Vui lòng tích xác nhận đã chuyển khoản đúng số tiền và nội dung.', 'warning');
       return;
     }
     if (!proofImageBase64) {
-      showNotice('Vui lÃ²ng táº£i áº£nh chá»©ng tá»« chuyá»ƒn khoáº£n Ä‘á»ƒ gá»­i admin duyá»‡t.', 'warning');
+      showNotice('Vui lòng tải ảnh chứng từ chuyển khoản để gửi admin duyệt.', 'warning');
       return;
     }
 
@@ -294,7 +294,7 @@
 
     const btn = document.getElementById('btn-submit');
     btn.disabled    = true;
-      btn.innerHTML   = '<i class="fas fa-spinner fa-spin me-2"></i>Äang xá»­ lÃ½ thanh toÃ¡n...';
+      btn.innerHTML   = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý thanh toán...';
 
     try {
       const res = await fetch(API_BASE + '/api/dondatsan', {
@@ -307,14 +307,14 @@
         throw new Error(err);
       }
       const don = await res.json();
-      showNotice(`ÄÃ£ gá»­i yÃªu cáº§u Ä‘áº·t sÃ¢n ${don.maDon}. Vui lÃ²ng chá» admin xÃ¡c nháº­n thanh toÃ¡n trÆ°á»›c khi Ä‘Æ¡n Ä‘Æ°á»£c duyá»‡t.`, 'success');
+      showNotice(`Đã gửi yêu cầu đặt sân ${don.maDon}. Vui lòng chờ admin xác nhận thanh toán trước khi đơn được duyệt.`, 'success');
       setTimeout(() => { window.location.href = 'lich-su-dat-san.html'; }, 1200);
     } catch(e) {
-      showNotice('Lá»—i Ä‘áº·t sÃ¢n: ' + (e.message || 'Vui lÃ²ng thá»­ láº¡i!'), 'danger');
+      showNotice('Lỗi đặt sân: ' + (e.message || 'Vui lòng thử lại!'), 'danger');
       btn.disabled  = false;
       btn.innerHTML = selectedPayment === 'CHUYEN_KHOAN'
-        ? '<i class="fas fa-building-columns me-2"></i>CHUYá»‚N KHOáº¢N TOÃ€N Bá»˜ &amp; Äáº¶T SÃ‚N'
-        : '<i class="fas fa-wallet me-2"></i>ÄÃƒ CHUYá»‚N KHOáº¢N Cá»ŒC &amp; Äáº¶T SÃ‚N';
+        ? '<i class="fas fa-building-columns me-2"></i>CHUYỂN KHOẢN TOÀN BỘ &amp; ĐẶT SÂN'
+        : '<i class="fas fa-wallet me-2"></i>ĐÃ CHUYỂN KHOẢN CỌC &amp; ĐẶT SÂN';
     }
   }
 
@@ -329,10 +329,10 @@
     document.getElementById('inv-kh-sdt').textContent   = user.sdt;
     document.getElementById('inv-total').textContent    = formatCurrency(don.tienSan);
     document.getElementById('inv-coc').textContent      = formatCurrency(don.tienCoc);
-    document.getElementById('inv-diem').textContent     = (don.diemThuong || 0) + ' Ä‘iá»ƒm';
+    document.getElementById('inv-diem').textContent     = (don.diemThuong || 0) + ' điểm';
     document.getElementById('invoiceModal').classList.add('show');
 
-    // Äiá»ƒm tÃ­ch lÅ©y sáº½ Ä‘Æ°á»£c cá»™ng khi hÃ³a Ä‘Æ¡n hoÃ n táº¥t á»Ÿ phÃ­a admin.
+    // Điểm tích lũy sẽ được cộng khi hóa đơn hoàn tất ở phía admin.
   }
 
   function showNotice(msg, type = 'info') {
@@ -345,7 +345,7 @@
   }
 
   function formatDate(d) {
-    if (!d) return 'â€”';
+    if (!d) return '—';
     const p = d.split('-');
     return p[2] + '/' + p[1] + '/' + p[0];
   }

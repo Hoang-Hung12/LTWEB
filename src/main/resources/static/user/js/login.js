@@ -1,7 +1,7 @@
 ﻿
   const API_BASE_LOGIN = 'http://localhost:8080';
 
-  // Náº¿u Ä‘Ã£ Ä‘Äƒng nháº­p thÃ¬ redirect tháº³ng
+  // Nếu đã đăng nhập thì redirect thẳng
   document.addEventListener('DOMContentLoaded', () => {
     const existing = getCurrentUser();
     if (existing) {
@@ -16,14 +16,14 @@
     const pw  = document.getElementById('login-pw').value;
     const err = document.getElementById('login-error');
     const btn = document.getElementById('btn-login');
-    if (!sdt || !pw) { showErr(err, 'Vui lÃ²ng nháº­p Ä‘áº§y Ä‘á»§!'); return; }
-    btn.disabled = true; btn.textContent = 'Äang Ä‘Äƒng nháº­p...';
+    if (!sdt || !pw) { showErr(err, 'Vui lòng nhập đầy đủ!'); return; }
+    btn.disabled = true; btn.textContent = 'Đang đăng nhập...';
     try {
       const res = await fetch(API_BASE_LOGIN + '/api/taikhoan/login', {
         method: 'POST', headers: {'Content-Type':'application/json'},
         body: JSON.stringify({sdt, matKhau: pw})
       });
-      if (!res.ok) { showErr(err, 'Sai sá»‘ Ä‘iá»‡n thoáº¡i hoáº·c máº­t kháº©u!'); return; }
+      if (!res.ok) { showErr(err, 'Sai số điện thoại hoặc mật khẩu!'); return; }
       const user = await res.json();
       setCurrentUser(user);
       const redirect = sessionStorage.getItem('arenax_redirect');
@@ -33,8 +33,8 @@
       } else {
         window.location.href = redirect || 'index.html';
       }
-    } catch { showErr(err, 'KhÃ´ng káº¿t ná»‘i Ä‘Æ°á»£c server!'); }
-    finally { btn.disabled = false; btn.textContent = 'ÄÄ‚NG NHáº¬P'; }
+    } catch { showErr(err, 'Không kết nối được server!'); }
+    finally { btn.disabled = false; btn.textContent = 'ĐĂNG NHẬP'; }
   }
 
   async function doRegister() {
@@ -47,9 +47,9 @@
     const succ   = document.getElementById('reg-success');
     const btn    = document.getElementById('btn-reg');
     err.classList.add('d-none'); succ.classList.add('d-none');
-    if (!hoTen || !sdt || !pw) { showErr(err, 'Vui lÃ²ng Ä‘iá»n Ä‘áº§y Ä‘á»§!'); return; }
-    if (pw !== pw2) { showErr(err, 'Máº­t kháº©u nháº­p láº¡i khÃ´ng khá»›p!'); return; }
-    btn.disabled = true; btn.textContent = 'Äang Ä‘Äƒng kÃ½...';
+    if (!hoTen || !sdt || !pw) { showErr(err, 'Vui lòng điền đầy đủ!'); return; }
+    if (pw !== pw2) { showErr(err, 'Mật khẩu nhập lại không khớp!'); return; }
+    btn.disabled = true; btn.textContent = 'Đang đăng ký...';
     try {
       const res = await fetch(API_BASE_LOGIN + '/api/taikhoan/register', {
         method: 'POST', headers: {'Content-Type':'application/json'},
@@ -57,14 +57,14 @@
       });
       if (!res.ok) {
         const msg = await res.text();
-        showErr(err, msg || 'ÄÄƒng kÃ½ tháº¥t báº¡i!');
+        showErr(err, msg || 'Đăng ký thất bại!');
         return;
       }
-      succ.textContent = 'ÄÄƒng kÃ½ thÃ nh cÃ´ng! Chuyá»ƒn sang Ä‘Äƒng nháº­p...';
+      succ.textContent = 'Đăng ký thành công! Chuyển sang đăng nhập...';
       succ.classList.remove('d-none');
       setTimeout(() => document.querySelector('[data-bs-target="#login"]').click(), 1500);
-    } catch { showErr(err, 'KhÃ´ng káº¿t ná»‘i Ä‘Æ°á»£c server!'); }
-    finally { btn.disabled = false; btn.textContent = 'ÄÄ‚NG KÃ TÃ€I KHOáº¢N'; }
+    } catch { showErr(err, 'Không kết nối được server!'); }
+    finally { btn.disabled = false; btn.textContent = 'ĐĂNG KÝ TÀI KHOẢN'; }
   }
 
   function showErr(el, msg) { el.textContent = msg; el.classList.remove('d-none'); }
