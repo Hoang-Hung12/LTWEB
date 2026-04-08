@@ -78,8 +78,8 @@ function buildSanCard(san) {
         ? `<span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>C\u00f2n tr\u1ed1ng</span>`
         : `<span class="badge bg-danger"><i class="fas fa-times-circle me-1"></i>B\u1ea3o tr\u00ec</span>`;
     const btnDat = isAvail
-        ? `<button class="btn btn-primary w-100 fw-bold" onclick="datSan('${san.maSan}')">D\u1ea8T NGAY</button>`
-        : `<button class="btn btn-secondary w-100 fw-bold" disabled>DANG B\u1ea2O TR\u00cc</button>`;
+        ? `<button class="btn btn-primary w-100 fw-bold" onclick="datSan('${san.maSan}')">ĐẶT NGAY</button>`
+        : `<button class="btn btn-secondary w-100 fw-bold" disabled>ĐANG BẢO TRÌ</button>`;
     const img  = san.anhChinh || 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=80';
     const loai = san.tenLoaiSan || (san.soNguoi ? `S\u00e2n ${san.soNguoi} ng\u01b0\u1eddi` : 'S\u00e2n b\u00f3ng');
     return `
