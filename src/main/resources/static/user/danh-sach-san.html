@@ -8,18 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../user/css/style.css">
   <link rel="stylesheet" href="../user/css/danh-sach-san.css">
-  <style>
-    .user-menu-btn{background:transparent;border:1px solid rgba(255,255,255,.3);border-radius:25px;color:#fff;padding:5px 14px;cursor:pointer;display:flex;align-items:center;gap:8px}
-    .user-avatar{width:32px;height:32px;background:#0d6efd;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
-    .user-info-text{line-height:1.2;text-align:left}
-    .user-info-text .u-name{font-weight:600;font-size:14px}
-    .user-info-text .u-sub{font-size:11px;color:#adb5bd}
-    .rank-badge{font-size:11px;background:rgba(255,255,255,.15);border-radius:12px;padding:2px 8px}
-    .page-header{background:#fff;border-bottom:1px solid #e5e7eb;padding:16px 0;margin-bottom:20px}
-    .filter-box{display:flex;gap:10px;flex-wrap:wrap}
-    .loading-spinner{text-align:center;padding:40px;color:#666;width:100%}
-    .results-info{color:#6c757d;font-size:14px;margin-bottom:8px}
-  </style>
+  
 </head>
 <body>
 <!-- NAVBAR -->
@@ -123,117 +112,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../user/js/auth.js"></script>
-<script>
-  const PAGE_SIZE = 6;
-  let allSans    = [];
-  let filtered   = [];
-  let currentPage = 1;
-
-  document.addEventListener('DOMContentLoaded', () => {
-    loadLoaiSan(document.getElementById('filter-loai'));
-    loadSans();
-  });
-
-  async function loadSans() {
-    const list = document.getElementById('san-list');
-    try {
-      const res = await fetch(API_BASE + '/api/san');
-      if (!res.ok) throw new Error();
-      allSans = await res.json();
-      applyFilters();
-    } catch {
-      list.innerHTML = '<p class="text-danger text-center py-4 col-12"><i class="fas fa-exclamation-triangle me-2"></i>Không kết nối được server!</p>';
-    }
-  }
-
-  function applyFilters() {
-    const loai = document.getElementById('filter-loai').value;
-    const tt   = document.getElementById('filter-tt').value;
-    const sort = document.getElementById('filter-sort').value;
-    filtered   = [...allSans];
-    if (loai) filtered = filtered.filter(s => s.maLoaiSan === loai);
-    if (tt)   filtered = filtered.filter(s => (s.trangThai||'').toUpperCase() === tt.toUpperCase());
-    if (sort === 'asc')  filtered.sort((a,b)=>(a.giaThue||0)-(b.giaThue||0));
-    if (sort === 'desc') filtered.sort((a,b)=>(b.giaThue||0)-(a.giaThue||0));
-    currentPage = 1;
-    renderPage();
-  }
-
-  function renderPage() {
-    const total  = filtered.length;
-    const pages  = Math.ceil(total / PAGE_SIZE);
-    const start  = (currentPage - 1) * PAGE_SIZE;
-    const data   = filtered.slice(start, start + PAGE_SIZE);
-    const list   = document.getElementById('san-list');
-    const info   = document.getElementById('results-info');
-
-    info.textContent = total === 0 ? '' : `Hiển thị ${start+1}–${Math.min(start+data.length, total)} trong tổng số ${total} sân`;
-
-    list.innerHTML = data.length === 0
-      ? '<p class="text-muted text-center py-4 col-12"><i class="fas fa-search me-2"></i>Không có sân phù hợp.</p>'
-      : data.map(buildSanCard).join('');
-
-    renderPagination(pages);
-  }
-
-  function renderPagination(pages) {
-    const wrap = document.getElementById('pagination-wrap');
-    if (pages <= 1) { wrap.innerHTML = ''; return; }
-    let html = '';
-    html += `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}><i class="fas fa-chevron-left"></i></button>`;
-    for (let p = 1; p <= pages; p++) {
-      if (pages > 7 && p > 2 && p < pages - 1 && Math.abs(p - currentPage) > 1) {
-        if (p === 3 || p === pages - 2) html += `<button class="page-btn" disabled>…</button>`;
-        continue;
-      }
-      html += `<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
-    }
-    html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}><i class="fas fa-chevron-right"></i></button>`;
-    wrap.innerHTML = html;
-  }
-
-  function goPage(p) {
-    const pages = Math.ceil(filtered.length / PAGE_SIZE);
-    if (p < 1 || p > pages) return;
-    currentPage = p;
-    renderPage();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  async function xemChiTiet(maSan) {
-    try {
-      const res = await fetch(API_BASE + '/api/san/' + maSan);
-      if (!res.ok) throw new Error();
-      const san = await res.json();
-      const img  = san.anhChinh || 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80';
-      const loai = san.tenLoaiSan || (san.soNguoi ? 'Sân ' + san.soNguoi + ' người' : 'Sân bóng');
-      let tienIchHtml = '';
-      if (san.tienIch) {
-        san.tienIch.split(',').forEach(ti => {
-          tienIchHtml += `<div class="amenity"><i class="fas fa-check-circle me-1 text-success"></i>${ti.trim()}</div>`;
-        });
-      }
-      document.getElementById('modal-san-title').textContent  = san.tenSan;
-      document.getElementById('modal-san-diachi').textContent = san.diaChi || '';
-      document.getElementById('modal-san-loai').textContent   = loai;
-      document.getElementById('modal-san-mota').textContent   = san.moTa || 'Chưa có mô tả.';
-      document.getElementById('modal-san-tienich').innerHTML  = tienIchHtml || '<span class="text-muted">Chưa cập nhật</span>';
-      document.getElementById('modal-san-gia').textContent    = formatCurrency(san.giaThue);
-      document.getElementById('modal-san-img').src            = img;
-      document.getElementById('modal-btn-dat').onclick        = () => { closeModal(); datSan(maSan); };
-      document.getElementById('modal-btn-dat').disabled       = (san.trangThai||'').toUpperCase() === 'MAINTENANCE';
-      document.getElementById('detailModal').style.display    = 'flex';
-      document.body.style.overflow = 'hidden';
-    } catch { alert('Không tải được thông tin sân!'); }
-  }
-
-  function closeModal() {
-    const m = document.getElementById('detailModal');
-    if (m) m.style.display = 'none';
-    document.body.style.overflow = '';
-  }
-
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-</script>
+<script src="./../user/js/danh-sach-san.js"></script>
 </body>
 </html>

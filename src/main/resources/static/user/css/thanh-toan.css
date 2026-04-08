@@ -1,18 +1,34 @@
-.checkout-container { margin-top: 40px; margin-bottom: 50px; }
-.page-title { font-size: 28px; font-weight: bold; margin-bottom: 30px; border-left: 4px solid #0d6efd; padding-left: 15px; }
-.box { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 25px; }
-.box-title { font-size: 18px; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
-.time-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.slot { border: 1px solid #ddd; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-.slot:hover:not(.disabled) { border-color: #0d6efd; }
-.slot.active { background: #0d6efd; color: white; border-color: #0d6efd; font-weight: bold; }
-.slot.disabled { background: #f1f1f1; color: #aaa; cursor: not-allowed; text-decoration: line-through; }
-.promo-box { display: flex; gap: 10px; margin-bottom: 20px; }
-.points-box { background: #eef9f0; border: 1px dashed #198754; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
-.bill-box { position: sticky; top: 20px; }
-.pitch-info-sm { display: flex; gap: 15px; margin-bottom: 20px; }
-.pitch-info-sm img { width: 80px; height: 80px; border-radius: 8px; object-fit: cover; }
-.summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; color: #555; }
-.summary-total { font-size: 22px; font-weight: bold; color: #dc3545; border-top: 1px solid #eee; padding-top: 15px; margin-top: 10px; }
-.summary-deposit { background: #fff8e1; color: #ff9800; font-weight: bold; padding: 12px; border-radius: 8px; margin-top: 15px; text-align: center; }
-.btn-submit { background: #0d6efd; color: white; width: 100%; padding: 15px; font-size: 16px; font-weight: bold; border: none; border-radius: 8px; margin-top: 20px; }
+﻿
+        .slot{display:inline-block;padding:10px 16px;margin:6px;border:2px solid #dee2e6;border-radius:8px;cursor:pointer;font-size:14px;text-align:center;min-width:120px;transition:.2s}
+        .slot:hover{border-color:#0d6efd;background:#e8f0fe}
+        .slot.selected{border-color:#0d6efd;background:#0d6efd;color:#fff}
+        .slot.booked{border-color:#e5e7eb;background:#f3f4f6;color:#9ca3af;cursor:not-allowed}
+        .checkout-container{max-width:1000px;margin:30px auto;padding:0 16px}
+        .page-title{font-size:28px;font-weight:700;margin-bottom:24px}
+        .box{background:#fff;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+        .box-title{font-size:18px;font-weight:700;margin-bottom:16px;color:#111}
+        .summary-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:15px}
+        .summary-total{font-size:18px;font-weight:700;border-bottom:none;color:#111;margin-top:8px}
+        .summary-deposit{background:#e8f5e9;border-radius:8px;padding:12px 16px;margin-top:12px;font-size:14px;color:#2e7d32}
+        .btn-submit{width:100%;padding:14px;background:#0d6efd;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:.2s;margin-top:16px}
+        .btn-submit:hover{background:#0b5ed7}
+        .btn-submit:disabled{background:#9ca3af;cursor:not-allowed}
+        .points-box{background:#f8f9fa;border-radius:8px;padding:12px 16px;margin-top:12px;display:flex;justify-content:space-between;align-items:center}
+        .promo-box{display:flex;gap:8px;margin-top:8px}
+        .pay-card{border:1px solid #e5e7eb;border-radius:10px;padding:12px;cursor:pointer}
+        .pay-card.active{border-color:#0d6efd;background:#eff6ff}
+        .qr-box{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin-top:12px}
+        .qr-img{width:180px;height:180px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0}
+
+        /* Modal hÃ³a Ä‘Æ¡n */
+        .invoice-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;align-items:center;justify-content:center;padding:20px}
+        .invoice-modal-bg.show{display:flex}
+        .invoice-box{background:#fff;border-radius:16px;padding:32px;max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:slideUp .3s ease}
+        @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .invoice-header{text-align:center;margin-bottom:24px}
+        .invoice-header .check-icon{width:64px;height:64px;background:#22c55e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;color:#fff}
+        .inv-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:14px}
+        .inv-row:last-child{border-bottom:none}
+        .inv-total{font-size:18px;font-weight:700;color:#0d6efd;border-top:2px solid #e5e7eb;padding-top:12px;margin-top:4px}
+        .inv-code{background:#f0f9ff;border-radius:8px;padding:10px 16px;text-align:center;font-family:monospace;font-size:18px;font-weight:700;letter-spacing:2px;color:#0d6efd;margin:16px 0}
+    

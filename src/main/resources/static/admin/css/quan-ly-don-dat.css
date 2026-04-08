@@ -1,0 +1,14 @@
+﻿
+    .status-cho   { background:#fff3cd;color:#856404 }
+    .status-xacnhan { background:#d1e7dd;color:#0f5132 }
+    .status-hoantat { background:#cfe2ff;color:#084298 }
+    .status-huy   { background:#f8d7da;color:#842029 }
+    .status-badge { padding:5px 10px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap }
+    .detail-modal-bg { display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:3000;align-items:center;justify-content:center;padding:20px }
+    .detail-modal-bg.show { display:flex }
+    .detail-box { background:#fff;border-radius:14px;padding:28px;max-width:520px;width:100%;box-shadow:0 16px 48px rgba(0,0,0,.2);animation:fadeUp .25s ease }
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .det-row { display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f0f0f0;font-size:14px }
+    .det-row:last-child { border-bottom:none }
+    .proof-thumb{max-width:180px;border-radius:8px;border:1px solid #e5e7eb}
+  
