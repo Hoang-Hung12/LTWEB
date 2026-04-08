@@ -9,12 +9,41 @@
   <link rel="stylesheet" href="../admin/css/style.css">
   <style>
     .don-item { cursor:pointer;border-left:3px solid transparent;transition:.15s }
-    .don-item:hover,.don-item.selected { border-left-color:#0d6efd;background:#f0f7ff }
-    .don-item.selected { background:#e8f0fe }
+    .don-item:hover { border-left-color:#0d6efd;background:#f0f7ff }
+    .don-item.selected { border-left-color:#0d6efd;background:#e8f0fe }
     .inv-section { position:sticky;top:70px }
+
+    /* ════════════════════════════════════════════
+       PRINT — chỉ in hóa đơn, ẩn mọi thứ khác
+       ════════════════════════════════════════════ */
     @media print {
-      .sidebar,.top-header,.btn-print-hide { display:none!important }
-      .main-content { margin-left:0 }
+      @page { size: A4 portrait; margin: 15mm 18mm; }
+
+      /* Ẩn toàn bộ layout trang admin */
+      .sidebar,
+      .top-header,
+      .btn-print-hide,
+      #panel-left,          /* cột chọn đơn */
+      .hd-success-block,
+      .alert { display: none !important; }
+
+      /* Bỏ margin sidebar */
+      .main-content { margin-left: 0 !important; }
+      .page-section { padding: 0 !important; }
+
+      /* Cột phải (hóa đơn) chiếm toàn bộ */
+      .row { display: block !important; }
+      #panel-right {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
+        position: static !important;
+      }
+      .inv-section { position: static !important; }
+
+      /* Ép 1 trang */
+      .card-custom { box-shadow: none !important; border: none !important; page-break-inside: avoid; }
+      body, html { background: #fff !important; }
     }
   </style>
 </head>
@@ -37,7 +66,7 @@
     <div class="text-secondary fw-bold fs-5">Lập Hóa Đơn &amp; Thanh Toán</div>
     <div class="d-flex align-items-center gap-2">
       <div class="text-end lh-1">
-        <div class="fw-bold small" id="admin-name">Admin ARENAX</div>
+        <div class="fw-bold small">Admin ARENAX</div>
         <div class="text-muted" style="font-size:.75rem">Quản trị viên</div>
       </div>
       <div class="avatar">A</div>
@@ -46,25 +75,25 @@
 
   <div class="page-section">
     <div class="row g-4">
-      <!-- CỘT TRÁI: Danh sách đơn cần lập HĐ -->
-      <div class="col-md-4">
+
+      <!-- CỘT TRÁI: Chọn đơn — id="panel-left" để ẩn khi in -->
+      <div class="col-md-4" id="panel-left">
         <div class="card-custom">
           <div class="card-custom-header">
             <div class="card-title">Chọn đơn đặt sân</div>
           </div>
           <div class="card-body p-3">
-            <div class="input-group input-group-sm mb-3">
-              <input type="text" class="form-control" id="search-don" placeholder="Tìm mã đơn, tên KH..." oninput="filterDons()">
+            <div class="input-group input-group-sm mb-2">
+              <input type="text" class="form-control" id="search-don"
+                     placeholder="Tìm mã đơn, tên KH..." oninput="filterDons()">
               <span class="input-group-text"><i class="fas fa-search"></i></span>
             </div>
-            <div class="mb-2">
-              <select class="form-select form-select-sm" id="filter-tt-hd" onchange="filterDons()">
-                <option value="">Tất cả trạng thái</option>
-                <option value="Đã xác nhận" selected>Đã xác nhận (chưa lập HĐ)</option>
-                <option value="Đã hoàn thành">Đã hoàn thành</option>
-                <option value="Chờ duyệt">Chờ duyệt</option>
-              </select>
-            </div>
+            <select class="form-select form-select-sm mb-3" id="filter-tt-hd" onchange="filterDons()">
+              <option value="">Tất cả trạng thái</option>
+              <option value="Đã xác nhận" selected>Đã xác nhận (chưa lập HĐ)</option>
+              <option value="Đã hoàn thành">Đã hoàn thành</option>
+              <option value="Chờ duyệt">Chờ duyệt</option>
+            </select>
             <div id="don-list" style="max-height:500px;overflow-y:auto">
               <p class="text-center text-muted py-3"><i class="fas fa-spinner fa-spin me-2"></i>Đang tải...</p>
             </div>
@@ -72,26 +101,29 @@
         </div>
       </div>
 
-      <!-- CỘT PHẢI: Hóa đơn -->
-      <div class="col-md-8">
+      <!-- CỘT PHẢI: Hóa đơn — id="panel-right" để chiếm full khi in -->
+      <div class="col-md-8" id="panel-right">
         <div class="card-custom inv-section" id="invoice-panel">
-          <!-- Trạng thái chờ chọn -->
+
+          <!-- Empty state -->
           <div id="empty-state" class="card-body text-center py-5">
             <i class="fas fa-file-invoice fa-3x text-muted mb-3"></i>
             <h6 class="text-muted">Chọn một đơn đặt sân để lập hóa đơn</h6>
+            <p class="text-muted small">Chỉ có thể xuất hóa đơn cho đơn <strong>Đã xác nhận</strong> hoặc <strong>Đã hoàn thành</strong>.</p>
           </div>
 
           <!-- Nội dung hóa đơn -->
           <div id="inv-content" style="display:none">
-            <div class="card-custom-header d-print-flex">
+            <div class="card-custom-header">
               <div class="card-title fs-5">Hóa Đơn Thanh Toán</div>
               <div id="inv-status-badge"></div>
             </div>
             <div class="card-body p-4">
+
+              <!-- Header: logo + mã HĐ -->
               <div class="row mb-4">
                 <div class="col-6">
-                  <img src="../admin/images/logo.png" alt="ARENAX" style="height:36px;object-fit:contain" onerror="this.style.display='none'">
-                  <div class="fw-bold fs-5 text-primary mt-1">ARENAX</div>
+                  <div class="fw-bold fs-4 text-primary">ARENAX</div>
                   <div class="small text-muted">Football Management</div>
                 </div>
                 <div class="col-6 text-end">
@@ -101,6 +133,7 @@
                 </div>
               </div>
 
+              <!-- Khách hàng + Đơn -->
               <div class="row mb-4">
                 <div class="col-6">
                   <div class="small text-muted fw-bold mb-1">KHÁCH HÀNG</div>
@@ -123,18 +156,18 @@
                     <th class="text-end pe-0 text-muted small">THÀNH TIỀN</th>
                   </tr>
                 </thead>
-                <tbody id="inv-items">
+                <tbody>
                   <tr>
                     <td class="ps-0">Thuê sân (1.5 giờ)</td>
                     <td class="text-center">1</td>
                     <td class="text-end pe-0 fw-bold" id="inv-tiensan">—</td>
                   </tr>
-                  <tr id="inv-coc-row" class="text-success">
+                  <tr class="text-success">
                     <td class="ps-0">Đã đặt cọc</td>
                     <td></td>
                     <td class="text-end pe-0 fw-bold" id="inv-tiencocRow">—</td>
                   </tr>
-                  <tr id="inv-diem-row" class="text-purple" style="color:#8b5cf6">
+                  <tr id="inv-diem-row" style="color:#8b5cf6;display:none">
                     <td class="ps-0">Dùng điểm tích lũy</td>
                     <td></td>
                     <td class="text-end pe-0 fw-bold" id="inv-diemRow">—</td>
@@ -158,16 +191,19 @@
                 </div>
               </div>
 
+              <!-- Actions — ẩn khi in -->
               <div class="d-flex gap-3 justify-content-end btn-print-hide">
                 <button class="btn btn-light border px-4" onclick="clearInvoice()">Hủy</button>
                 <button class="btn btn-outline-secondary px-3" onclick="window.print()">
-                  <i class="fas fa-print me-1"></i>In
+                  <i class="fas fa-print me-1"></i>In hóa đơn
                 </button>
                 <button class="btn btn-primary px-4 fw-bold" id="btn-xuat" onclick="xuatHoaDon()">
                   <i class="fas fa-file-invoice-dollar me-1"></i>Xuất Hóa Đơn
                 </button>
               </div>
-              <div id="hd-success" class="alert alert-success mt-3 d-none"></div>
+
+              <div id="hd-success" class="alert alert-success mt-3 d-none hd-success-block"></div>
+              <div id="hd-error"   class="alert alert-danger  mt-3 d-none hd-success-block"></div>
             </div>
           </div>
         </div>
@@ -179,6 +215,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../admin/js/admin-auth.js"></script>
 <script src="../admin/js/script.js"></script>
+<script src="../admin/js/arenax-ui.js"></script>
 <script>
   const API   = 'http://localhost:8080';
   let allDons = [];
@@ -188,8 +225,8 @@
 
   async function loadDons() {
     try {
-      const res  = await fetch(API + '/api/dondatsan');
-      allDons    = await res.json();
+      const res = await fetch(API + '/api/dondatsan');
+      allDons = await res.json();
       allDons.sort((a,b) => new Date(b.ngayDat||0) - new Date(a.ngayDat||0));
       filterDons();
     } catch {
@@ -199,25 +236,30 @@
   }
 
   function filterDons() {
-    const q   = (document.getElementById('search-don').value||'').toLowerCase();
-    const tt  = document.getElementById('filter-tt-hd').value;
+    const q  = (document.getElementById('search-don').value||'').toLowerCase();
+    const tt = document.getElementById('filter-tt-hd').value;
     const data = allDons.filter(d => {
-      const matchTT = !tt || d.trangThai === tt;
-      const matchQ  = !q  || (d.maDon||'').toLowerCase().includes(q)
-                           || (d.tenKhachHang||'').toLowerCase().includes(q);
-      return matchTT && matchQ;
+      const mTT = !tt || d.trangThai === tt;
+      const mQ  = !q  || (d.maDon||'').toLowerCase().includes(q)
+                       || (d.tenKhachHang||'').toLowerCase().includes(q);
+      return mTT && mQ;
     });
     const list = document.getElementById('don-list');
+    const clsMap = {
+      'Đã xác nhận':'badge-soft-success','Đã hoàn thành':'badge-soft-primary',
+      'Chờ duyệt':'badge-soft-warning','Đã hủy':'badge-soft-danger'
+    };
     list.innerHTML = data.length === 0
       ? '<p class="text-muted text-center py-3 small">Không có đơn phù hợp.</p>'
       : data.map(d => {
           const ngay = d.ngayDa ? fmtDate(d.ngayDa) : '—';
           const gio  = [(d.gioBatDau||'').substring(0,5),(d.gioKetThuc||'').substring(0,5)].join(' - ');
-          const ttClass = {'Đã xác nhận':'badge-soft-success','Đã hoàn thành':'badge-soft-primary','Chờ duyệt':'badge-soft-warning','Đã hủy':'badge-soft-danger'}[d.trangThai]||'badge-soft-secondary';
-          return `<div class="don-item p-3 border-bottom ${selectedDon&&selectedDon.maDon===d.maDon?'selected':''}" onclick="selectDon('${d.maDon}')">
+          const cls  = clsMap[d.trangThai] || 'badge-soft-secondary';
+          const active = selectedDon && selectedDon.maDon===d.maDon ? 'selected' : '';
+          return `<div class="don-item p-3 border-bottom ${active}" onclick="selectDon('${d.maDon}')">
             <div class="d-flex justify-content-between align-items-start">
               <strong class="text-primary small font-monospace">${d.maDon}</strong>
-              <span class="badge-soft ${ttClass}" style="font-size:10px;padding:2px 7px;border-radius:10px">${d.trangThai||'—'}</span>
+              <span class="badge-soft ${cls}" style="font-size:10px;padding:2px 7px;border-radius:10px">${d.trangThai||'—'}</span>
             </div>
             <div class="fw-bold small mt-1">${d.tenKhachHang||'—'}</div>
             <div class="small text-muted">${d.tenSan||'—'}</div>
@@ -230,7 +272,7 @@
   function selectDon(maDon) {
     selectedDon = allDons.find(d => d.maDon === maDon);
     if (!selectedDon) return;
-    filterDons(); // re-render để highlight
+    filterDons();
     renderInvoice(selectedDon);
   }
 
@@ -238,11 +280,12 @@
     document.getElementById('empty-state').style.display = 'none';
     document.getElementById('inv-content').style.display = 'block';
     document.getElementById('hd-success').classList.add('d-none');
+    document.getElementById('hd-error').classList.add('d-none');
 
-    const ngay = d.ngayDa ? fmtDate(d.ngayDa) : '—';
-    const gio  = [(d.gioBatDau||'').substring(0,5),(d.gioKetThuc||'').substring(0,5)].join(' – ');
-    const tienCon = (d.tienSan||0) - (d.tienCoc||0) - ((d.diemSuDung||0)*100);
-    const ttClass = {'Đã xác nhận':'badge-soft-success','Đã hoàn thành':'badge-soft-primary','Chờ duyệt':'badge-soft-warning'}[d.trangThai]||'badge-soft-secondary';
+    const ngay  = d.ngayDa ? fmtDate(d.ngayDa) : '—';
+    const gio   = [(d.gioBatDau||'').substring(0,5),(d.gioKetThuc||'').substring(0,5)].join(' – ');
+    const tienCon = Math.max(0, (d.tienSan||0) - (d.tienCoc||0) - ((d.diemSuDung||0)*100));
+    const clsMap  = {'Đã xác nhận':'badge-soft-success','Đã hoàn thành':'badge-soft-primary','Chờ duyệt':'badge-soft-warning'};
 
     document.getElementById('inv-ma').textContent        = '(Chưa xuất)';
     document.getElementById('inv-ngaylap').textContent   = 'Ngày lập: ' + new Date().toLocaleDateString('vi-VN');
@@ -252,14 +295,13 @@
     document.getElementById('inv-ngayda').textContent    = 'Ngày đặt: ' + (d.ngayDat ? new Date(d.ngayDat).toLocaleDateString('vi-VN') : '—');
     document.getElementById('inv-tiensan').textContent   = fmtMoney(d.tienSan);
     document.getElementById('inv-tiencocRow').textContent= '- ' + fmtMoney(d.tienCoc);
-    document.getElementById('inv-total').textContent     = fmtMoney(Math.max(0, tienCon));
+    document.getElementById('inv-total').textContent     = fmtMoney(tienCon);
     document.getElementById('inv-san').textContent       = d.tenSan || d.maSan || '—';
     document.getElementById('inv-ngaydaInfo').textContent= ngay;
     document.getElementById('inv-gio').textContent       = gio;
     document.getElementById('inv-diemthuong').textContent= (d.diemThuong||0) + ' điểm';
-    document.getElementById('inv-status-badge').innerHTML= `<span class="badge-soft ${ttClass}">${d.trangThai||'—'}</span>`;
+    document.getElementById('inv-status-badge').innerHTML= `<span class="badge-soft ${clsMap[d.trangThai]||'badge-soft-secondary'}">${d.trangThai||'—'}</span>`;
 
-    // Diem su dung row
     if ((d.diemSuDung||0) > 0) {
       document.getElementById('inv-diem-row').style.display = '';
       document.getElementById('inv-diemRow').textContent = '- ' + fmtMoney(d.diemSuDung * 100);
@@ -267,42 +309,46 @@
       document.getElementById('inv-diem-row').style.display = 'none';
     }
 
-    const canExport = d.trangThai === 'Đã xác nhận' || d.trangThai === 'Đã hoàn thành';
+    const canExport = ['Đã xác nhận','Đã hoàn thành'].includes(d.trangThai);
     document.getElementById('btn-xuat').disabled = !canExport;
   }
 
   async function xuatHoaDon() {
     if (!selectedDon) return;
-    const admin = JSON.parse(localStorage.getItem('arenax_user') || '{}');
+    const admin   = JSON.parse(localStorage.getItem('arenax_user') || '{}');
     const maAdmin = admin.maTK || 'TK001';
-    const btn = document.getElementById('btn-xuat');
-    btn.disabled = true;
+    const btn     = document.getElementById('btn-xuat');
+    const succ    = document.getElementById('hd-success');
+    const errEl   = document.getElementById('hd-error');
+    succ.classList.add('d-none');
+    errEl.classList.add('d-none');
+    btn.disabled  = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Đang xuất...';
     try {
-      const res = await fetch(`${API}/api/hoadon/xuat?maDon=${encodeURIComponent(selectedDon.maDon)}&maQLLap=${encodeURIComponent(maAdmin)}`, {
-        method: 'POST'
-      });
-      if (!res.ok) { const m = await res.text(); throw new Error(m); }
+      const res = await fetch(
+        `${API}/api/hoadon/xuat?maDon=${encodeURIComponent(selectedDon.maDon)}&maQLLap=${encodeURIComponent(maAdmin)}`,
+        { method: 'POST' }
+      );
+      if (!res.ok) {
+        const body = await res.text();
+        let msg = body;
+        try { msg = JSON.parse(body).message || body; } catch {}
+        throw new Error(msg);
+      }
       const hd = await res.json();
       document.getElementById('inv-ma').textContent = hd.maHoaDon;
       document.getElementById('inv-ngaylap').textContent = 'Ngày lập: ' + new Date(hd.ngayLap).toLocaleDateString('vi-VN');
-      const succ = document.getElementById('hd-success');
-      succ.textContent = `✅ Xuất hóa đơn ${hd.maHoaDon} thành công! Tổng thanh toán: ${fmtMoney(hd.tongThanhToan)}`;
-      succ.classList.remove('alert-danger');
-      succ.classList.add('alert-success');
+      succ.innerHTML = `✅ Xuất hóa đơn <strong>${hd.maHoaDon}</strong> thành công! Còn lại: <strong>${fmtMoney(hd.tongThanhToan)}</strong>`;
       succ.classList.remove('d-none');
-      // Update local list
+      // cập nhật local
       const idx = allDons.findIndex(d => d.maDon === selectedDon.maDon);
       if (idx >= 0) { allDons[idx].trangThai = 'Đã hoàn thành'; selectedDon = allDons[idx]; }
       filterDons();
+      btn.innerHTML = '<i class="fas fa-check me-1"></i>Đã xuất';
     } catch(e) {
-      const succ = document.getElementById('hd-success');
-      succ.textContent = 'Lỗi xuất hóa đơn: ' + (e.message||'Thử lại!');
-      succ.classList.remove('d-none');
-      succ.classList.remove('alert-success');
-      succ.classList.add('alert-danger');
-    } finally {
-      btn.disabled = false;
+      errEl.textContent = '❌ ' + (e.message || 'Vui lòng thử lại!');
+      errEl.classList.remove('d-none');
+      btn.disabled  = false;
       btn.innerHTML = '<i class="fas fa-file-invoice-dollar me-1"></i>Xuất Hóa Đơn';
     }
   }

@@ -4,10 +4,12 @@ import com.hung.demo_web.dto.TaiKhoanDto;
 import com.hung.demo_web.entity.TaiKhoan;
 import com.hung.demo_web.exception.KhongTimThay;
 import com.hung.demo_web.exception.LoiThaoTac;
+import com.hung.demo_web.repository.DonDatSanRepository;
 import com.hung.demo_web.repository.TaiKhoanRepository;
 import com.hung.demo_web.service.TaiKhoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class TaiKhoanServiceImpl implements TaiKhoanService {
 
     @Autowired private TaiKhoanRepository repo;
+    @Autowired private DonDatSanRepository donDatSanRepository;
 
     private TaiKhoanDto mapToDTO(TaiKhoan entity) {
         TaiKhoanDto dto = new TaiKhoanDto();
@@ -52,7 +55,6 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
 
     @Override
     public TaiKhoanDto createTaiKhoan(TaiKhoanDto dto) {
-        // Kiểm tra số điện thoại đã tồn tại chưa
         if (repo.findBySdt(dto.getSdt()).isPresent()) {
             throw new LoiThaoTac("Số điện thoại đã được đăng ký!");
         }
@@ -80,7 +82,6 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
         }
         if (dto.getDiemTichLuy() != null) {
             entity.setDiemTichLuy(dto.getDiemTichLuy());
-            // Cập nhật hạng thành viên tự động
             int diem = dto.getDiemTichLuy();
             if (diem >= 1000) entity.setHangThanhVien("Vàng");
             else if (diem >= 500) entity.setHangThanhVien("Bạc");
@@ -91,9 +92,20 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     }
 
     @Override
+    @Transactional
     public void deleteTaiKhoan(String maTK) {
         TaiKhoan entity = repo.findById(maTK)
                 .orElseThrow(() -> new KhongTimThay("Không tìm thấy tài khoản: " + maTK));
+
+        // Kiểm tra có đơn đặt sân nào không — nếu có, báo lỗi rõ ràng
+        long soDon = donDatSanRepository.findByKhachHang_maTK(maTK).size();
+        if (soDon > 0) {
+            throw new LoiThaoTac(
+                "Không thể xóa khách hàng \"" + entity.getHoTen() + "\" vì đang có " + soDon +
+                " đơn đặt sân liên quan. Hãy hủy hoặc xóa toàn bộ đơn đặt sân của khách này trước."
+            );
+        }
+
         repo.delete(entity);
     }
 

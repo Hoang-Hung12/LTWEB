@@ -69,6 +69,10 @@
           </tbody>
         </table>
       </div>
+      <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
+        <small class="text-muted" id="san-info">Đang tải...</small>
+        <div id="san-pagination" class="d-flex gap-1"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -205,12 +209,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../admin/js/admin-auth.js"></script>
 <script src="../admin/js/script.js"></script>
+<script src="../admin/js/pagination-helper.js"></script>
 <script>
   const API = 'http://localhost:8080';
   let allSans   = [];
   let loaiList  = [];
   let editMaSan = null;
   let deleteMaSan = null;
+  const PAGE_SIZE_SAN = 10;
+  let currentPageSan  = 1;
+  let filteredSans    = [];
 
   document.addEventListener('DOMContentLoaded', async () => {
     await loadLoaiSan();
@@ -244,13 +252,26 @@
   function applyFilter() {
     const q    = (document.getElementById('search-input').value || '').toLowerCase();
     const loai = document.getElementById('filter-loai-admin').value;
-    const data = allSans.filter(s => {
+    filteredSans = allSans.filter(s => {
       const matchQ = !q || (s.tenSan||'').toLowerCase().includes(q) || (s.maSan||'').toLowerCase().includes(q);
       const matchL = !loai || s.maLoaiSan === loai;
       return matchQ && matchL;
     });
-    document.getElementById('san-count').textContent = data.length;
+    document.getElementById('san-count').textContent = filteredSans.length;
+    currentPageSan = 1;
+    renderPage();
+  }
+
+  function renderPage() {
+    const total  = filteredSans.length;
+    const pages  = Math.ceil(total / PAGE_SIZE_SAN);
+    const start  = (currentPageSan - 1) * PAGE_SIZE_SAN;
+    const data   = filteredSans.slice(start, start + PAGE_SIZE_SAN);
+    document.getElementById('san-info').textContent =
+      total === 0 ? 'Không có sân nào' :
+      `Hiển thị ${start+1}–${Math.min(start+data.length, total)} / ${total} sân`;
     renderTable(data);
+    renderPagination('san-pagination', currentPageSan, pages, (p) => { currentPageSan = p; renderPage(); });
   }
 
   function renderTable(data) {
