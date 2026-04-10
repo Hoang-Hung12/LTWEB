@@ -2,49 +2,51 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Kết quả tìm kiếm - SanBong PTIT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết quả tìm kiếm - ArenaX</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../../static/user/css/style.css">
-    <link rel="stylesheet" href="../../static/user/css/tim-kiem.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tim-kiem.css">
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="trang-chu.html"><i class="fas fa-futbol me-2"></i>ARENAX</a>
-            <div class="collapse navbar-collapse">
+            <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-futbol me-2"></i>ARENAX</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link me-3" href="trang-chu.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link me-3" href="danh-sach-san.html">Danh sách sân</a></li>
-                    <li class="nav-item"><a class="nav-link me-3" href="lich-su.html">Lịch sử đặt</a></li>
-                    <li class="nav-item"><a class="btn-login fw-bold" href="dang-nhap.html">Đăng nhập</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="danh-sach-san.html">Danh sách sân</a></li>
+                    <li class="nav-item"><a class="nav-link" href="lich-su-dat-san.html">Lịch sử đặt</a></li>
+                    <li class="nav-item ms-2"><a class="btn btn-primary btn-sm px-3 rounded-pill" href="login.html">Đăng nhập</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <div class="hero-section">
-        <h1 class="fw-bold">Tìm & Đặt Sân Bóng Nhanh Chóng</h1>
+        <h1 class="fw-bold">Tìm &amp; Đặt Sân Bóng Nhanh Chóng</h1>
         <p>Hệ thống quản lý sân bóng hiện đại nhất dành cho sinh viên</p>
-        
+
         <div class="search-box text-dark text-start">
             <div class="row g-2 align-items-end">
                 <div class="col-md-3">
                     <label class="fw-bold small mb-1">Ngày đá</label>
-                    <input type="date" class="form-control" value="2026-02-12"> 
+                    <input type="date" class="form-control" value="2026-02-12">
                 </div>
                 <div class="col-md-3">
                     <label class="fw-bold small mb-1">Khung giờ</label>
                     <select class="form-select">
-                        <option selected>17:00 - 18:30</option> 
+                        <option selected>17:00 - 18:30</option>
                         <option>19:00 - 20:30</option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label class="fw-bold small mb-1">Loại sân</label>
                     <select class="form-select">
-                        <option selected>Sân 7 người</option> 
+                        <option selected>Sân 7 người</option>
                         <option>Tất cả</option>
                         <option>Sân 5 người</option>
                     </select>
@@ -70,14 +72,14 @@
             <div class="col-md-4">
                 <div class="pitch-card position-relative">
                     <span class="badge-custom"><i class="fas fa-check-circle"></i> Còn trống</span>
-                    <img src="../../static/user/images/san1.avif" alt="Sân 1">
+                    <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&amp;q=80" alt="Sân bóng">
                     <div class="pitch-body">
                         <span class="badge bg-info text-dark mb-2">Sân 7 người</span>
                         <h5 class="fw-bold">Sân A - Khu KTX</h5>
                         <p class="text-muted small"><i class="fas fa-map-marker-alt text-danger"></i> Khu A, Học viện PTIT</p>
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <h5 class="text-danger fw-bold mb-0">300.000đ<span class="text-muted small fw-normal">/1.5h</span></h5>
-                            <a href="chi-tiet-san.html" class="btn btn-outline-primary btn-sm">Xem chi tiết</a>
+                            <a href="danh-sach-san.html" class="btn btn-outline-primary btn-sm">Xem chi tiết</a>
                         </div>
                         <a href="thanh-toan.html" class="btn btn-primary w-100 fw-bold mt-3">ĐẶT NGAY</a>
                     </div>
@@ -91,8 +93,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../static/user/js/main.js"></script>
-
-<script src="./../user/js/tim-kiem.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tim-kiem.js"></script>
 </body>
 </html>

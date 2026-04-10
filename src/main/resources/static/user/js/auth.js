@@ -3,7 +3,20 @@
  * Dùng chung cho toàn bộ trang user
  */
 
-const API_BASE = 'http://localhost:8080';
+const API_BASE = (typeof window !== 'undefined' && window.location && window.location.origin)
+    ? window.location.origin
+    : 'http://localhost:8080';
+
+const SAN_IMG_FALLBACK = 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=80';
+
+/** Tên file trong DB (san1.jpg) → URL tĩnh /images/san/... */
+function resolveSanImageUrl(raw) {
+    if (!raw || !String(raw).trim()) return SAN_IMG_FALLBACK;
+    const t = String(raw).trim();
+    if (t.startsWith('http://') || t.startsWith('https://')) return t;
+    if (t.startsWith('/')) return t;
+    return '/images/san/' + t;
+}
 
 function getCurrentUser() {
     try { return JSON.parse(localStorage.getItem('arenax_user')); }
@@ -77,7 +90,7 @@ function buildSanCard(san) {
     const btnDat = isAvail
         ? `<button class="btn btn-primary w-100 fw-bold" onclick="datSan('${san.maSan}')">ĐẶT NGAY</button>`
         : `<button class="btn btn-secondary w-100 fw-bold" disabled>ĐANG BẢO TRÌ</button>`;
-    const img  = san.anhChinh || 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=80';
+    const img  = resolveSanImageUrl(san.anhChinh);
     const loai = san.tenLoaiSan || (san.soNguoi ? `S\u00e2n ${san.soNguoi} ng\u01b0\u1eddi` : 'S\u00e2n b\u00f3ng');
     return `
     <div class="col-md-4 mb-4">
@@ -111,7 +124,7 @@ async function xemChiTiet(maSan) {
         const res = await fetch(`${API_BASE}/api/san/${maSan}`);
         if (!res.ok) throw new Error();
         const san = await res.json();
-        const img  = san.anhChinh || 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=80';
+        const img  = resolveSanImageUrl(san.anhChinh);
         const loai = san.tenLoaiSan || `S\u00e2n ${san.soNguoi} ng\u01b0\u1eddi`;
         let tienIchHtml = '';
         if (san.tienIch) {

@@ -2,7 +2,6 @@
   document.getElementById('search-ngay').value = new Date().toISOString().split('T')[0];
 
   document.addEventListener('DOMContentLoaded', () => {
-    if (!requireLogin()) return;
     const user = getCurrentUser();
     if (user) {
       const av = document.getElementById('nav-user-avatar');

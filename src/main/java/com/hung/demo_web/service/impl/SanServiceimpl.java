@@ -31,13 +31,22 @@ public class SanServiceimpl implements SanService {
     @Autowired private DonDatDichVuRepository donDatDichVuRepository;
     @Autowired private HoaDonRepository hoaDonRepository;
 
+    /** Ảnh trong DB dạng tên file (san1.jpg) → đường dẫn tĩnh /images/san/... */
+    private static String normalizeAnhChinh(String raw) {
+        if (raw == null || raw.isBlank()) return raw;
+        String t = raw.trim();
+        if (t.startsWith("http://") || t.startsWith("https://")) return t;
+        if (t.startsWith("/")) return t;
+        return "/images/san/" + t;
+    }
+
     private SanDto mapToDto(San entity) {
         SanDto dto = new SanDto();
         dto.setMaSan(entity.getMaSan());
         dto.setTenSan(entity.getTenSan());
         dto.setDiaChi(entity.getDiaChi());
         dto.setMoTa(entity.getMoTa());
-        dto.setAnhChinh(entity.getAnhChinh());
+        dto.setAnhChinh(normalizeAnhChinh(entity.getAnhChinh()));
         dto.setTienIch(entity.getTienIch());
         dto.setGiaThue(entity.getGiaThue());
         dto.setTrangThai(entity.getTrangThai());

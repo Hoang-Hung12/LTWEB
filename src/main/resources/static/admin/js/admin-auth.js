@@ -16,6 +16,11 @@ function requireAdmin() {
   return user;
 }
 
+function adminLogout() {
+  try { localStorage.removeItem('arenax_user'); } catch (_) {}
+  window.location.href = '../user/login.html';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const admin = requireAdmin();
   if (!admin) return;

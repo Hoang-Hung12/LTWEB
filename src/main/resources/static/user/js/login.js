@@ -1,5 +1,7 @@
 ﻿
-  const API_BASE_LOGIN = 'http://localhost:8080';
+  const API_BASE_LOGIN = (typeof window !== 'undefined' && window.location && window.location.origin)
+      ? window.location.origin
+      : 'http://localhost:8080';
 
   // Nếu đã đăng nhập thì redirect thẳng
   document.addEventListener('DOMContentLoaded', () => {

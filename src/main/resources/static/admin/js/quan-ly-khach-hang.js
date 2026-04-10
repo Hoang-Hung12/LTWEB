@@ -1,4 +1,4 @@
-const API   = 'http://localhost:8080';
+/* API khai báo trong script.js */
 let allKH   = [];
 let editMaTK = null;
 let deleteMaTK = null;

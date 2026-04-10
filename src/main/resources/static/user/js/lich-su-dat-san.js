@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const user = getCurrentUser();
     if (!user) { window.location.href = 'login.html'; return; }
+    if (typeof renderNavbar === 'function') renderNavbar();
     const av = document.getElementById('nav-user-avatar');
     if (av) av.textContent = (user.hoTen || 'U')[0].toUpperCase();
 
@@ -21,15 +22,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// Đúng với trạng thái trong DB
+// Trạng thái khớp DB: Chờ duyệt | Đã xác nhận | Đã hoàn thành | Đã hủy
 function updateStats() {
+    const user = getCurrentUser();
     document.getElementById('st-total').textContent   = allDons.length;
     document.getElementById('st-done').textContent    = allDons.filter(d => d.trangThai === 'Đã hoàn thành').length;
     document.getElementById('st-pending').textContent = allDons.filter(d =>
         d.trangThai === 'Chờ duyệt' || d.trangThai === 'Đã xác nhận').length;
     document.getElementById('st-cancel').textContent  = allDons.filter(d => d.trangThai === 'Đã hủy').length;
-    const pts = allDons.reduce((s,d) => s + (d.diemThuong||0), 0);
-    document.getElementById('st-points').textContent  = pts;
+    document.getElementById('st-points').textContent  = user ? (user.diemTichLuy ?? 0) : 0;
+    const rewardPts = allDons.reduce((s, d) => s + (d.diemThuong || 0), 0);
+    const rewardEl = document.getElementById('st-reward');
+    if (rewardEl) rewardEl.textContent = rewardPts;
 }
 
 function renderList() {
@@ -50,29 +54,32 @@ function renderList() {
         const icon = statusIcon(sc);
         const ngay = don.ngayDa ? formatDate2(don.ngayDa) : '—';
         const gio  = [(don.gioBatDau||'').substring(0,5), (don.gioKetThuc||'').substring(0,5)].filter(Boolean).join(' - ');
-        // Chỉ cho hủy khi đang "Chờ duyệt"
         const canCancel = don.trangThai === 'Chờ duyệt';
+        const cocTxt = don.tienCoc != null ? `<span class="text-muted small">Cọc: ${formatCurrency(don.tienCoc)}</span>` : '';
         return `
       <div class="history-card">
         <div class="history-icon ${sc}">${icon}</div>
-        <div class="flex-grow-1">
-          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
-            <div>
-              <h6 class="fw-bold mb-1">${don.tenSan || '—'}</h6>
-              <p class="text-muted mb-1" style="font-size:14px">
-                <i class="fas fa-calendar me-1"></i>${ngay}
-                &nbsp;|&nbsp;
-                <i class="fas fa-clock me-1"></i>${gio}
-              </p>
-              <p class="text-muted mb-0" style="font-size:13px">Mã đơn: <code>${don.maDon}</code></p>
+        <div class="flex-grow-1 history-card-body">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+            <div class="history-main">
+              <div class="history-title-row">
+                <h5 class="history-title mb-0">${don.tenSan || '—'}</h5>
+                <span class="badge-tt ${sc}">${don.trangThai || '—'}</span>
+              </div>
+              <div class="history-meta text-muted small mt-2">
+                <span><i class="fas fa-calendar-alt me-1"></i>${ngay}</span>
+                <span class="mx-2">·</span>
+                <span><i class="fas fa-clock me-1"></i>${gio}</span>
+              </div>
+              <div class="mt-1"><code class="history-code">${don.maDon}</code></div>
             </div>
-            <div class="text-end">
-              <div class="badge-tt ${sc} mb-1">${don.trangThai || '—'}</div>
-              <div class="fw-bold text-primary">${formatCurrency(don.tienSan)}</div>
-              ${don.diemThuong ? `<div class="text-success" style="font-size:12px">+${don.diemThuong} điểm</div>` : ''}
+            <div class="text-end history-price-block">
+              <div class="history-price">${formatCurrency(don.tienSan)}</div>
+              ${cocTxt ? `<div class="mt-1">${cocTxt}</div>` : ''}
+              ${don.diemThuong ? `<div class="text-success small mt-1"><i class="fas fa-star me-1"></i>+${don.diemThuong} điểm thưởng</div>` : ''}
             </div>
           </div>
-          ${canCancel ? `<button class="btn btn-outline-danger btn-sm mt-2" onclick="huyDon('${don.maDon}')"><i class="fas fa-times me-1"></i>Hủy đơn</button>` : ''}
+          ${canCancel ? `<button type="button" class="btn btn-outline-danger btn-sm mt-3" onclick="huyDon('${don.maDon}')"><i class="fas fa-times me-1"></i>Hủy đơn</button>` : ''}
         </div>
       </div>`;
     }).join('');

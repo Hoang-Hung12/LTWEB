@@ -1,5 +1,7 @@
-// Hằng số API dùng chung cho toàn bộ trang admin
-const API = 'http://localhost:8080';
+// Hằng số API dùng chung cho toàn bộ trang admin (cùng origin với trang đang mở)
+const API = (typeof window !== 'undefined' && window.location && window.location.origin)
+    ? window.location.origin
+    : 'http://localhost:8080';
 
 // HÀM MỞ MODAL SỬA SÂN
 function editPitch(id) {
