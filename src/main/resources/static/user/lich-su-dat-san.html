@@ -53,7 +53,7 @@
   <div class="stats-bar" id="stats-bar" style="display:none">
     <div class="stat-item"><div class="stat-val" id="st-total">0</div><div class="stat-lbl">Tổng đơn</div></div>
     <div class="stat-item"><div class="stat-val text-success" id="st-done">0</div><div class="stat-lbl">Đã hoàn thành</div></div>
-    <div class="stat-item"><div class="stat-val text-warning" id="st-pending">0</div><div class="stat-lbl">Chờ duyệt / Đã xác nhận</div></div>
+    <div class="stat-item"><div class="stat-val text-warning" id="st-pending">0</div><div class="stat-lbl">Đang xử lý</div></div>
     <div class="stat-item"><div class="stat-val text-danger" id="st-cancel">0</div><div class="stat-lbl">Đã hủy</div></div>
     <div class="stat-item"><div class="stat-val" id="st-points" style="color:#8b5cf6">0</div><div class="stat-lbl">Điểm tài khoản</div></div>
     <div class="stat-item"><div class="stat-val text-info" id="st-reward">0</div><div class="stat-lbl">Điểm thưởng (đơn)</div></div>
@@ -64,6 +64,7 @@
     <select class="form-select form-select-sm" id="filter-tt-lich" style="width:220px" onchange="renderList()">
       <option value="">Tất cả trạng thái</option>
       <option value="Chờ duyệt">Chờ duyệt</option>
+      <option value="Chờ xác nhận thanh toán">Chờ xác nhận thanh toán</option>
       <option value="Đã xác nhận">Đã xác nhận</option>
       <option value="Đã hoàn thành">Đã hoàn thành</option>
       <option value="Đã hủy">Đã hủy</option>

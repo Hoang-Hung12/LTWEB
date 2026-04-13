@@ -7,28 +7,28 @@ import jakarta.persistence.*;
 @Table(name = "TaiKhoan")
 public class TaiKhoan {
     @Id
-    @Column(name = "MaTK")
+    @Column(name = "MaTK", length = 20)
     private String maTK; // SỬA: MaTK → maTK (field phải bắt đầu chữ thường)
 
     @Column(name = "MatKhau", nullable = false)
     private String matKhau;
 
-    @Column(name = "HoTen", nullable = false)
+    @Column(name = "HoTen", nullable = false, length = 100)
     private String hoTen;
 
-    @Column(name = "Email", nullable = false, unique = true)
+    @Column(name = "Email", nullable = false, unique = true, length = 150)
     private String email;
 
-    @Column(name = "SDT", nullable = false, unique = true)
+    @Column(name = "SDT", nullable = false, unique = true, length = 15)
     private String sdt;
 
-    @Column(name = "VaiTro")
+    @Column(name = "VaiTro", length = 20)
     private String vaiTro;
 
     @Column(name = "DiemTichLuy")
     private Integer diemTichLuy;
 
-    @Column(name = "HangThanhVien")
+    @Column(name = "HangThanhVien", length = 20)
     private String hangThanhVien;
 
     @Column(name = "NgayTao", insertable = false, updatable = false)

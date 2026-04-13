@@ -28,7 +28,7 @@ function updateStats() {
     document.getElementById('st-total').textContent   = allDons.length;
     document.getElementById('st-done').textContent    = allDons.filter(d => d.trangThai === 'Đã hoàn thành').length;
     document.getElementById('st-pending').textContent = allDons.filter(d =>
-        d.trangThai === 'Chờ duyệt' || d.trangThai === 'Đã xác nhận').length;
+        d.trangThai === 'Chờ duyệt' || d.trangThai === 'Đã xác nhận' || d.trangThai === 'Chờ xác nhận thanh toán').length;
     document.getElementById('st-cancel').textContent  = allDons.filter(d => d.trangThai === 'Đã hủy').length;
     document.getElementById('st-points').textContent  = user ? (user.diemTichLuy ?? 0) : 0;
     const rewardPts = allDons.reduce((s, d) => s + (d.diemThuong || 0), 0);
@@ -54,7 +54,7 @@ function renderList() {
         const icon = statusIcon(sc);
         const ngay = don.ngayDa ? formatDate2(don.ngayDa) : '—';
         const gio  = [(don.gioBatDau||'').substring(0,5), (don.gioKetThuc||'').substring(0,5)].filter(Boolean).join(' - ');
-        const canCancel = don.trangThai === 'Chờ duyệt';
+        const canCancel = don.trangThai === 'Chờ duyệt' || don.trangThai === 'Chờ xác nhận thanh toán';
         const cocTxt = don.tienCoc != null ? `<span class="text-muted small">Cọc: ${formatCurrency(don.tienCoc)}</span>` : '';
         return `
       <div class="history-card">
@@ -104,6 +104,7 @@ async function huyDon(maDon) {
 
 // statusClass dùng giá trị chuỗi chính xác từ DB
 function statusClass(tt) {
+    if (tt === 'Chờ xác nhận thanh toán') return 'pending';
     if (tt === 'Đã xác nhận')   return 'confirmed';
     if (tt === 'Đã hoàn thành') return 'done';
     if (tt === 'Đã hủy')        return 'cancelled';

@@ -1,7 +1,4 @@
-﻿
-  const API_BASE_LOGIN = (typeof window !== 'undefined' && window.location && window.location.origin)
-      ? window.location.origin
-      : 'http://localhost:8080';
+﻿// API_BASE lấy từ auth.js (resolveApiBase — tránh lỗi khi mở file://)
 
   // Nếu đã đăng nhập thì redirect thẳng
   document.addEventListener('DOMContentLoaded', () => {
@@ -21,11 +18,20 @@
     if (!sdt || !pw) { showErr(err, 'Vui lòng nhập đầy đủ!'); return; }
     btn.disabled = true; btn.textContent = 'Đang đăng nhập...';
     try {
-      const res = await fetch(API_BASE_LOGIN + '/api/taikhoan/login', {
+      const res = await fetch(API_BASE + '/api/taikhoan/login', {
         method: 'POST', headers: {'Content-Type':'application/json'},
         body: JSON.stringify({sdt, matKhau: pw})
       });
-      if (!res.ok) { showErr(err, 'Sai số điện thoại hoặc mật khẩu!'); return; }
+      if (!res.ok) {
+        let msg = 'Sai số điện thoại hoặc mật khẩu!';
+        if (res.status >= 500) msg = 'Lỗi server. Kiểm tra backend đã chạy và xem log console.';
+        else {
+          const t = await res.text();
+          if (t && t.length < 200 && !t.trim().startsWith('<')) msg = t;
+        }
+        showErr(err, msg);
+        return;
+      }
       const user = await res.json();
       setCurrentUser(user);
       const redirect = sessionStorage.getItem('arenax_redirect');
@@ -53,7 +59,7 @@
     if (pw !== pw2) { showErr(err, 'Mật khẩu nhập lại không khớp!'); return; }
     btn.disabled = true; btn.textContent = 'Đang đăng ký...';
     try {
-      const res = await fetch(API_BASE_LOGIN + '/api/taikhoan/register', {
+      const res = await fetch(API_BASE + '/api/taikhoan/register', {
         method: 'POST', headers: {'Content-Type':'application/json'},
         body: JSON.stringify({hoTen, sdt, email, matKhau: pw})
       });

@@ -44,6 +44,9 @@ public class TaiKhoanController {
     /** Đăng nhập — trả về thông tin user đầy đủ */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody TaiKhoanDto loginRequest) {
+        if (loginRequest == null || loginRequest.getSdt() == null || loginRequest.getMatKhau() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Thiếu số điện thoại hoặc mật khẩu");
+        }
         boolean isSuccess = taiKhoanService.login(loginRequest.getSdt(), loginRequest.getMatKhau());
         if (isSuccess) {
             TaiKhoanDto user = taiKhoanService.getBySdt(loginRequest.getSdt());

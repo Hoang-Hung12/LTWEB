@@ -11,7 +11,7 @@ async function loadDons() {
         dons.sort((a,b) => new Date(b.ngayDat||0) - new Date(a.ngayDat||0));
 
         // Đếm theo đúng trạng thái trong DB
-        const cho  = dons.filter(d => d.trangThai === 'Chờ duyệt').length;
+        const cho  = dons.filter(d => d.trangThai === 'Chờ duyệt' || d.trangThai === 'Chờ xác nhận thanh toán').length;
         const xn   = dons.filter(d => d.trangThai === 'Đã xác nhận').length;
         const ht   = dons.filter(d => d.trangThai === 'Đã hoàn thành').length;
         const huy  = dons.filter(d => d.trangThai === 'Đã hủy').length;
@@ -49,6 +49,7 @@ async function loadDons() {
         const recent = dons.slice(0, 8);
         const tbody  = document.getElementById('recent-tbody');
         const ttClassMap = {
+            'Chờ xác nhận thanh toán': 'badge-soft-warning',
             'Chờ duyệt':     'badge-soft-warning',
             'Đã xác nhận':   'badge-soft-success',
             'Đã hoàn thành': 'badge-soft-primary',

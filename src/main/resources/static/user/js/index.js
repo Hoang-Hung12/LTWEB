@@ -18,10 +18,10 @@
       if (!res.ok) throw new Error();
       const sans = await res.json();
       list.innerHTML = sans.length === 0
-        ? '<p class="text-muted text-center py-4 col-12">ChÆ°a cÃ³ sÃ¢n nÃ o.</p>'
+        ? '<p class="text-muted text-center py-4 col-12">Chưa có sân nào.</p>'
         : sans.slice(0,6).map(buildSanCard).join('');
     } catch {
-      list.innerHTML = '<p class="text-danger text-center py-4 col-12"><i class="fas fa-exclamation-triangle me-2"></i>KhÃ´ng káº¿t ná»‘i Ä‘Æ°á»£c server backend!</p>';
+      list.innerHTML = '<p class="text-danger text-center py-4 col-12"><i class="fas fa-exclamation-triangle me-2"></i>Không kết nối được server. Hãy chạy Spring Boot và mở trang qua <strong>http://localhost:8080/user/index.html</strong> (không mở file .html trực tiếp từ ổ đĩa).</p>';
     }
   }
 
@@ -30,12 +30,12 @@
     const bd   = document.getElementById('search-gio-bd').value;
     const kt   = document.getElementById('search-gio-kt').value;
     const loai = document.getElementById('search-loai').value;
-    if (!ngay || !bd || !kt) { alert('Vui lÃ²ng Ä‘iá»n Ä‘áº§y Ä‘á»§!'); return; }
-    if (bd >= kt) { alert('Giá» báº¯t Ä‘áº§u pháº£i nhá» hÆ¡n giá» káº¿t thÃºc!'); return; }
+    if (!ngay || !bd || !kt) { alert('Vui lòng điền đầy đủ!'); return; }
+    if (bd >= kt) { alert('Giờ bắt đầu phải nhỏ hơn giờ kết thúc!'); return; }
 
     document.getElementById('search-results').style.display = 'block';
     document.getElementById('featured-section').style.display = 'none';
-    document.getElementById('search-list').innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Äang tÃ¬m...</p></div>';
+    document.getElementById('search-list').innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Đang tìm...</p></div>';
     document.getElementById('search-results').scrollIntoView({ behavior: 'smooth' });
 
     try {
@@ -44,10 +44,10 @@
       const res  = await fetch(url);
       const sans = await res.json();
       document.getElementById('search-list').innerHTML = sans.length === 0
-        ? '<p class="text-warning text-center py-4 col-12"><i class="fas fa-search me-2"></i>KhÃ´ng cÃ³ sÃ¢n trá»‘ng trong khung giá» nÃ y.</p>'
+        ? '<p class="text-warning text-center py-4 col-12"><i class="fas fa-search me-2"></i>Không có sân trống trong khung giờ này.</p>'
         : sans.map(buildSanCard).join('');
     } catch {
-      document.getElementById('search-list').innerHTML = '<p class="text-danger text-center py-4 col-12">Lá»—i káº¿t ná»‘i server!</p>';
+      document.getElementById('search-list').innerHTML = '<p class="text-danger text-center py-4 col-12">Lỗi kết nối server. Chạy backend và dùng http://localhost:8080/user/index.html</p>';
     }
   }
 

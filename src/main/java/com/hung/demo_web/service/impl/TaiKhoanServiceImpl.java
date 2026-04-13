@@ -130,7 +130,18 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
 
     @Override
     public boolean login(String sdt, String matKhau) {
-        Optional<TaiKhoan> tk = repo.findBySdt(sdt);
-        return tk.isPresent() && tk.get().getMatKhau().equals(matKhau);
+        if (sdt == null || matKhau == null) return false;
+        String s = sdt.trim();
+        String m = matKhau.trim();
+        if (s.isEmpty() || m.isEmpty()) return false;
+        
+        var result = repo.findBySdt(s);
+        if (result.isPresent()) {
+            TaiKhoan tk = result.get();
+            String db = tk.getMatKhau();
+            return db != null && db.trim().equals(m);
+        } else {
+            return false;
+        }
     }
 }

@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 @Table(name = "DonDatSan")
 public class DonDatSan {
     @Id
-    @Column(name = "MaDon")
+    @Column(name = "MaDon", length = 30)
     private String maDon; // SỬA: MaDon → maDon
 
     @Column(name = "NgayDat", insertable = false, updatable = false)
@@ -37,10 +37,10 @@ public class DonDatSan {
     @Column(name = "DiemThuong")
     private Integer diemThuong;
 
-    @Column(name = "TrangThai")
+    @Column(name = "TrangThai", length = 50)
     private String trangThai;
 
-    @Column(name = "PhuongThucThanhToan")
+    @Column(name = "PhuongThucThanhToan", length = 50)
     private String phuongThucThanhToan;
 
     @Column(name = "DaXacNhanThanhToan")
@@ -50,7 +50,7 @@ public class DonDatSan {
     @Column(name = "ChungTuThanhToan", columnDefinition = "LONGTEXT")
     private String chungTuThanhToan;
 
-    @Column(name = "MaAdminXacNhanThanhToan")
+    @Column(name = "MaAdminXacNhanThanhToan", length = 20)
     private String maAdminXacNhanThanhToan;
 
     @Column(name = "ThoiGianXacNhanThanhToan")

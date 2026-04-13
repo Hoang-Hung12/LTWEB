@@ -27,7 +27,7 @@ async function loadDons() {
 
 // Đúng với DB: Chờ duyệt | Đã xác nhận | Đã hoàn thành | Đã hủy
 function updateStatCards() {
-    document.getElementById('cnt-cho').textContent  = allDons.filter(d => d.trangThai === 'Chờ duyệt').length;
+    document.getElementById('cnt-cho').textContent  = allDons.filter(d => d.trangThai === 'Chờ duyệt' || d.trangThai === 'Chờ xác nhận thanh toán').length;
     document.getElementById('cnt-xn').textContent   = allDons.filter(d => d.trangThai === 'Đã xác nhận').length;
     document.getElementById('cnt-ht').textContent   = allDons.filter(d => d.trangThai === 'Đã hoàn thành').length;
     document.getElementById('cnt-huy').textContent  = allDons.filter(d => d.trangThai === 'Đã hủy').length;
@@ -88,7 +88,7 @@ function renderTable() {
 function buildActions(d) {
     const tt  = (d.trangThai||'');
     let html  = `<button class="btn btn-light btn-sm me-1" onclick="viewDon('${d.maDon}')" title="Chi tiết"><i class="fas fa-eye"></i></button>`;
-    if (tt === 'Chờ duyệt') {
+    if (tt === 'Chờ duyệt' || tt === 'Chờ xác nhận thanh toán') {
         html += `<button class="btn btn-success btn-sm me-1" onclick="updateTT('${d.maDon}','Đã xác nhận')" title="Duyệt"><i class="fas fa-check"></i> Duyệt</button>`;
         html += `<button class="btn btn-outline-danger btn-sm" onclick="updateTT('${d.maDon}','Đã hủy')" title="Hủy"><i class="fas fa-times"></i> Hủy</button>`;
     } else if (tt === 'Đã xác nhận') {
@@ -102,6 +102,7 @@ function statusClass(tt) {
     if (!tt) return 'status-cho';
     const t = tt;
     if (t === 'Chờ duyệt')     return 'status-cho';
+    if (t === 'Chờ xác nhận thanh toán') return 'status-cho';
     if (t === 'Đã xác nhận')   return 'status-xacnhan';
     if (t === 'Đã hoàn thành') return 'status-hoantat';
     if (t === 'Đã hủy')        return 'status-huy';
@@ -173,7 +174,7 @@ function viewDon(maDon) {
     const actDiv = document.getElementById('d-actions');
     actDiv.innerHTML = '';
     const tt = d.trangThai || '';
-    if (tt === 'Chờ duyệt') {
+    if (tt === 'Chờ duyệt' || tt === 'Chờ xác nhận thanh toán') {
         actDiv.innerHTML = `
           <button class="btn btn-success flex-fill" onclick="updateTT('${d.maDon}','Đã xác nhận');closeDetail()">
             <i class="fas fa-check me-1"></i>Duyệt đơn

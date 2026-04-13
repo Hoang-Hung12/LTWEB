@@ -3,9 +3,21 @@
  * Dùng chung cho toàn bộ trang user
  */
 
-const API_BASE = (typeof window !== 'undefined' && window.location && window.location.origin)
-    ? window.location.origin
-    : 'http://localhost:8080';
+/**
+ * Khi mở HTML trực tiếp (file://...) origin thường là chuỗi "null" → fetch API sẽ hỏng.
+ * Luôn dùng Spring Boot: http://localhost:8080/user/index.html
+ */
+function resolveApiBase() {
+    if (typeof window === 'undefined' || !window.location) return 'http://localhost:8080';
+    const href = window.location.href || '';
+    const origin = window.location.origin;
+    if (!origin || origin === 'null' || href.startsWith('file:')) {
+        return 'http://localhost:8080';
+    }
+    return origin;
+}
+
+const API_BASE = resolveApiBase();
 
 const SAN_IMG_FALLBACK = 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=80';
 

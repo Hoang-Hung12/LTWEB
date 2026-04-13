@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class HoaDonEntity {
 
     @Id
-    @Column(name = "MaHoaDon")
+    @Column(name = "MaHoaDon", length = 30)
     private String maHoaDon;
 
     @OneToOne
@@ -27,7 +27,7 @@ public class HoaDonEntity {
     private Timestamp ngayLap;
 
     @ManyToOne
-    @JoinColumn(name = "MaQLLap")
+    @JoinColumn(name = "MaQLLap", columnDefinition = "VARCHAR(20)")
     @JsonIgnore
     private TaiKhoan nguoiLap;
 

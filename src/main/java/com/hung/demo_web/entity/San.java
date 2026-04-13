@@ -7,32 +7,32 @@ import jakarta.persistence.*;
 @Table(name = "San")
 public class San {
     @Id
-    @Column(name = "MaSan")
+    @Column(name = "MaSan", length = 20)
     private String maSan;
 
-    @Column(name = "TenSan", nullable = false)
+    @Column(name = "TenSan", nullable = false, length = 150)
     private String tenSan;
 
-    @Column(name = "DiaChi", nullable = false)
+    @Column(name = "DiaChi", nullable = false, length = 255)
     private String diaChi;
 
-    @Column(name = "MoTa")
+    @Column(name = "MoTa", length = 500)
     private String moTa;
 
-    @Column(name = "TienIch")
+    @Column(name = "TienIch", length = 500)
     private String tienIch;
 
-    @Column(name = "AnhChinh")
+    @Column(name = "AnhChinh", length = 500)
     private String anhChinh;
 
     @Column(name = "GiaThue", nullable = false)
     private Double giaThue;
 
-    @Column(name = "TrangThai")
+    @Column(name = "TrangThai", length = 20)
     private String trangThai;
 
     @ManyToOne
-    @JoinColumn(name = "MaLoaiSan")
+    @JoinColumn(name = "MaLoaiSan", columnDefinition = "VARCHAR(20)")
     @JsonIgnore
     private LoaiSan loaiSan;
 

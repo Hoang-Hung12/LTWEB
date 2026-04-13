@@ -131,7 +131,7 @@ public class DonDatSanServiceImpl implements DonDatSanService {
         entity.setNgayDa(dto.getNgayDa());
         entity.setGioBatDau(dto.getGioBatDau());
         entity.setGioKetThuc(dto.getGioKetThuc());
-        entity.setTrangThai("Chờ xác nhận thanh toán");
+        entity.setTrangThai("Chờ duyệt");
         entity.setPhuongThucThanhToan(pttt);
         entity.setDaXacNhanThanhToan(false);
         entity.setChungTuThanhToan(dto.getChungTuThanhToan());
