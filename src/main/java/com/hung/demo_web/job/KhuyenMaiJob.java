@@ -34,16 +34,4 @@ public class KhuyenMaiJob {
         }
         System.out.println("✅ [JOB NỬA ĐÊM] Quét xong! Đã khóa thành công " + hetHan.size() + " mã.");
     }
-    
-    // =========================================================================
-    // BONUS THÊM 1 JOB THỰC TẾ HAY DÙNG: HỦY ĐƠN CHƯA CỌC SAU 30 PHÚT
-    // (Tôi viết sẵn form, nếu sau này bạn cần thì mở comment ra dùng nhé)
-    // =========================================================================
-    /*
-    @Scheduled(fixedRate = 1800000) // Cứ 30 phút (1.800.000 ms) chạy 1 lần
-    public void huyDonDatSanChuaCoc() {
-        System.out.println("⏳ [JOB 30 PHÚT] Quét đơn đặt sân chưa cọc...");
-        // Logic: Tìm đơn có Trạng thái "Chờ duyệt" mà NgayDat đã quá 30 phút -> Đổi thành "Đã hủy"
-    }
-    */
 }

@@ -12,6 +12,5 @@ public interface SanService {
     SanDto createSan(SanDto sanDto);
     SanDto updateSan(String maSan, SanDto sanDto);
     void deleteSan(String maSan);
-    /** Tìm sân còn trống theo ngày đá, giờ bắt đầu, giờ kết thúc và loại sân */
     List<SanDto> timSanTrong(LocalDate ngayDa, LocalTime gioBatDau, LocalTime gioKetThuc, String maLoaiSan);
 }

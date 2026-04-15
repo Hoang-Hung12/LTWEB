@@ -3,26 +3,16 @@
     .don-item:hover { border-left-color:#0d6efd;background:#f0f7ff }
     .don-item.selected { border-left-color:#0d6efd;background:#e8f0fe }
     .inv-section { position:sticky;top:70px }
-
-    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-       PRINT â€” chá»‰ in hÃ³a Ä‘Æ¡n, áº©n má»i thá»© khÃ¡c
-       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
     @media print {
       @page { size: A4 portrait; margin: 15mm 18mm; }
-
-      /* áº¨n toÃ n bá»™ layout trang admin */
       .sidebar,
       .top-header,
       .btn-print-hide,
-      #panel-left,          /* cá»™t chá»n Ä‘Æ¡n */
+      #panel-left,          
       .hd-success-block,
       .alert { display: none !important; }
-
-      /* Bá» margin sidebar */
       .main-content { margin-left: 0 !important; }
       .page-section { padding: 0 !important; }
-
-      /* Cá»™t pháº£i (hÃ³a Ä‘Æ¡n) chiáº¿m toÃ n bá»™ */
       .row { display: block !important; }
       #panel-right {
         width: 100% !important;

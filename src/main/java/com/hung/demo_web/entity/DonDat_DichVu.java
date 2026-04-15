@@ -11,13 +11,13 @@ public class DonDat_DichVu {
     private DonDatDichVuId id;
 
     @ManyToOne
-    @MapsId("maDon") // SỬA: "MaDon" → "maDon" (phải khớp tên field trong DonDatDichVuId)
+    @MapsId("maDon") 
     @JoinColumn(name = "MaDon")
     @JsonIgnore
     private DonDatSan donDatSan;
 
     @ManyToOne
-    @MapsId("maDV")  // SỬA: "MaDV" → "maDV" (phải khớp tên field trong DonDatDichVuId)
+    @MapsId("maDV")  
     @JoinColumn(name = "MaDV")
     @JsonIgnore
     private DichVu dichVu;

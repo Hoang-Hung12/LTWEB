@@ -1,12 +1,3 @@
-/**
- * auth.js — Quản lý trạng thái đăng nhập và navbar động
- * Dùng chung cho toàn bộ trang user
- */
-
-/**
- * Khi mở HTML trực tiếp (file://...) origin thường là chuỗi "null" → fetch API sẽ hỏng.
- * Luôn dùng Spring Boot: http://localhost:8080/user/index.html
- */
 function resolveApiBase() {
     if (typeof window === 'undefined' || !window.location) return 'http://localhost:8080';
     const href = window.location.href || '';

@@ -8,16 +8,24 @@ import jakarta.persistence.*;
 public class DonDatDichVuId implements Serializable {
 
     @Column(name = "MaDon")
-    private String maDon; // SỬA: MaDon → maDon
+    private String maDon; 
 
     @Column(name = "MaDV")
-    private String maDV;  // SỬA: MaDV → maDV
+    private String maDV;  
 
-    public String getMaDon() { return maDon; }
-    public void setMaDon(String maDon) { this.maDon = maDon; }
+    public String getMaDon(){ 
+        return maDon; 
+    }
+    public void setMaDon(String maDon){ 
+        this.maDon = maDon; 
+    }
 
-    public String getMaDV() { return maDV; }
-    public void setMaDV(String maDV) { this.maDV = maDV; }
+    public String getMaDV(){ 
+        return maDV; 
+    }
+    public void setMaDV(String maDV){ 
+        this.maDV = maDV; 
+    }
 
     @Override
     public boolean equals(Object o) {

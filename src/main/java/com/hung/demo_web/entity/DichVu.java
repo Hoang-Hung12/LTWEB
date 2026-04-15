@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class DichVu {
     @Id
     @Column(name = "MaDV")
-    private String maDV; // SỬA: MaDV → maDV
+    private String maDV; 
 
     @Column(name = "TenDichVu", nullable = false)
     private String tenDichVu;
@@ -15,7 +15,7 @@ public class DichVu {
     @Column(name = "DonGia", nullable = false)
     private Double donGia;
 
-    @Column(name = "DonViTinh") // SỬA: bỏ nullable=false, DB không NOT NULL
+    @Column(name = "DonViTinh") 
     private String donViTinh;
 
     public String getMaDV() { return maDV; }

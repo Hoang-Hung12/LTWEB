@@ -36,32 +36,66 @@ public class San {
     @JsonIgnore
     private LoaiSan loaiSan;
 
-    public void setMaSan(String maSan) { this.maSan = maSan; }
-    public String getMaSan() { return maSan; }
+    public void setMaSan(String maSan){ 
+        this.maSan = maSan; 
+    }
+    public String getMaSan(){ 
+        return maSan; 
+    }
 
-    // SỬA: seTenSan → setTenSan (thiếu chữ 't', sai JavaBean → Swagger lỗi + NPE khi gọi)
-    public void setTenSan(String tenSan) { this.tenSan = tenSan; }
-    public String getTenSan() { return tenSan; }
+    public void setTenSan(String tenSan){ 
+        this.tenSan = tenSan; 
+    }
+    public String getTenSan(){ 
+        return tenSan; 
+    }
 
-    public void setDiaChi(String diaChi) { this.diaChi = diaChi; }
-    public String getDiaChi() { return diaChi; }
+    public void setDiaChi(String diaChi){ 
+        this.diaChi = diaChi; 
+    }
+    public String getDiaChi(){ 
+        return diaChi; 
+    }
 
-    // SỬA: setMota → setMoTa (sai chữ hoa, không khớp field moTa)
-    public void setMoTa(String moTa) { this.moTa = moTa; }
-    public String getMoTa() { return moTa; }
+    public void setMoTa(String moTa){ 
+        this.moTa = moTa; 
+    }
+    public String getMoTa(){ 
+        return moTa; 
+    }
 
-    public void setTienIch(String tienIch) { this.tienIch = tienIch; }
-    public String getTienIch() { return tienIch; }
+    public void setTienIch(String tienIch){ 
+        this.tienIch = tienIch; 
+    }
+    public String getTienIch(){ 
+        return tienIch; 
+    }
 
-    public void setAnhChinh(String anhChinh) { this.anhChinh = anhChinh; }
-    public String getAnhChinh() { return anhChinh; }
+    public void setAnhChinh(String anhChinh){ 
+        this.anhChinh = anhChinh; 
+    }
+    public String getAnhChinh(){ 
+        return anhChinh; 
+    }
 
-    public void setGiaThue(Double giaThue) { this.giaThue = giaThue; }
-    public Double getGiaThue() { return giaThue; }
+    public void setGiaThue(Double giaThue){ 
+        this.giaThue = giaThue; 
+    }
+    public Double getGiaThue(){ 
+        return giaThue; 
+    }
 
-    public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
-    public String getTrangThai() { return trangThai; }
+    public void setTrangThai(String trangThai){ 
+        this.trangThai = trangThai; 
+    }
+    public String getTrangThai(){ 
+        return trangThai; 
+    }
 
-    public void setLoaiSan(LoaiSan loaiSan) { this.loaiSan = loaiSan; }
-    public LoaiSan getLoaiSan() { return loaiSan; }
+    public void setLoaiSan(LoaiSan loaiSan){ 
+        this.loaiSan = loaiSan; 
+    }
+    public LoaiSan getLoaiSan(){ 
+        return loaiSan; 
+    }
 }

@@ -1,7 +1,4 @@
-﻿// API_BASE lấy từ auth.js (resolveApiBase — tránh lỗi khi mở file://)
-
-  // Nếu đã đăng nhập thì redirect thẳng
-  document.addEventListener('DOMContentLoaded', () => {
+﻿  document.addEventListener('DOMContentLoaded', () => {
     const existing = getCurrentUser();
     if (existing) {
       window.location.href = (existing.vaiTro || '').toUpperCase() === 'ADMIN'

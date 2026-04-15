@@ -11,7 +11,7 @@ import jakarta.persistence.*;
 public class DonDatSan {
     @Id
     @Column(name = "MaDon", length = 30)
-    private String maDon; // SỬA: MaDon → maDon
+    private String maDon; 
 
     @Column(name = "NgayDat", insertable = false, updatable = false)
     private Timestamp ngayDat;
@@ -71,57 +71,129 @@ public class DonDatSan {
     @JsonIgnore
     private TaiKhoan khachHang;
 
-    public String getMaDon() { return maDon; }
-    public void setMaDon(String maDon) { this.maDon = maDon; }
+    public String getMaDon(){ 
+        return maDon; 
+    }
+    public void setMaDon(String maDon){ 
+        this.maDon = maDon; 
+    }
 
-    public Timestamp getNgayDat() { return ngayDat; }
-    public void setNgayDat(Timestamp ngayDat) { this.ngayDat = ngayDat; }
+    public Timestamp getNgayDat(){ 
+        return ngayDat; 
+    }
+    public void setNgayDat(Timestamp ngayDat){ 
+        this.ngayDat = ngayDat; 
+    }
 
-    public LocalDate getNgayDa() { return ngayDa; }
-    public void setNgayDa(LocalDate ngayDa) { this.ngayDa = ngayDa; }
+    public LocalDate getNgayDa(){ 
+        return ngayDa; 
+    }
+    public void setNgayDa(LocalDate ngayDa){ 
+        this.ngayDa = ngayDa; 
+    }
 
-    public LocalTime getGioBatDau() { return gioBatDau; }
-    public void setGioBatDau(LocalTime gioBatDau) { this.gioBatDau = gioBatDau; }
+    public LocalTime getGioBatDau(){ 
+        return gioBatDau; 
+    }
+    public void setGioBatDau(LocalTime gioBatDau){ 
+        this.gioBatDau = gioBatDau; 
+    }
 
-    public LocalTime getGioKetThuc() { return gioKetThuc; }
-    public void setGioKetThuc(LocalTime gioKetThuc) { this.gioKetThuc = gioKetThuc; }
+    public LocalTime getGioKetThuc(){ 
+        return gioKetThuc; 
+    }
+    public void setGioKetThuc(LocalTime gioKetThuc){ 
+        this.gioKetThuc = gioKetThuc; 
+    }
 
-    public Double getTienSan() { return tienSan; }
-    public void setTienSan(Double tienSan) { this.tienSan = tienSan; }
+    public Double getTienSan(){ 
+        return tienSan; 
+    }
+    public void setTienSan(Double tienSan){ 
+        this.tienSan = tienSan; 
+    }
 
-    public Double getTienCoc() { return tienCoc; }
-    public void setTienCoc(Double tienCoc) { this.tienCoc = tienCoc; }
+    public Double getTienCoc(){ 
+        return tienCoc; 
+    }
+    public void setTienCoc(Double tienCoc){ 
+        this.tienCoc = tienCoc; 
+    }
 
-    public Integer getDiemSuDung() { return diemSuDung; }
-    public void setDiemSuDung(Integer diemSuDung) { this.diemSuDung = diemSuDung; }
+    public Integer getDiemSuDung(){ 
+        return diemSuDung; 
+    }
+    public void setDiemSuDung(Integer diemSuDung){ 
+        this.diemSuDung = diemSuDung; 
+    }
 
-    public Integer getDiemThuong() { return diemThuong; }
-    public void setDiemThuong(Integer diemThuong) { this.diemThuong = diemThuong; }
+    public Integer getDiemThuong(){ 
+        return diemThuong; 
+    }
+    public void setDiemThuong(Integer diemThuong){ 
+        this.diemThuong = diemThuong; 
+    }
 
-    public String getTrangThai() { return trangThai; }
-    public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
+    public String getTrangThai(){ 
+        return trangThai; 
+    }
+    public void setTrangThai(String trangThai){ 
+        this.trangThai = trangThai; 
+    }
 
-    public String getPhuongThucThanhToan() { return phuongThucThanhToan; }
-    public void setPhuongThucThanhToan(String phuongThucThanhToan) { this.phuongThucThanhToan = phuongThucThanhToan; }
+    public String getPhuongThucThanhToan(){ 
+        return phuongThucThanhToan; 
+    }
+    public void setPhuongThucThanhToan(String phuongThucThanhToan){ 
+        this.phuongThucThanhToan = phuongThucThanhToan; 
+    }
 
-    public Boolean getDaXacNhanThanhToan() { return daXacNhanThanhToan; }
-    public void setDaXacNhanThanhToan(Boolean daXacNhanThanhToan) { this.daXacNhanThanhToan = daXacNhanThanhToan; }
+    public Boolean getDaXacNhanThanhToan(){ 
+        return daXacNhanThanhToan; 
+    }
+    public void setDaXacNhanThanhToan(Boolean daXacNhanThanhToan){ 
+        this.daXacNhanThanhToan = daXacNhanThanhToan; 
+    }
 
-    public String getChungTuThanhToan() { return chungTuThanhToan; }
-    public void setChungTuThanhToan(String chungTuThanhToan) { this.chungTuThanhToan = chungTuThanhToan; }
+    public String getChungTuThanhToan(){ 
+        return chungTuThanhToan; 
+    }
+    public void setChungTuThanhToan(String chungTuThanhToan){ 
+        this.chungTuThanhToan = chungTuThanhToan; 
+    }
 
-    public String getMaAdminXacNhanThanhToan() { return maAdminXacNhanThanhToan; }
-    public void setMaAdminXacNhanThanhToan(String maAdminXacNhanThanhToan) { this.maAdminXacNhanThanhToan = maAdminXacNhanThanhToan; }
+    public String getMaAdminXacNhanThanhToan(){ 
+        return maAdminXacNhanThanhToan; 
+    }
+    public void setMaAdminXacNhanThanhToan(String maAdminXacNhanThanhToan){ 
+        this.maAdminXacNhanThanhToan = maAdminXacNhanThanhToan; 
+    }
 
-    public Timestamp getThoiGianXacNhanThanhToan() { return thoiGianXacNhanThanhToan; }
-    public void setThoiGianXacNhanThanhToan(Timestamp thoiGianXacNhanThanhToan) { this.thoiGianXacNhanThanhToan = thoiGianXacNhanThanhToan; }
+    public Timestamp getThoiGianXacNhanThanhToan(){ 
+        return thoiGianXacNhanThanhToan; 
+    }
+    public void setThoiGianXacNhanThanhToan(Timestamp thoiGianXacNhanThanhToan){ 
+        this.thoiGianXacNhanThanhToan = thoiGianXacNhanThanhToan; 
+    }
 
-    public KhuyenMai getKhuyenMai() { return khuyenMai; }
-    public void setKhuyenMai(KhuyenMai khuyenMai) { this.khuyenMai = khuyenMai; }
+    public KhuyenMai getKhuyenMai(){ 
+        return khuyenMai; 
+    }
+    public void setKhuyenMai(KhuyenMai khuyenMai){ 
+        this.khuyenMai = khuyenMai; 
+    }
 
-    public San getSan() { return san; }
-    public void setSan(San san) { this.san = san; }
+    public San getSan(){ 
+        return san; 
+    }
+    public void setSan(San san){ 
+        this.san = san; 
+    }
 
-    public TaiKhoan getKhachHang() { return khachHang; }
-    public void setKhachHang(TaiKhoan khachHang) { this.khachHang = khachHang; }
+    public TaiKhoan getKhachHang(){ 
+        return khachHang; 
+    }
+    public void setKhachHang(TaiKhoan khachHang){ 
+        this.khachHang = khachHang; 
+    }
 }
