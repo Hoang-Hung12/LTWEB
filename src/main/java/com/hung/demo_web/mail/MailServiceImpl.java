@@ -10,10 +10,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 @Service
 public class MailServiceImpl implements MailService {
-    // Thằng này là "người đưa thư" do Spring Boot cấp sẵn
     @Autowired
     private JavaMailSender javaMailSender;
-    @Async // Lệnh cấm luồng chính chờ đợi. Cứ vứt mail cho thằng này chạy ngầm rồi làm việc khác!
+    @Async 
     @Override
     public void sendMailXacNhanDatSan(DonDatSanDto donDat, String emailTo) {
         try {

@@ -20,7 +20,7 @@ public class SanDto {
     public String getTenSan() { return tenSan; }
 
     public void setDiaChi(String diaChi) { this.diaChi = diaChi; }
-    public String getDiaChi() { return diaChi; }  // ← SỬA: getDiachi() → getDiaChi() cho đồng nhất
+    public String getDiaChi() { return diaChi; }  
 
     public void setMoTa(String moTa) { this.moTa = moTa; }
     public String getMoTa() { return moTa; }

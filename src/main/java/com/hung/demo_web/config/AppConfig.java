@@ -8,5 +8,4 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling // Bật tính năng chạy Job định kỳ (Dùng cho thư mục job)
 @EnableAsync      // Bật tính năng chạy ngầm đa luồng (Dùng cho thư mục mail)
 public class AppConfig {
-    // Không cần viết hàm gì ở đây cả, chỉ cần 3 cái "bùa chú" (Annotation) trên đầu là hệ thống tự hiểu.
 }
