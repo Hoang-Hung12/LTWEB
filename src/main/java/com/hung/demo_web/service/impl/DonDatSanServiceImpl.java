@@ -93,7 +93,8 @@ public class DonDatSanServiceImpl implements DonDatSanService {
 
         DonDatSan entity = new DonDatSan();
         entity.setMaDon((dto.getMaDon() != null && !dto.getMaDon().isEmpty())
-                ? dto.getMaDon() : "ORD" + System.currentTimeMillis());
+                ? dto.getMaDon()
+                : String.format("ORD%03d", donDatSanRepository.count() + 1));
 
         // Áp dụng khuyến mãi (nếu có)
         if (dto.getMaCodeKhuyenMai() != null && !dto.getMaCodeKhuyenMai().isEmpty()) {
@@ -182,14 +183,22 @@ public class DonDatSanServiceImpl implements DonDatSanService {
         String code = km.getMaCode() == null ? "" : km.getMaCode().toUpperCase();
         String rank = khach.getHangThanhVien() == null ? "" : khach.getHangThanhVien().toUpperCase();
         int diem = khach.getDiemTichLuy() == null ? 0 : khach.getDiemTichLuy();
-        if (code.startsWith("VIP") && diem < 1000) {
-            throw new LoiThaoTac("Mã này yêu cầu tối thiểu 1000 điểm tích lũy.");
+
+        // Mã DONG: chỉ dành cho hạng Đồng (dưới 500 điểm)
+        if (code.startsWith("DONG") && diem >= 500) {
+            throw new LoiThaoTac("Mã này chỉ áp dụng cho hạng Đồng (dưới 500 điểm tích lũy).");
         }
+        // Mã BAC: chỉ dành cho hạng Bạc (500–999 điểm)
+        if (code.startsWith("BAC") && (diem < 500 || diem >= 1000)) {
+            throw new LoiThaoTac("Mã này chỉ áp dụng cho hạng Bạc (500–999 điểm tích lũy).");
+        }
+        // Mã VANG: chỉ dành cho hạng Vàng
         if (code.startsWith("VANG") && !rank.contains("VÀNG")) {
             throw new LoiThaoTac("Mã này chỉ áp dụng cho hạng Vàng.");
         }
-        if (code.startsWith("BAC") && diem < 500) {
-            throw new LoiThaoTac("Mã này yêu cầu tối thiểu 500 điểm tích lũy.");
+        // Mã VIP: yêu cầu tối thiểu 1000 điểm (tương đương hạng Vàng)
+        if (code.startsWith("VIP") && diem < 1000) {
+            throw new LoiThaoTac("Mã này yêu cầu tối thiểu 1000 điểm tích lũy.");
         }
     }
 }

@@ -10,5 +10,5 @@ import com.hung.demo_web.entity.TaiKhoan;
 @Repository
 public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, String> {
     Optional<TaiKhoan> findBySdt(String sdt);
-    
+    Optional<TaiKhoan> findByEmail(String email);
 }

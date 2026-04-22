@@ -5,6 +5,7 @@ import com.hung.demo_web.entity.DonDatSan;
 import com.hung.demo_web.entity.TaiKhoan;
 import com.hung.demo_web.exception.KhongTimThay;
 import com.hung.demo_web.exception.LoiThaoTac;
+import com.hung.demo_web.mail.MailService;
 import com.hung.demo_web.repository.DonDatDichVuRepository;
 import com.hung.demo_web.repository.DonDatSanRepository;
 import com.hung.demo_web.repository.HoaDonRepository;
@@ -14,8 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +30,10 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     @Autowired private DonDatSanRepository donDatSanRepository;
     @Autowired private DonDatDichVuRepository donDatDichVuRepository;
     @Autowired private HoaDonRepository hoaDonRepository;
+    @Autowired private MailService mailService;
+
+    // Lưu OTP tạm thời: key = email, value = [otp, thoiGianHetHan]
+    private final Map<String, String[]> otpStore = new ConcurrentHashMap<>();
 
     private TaiKhoanDto mapToDTO(TaiKhoan entity) {
         TaiKhoanDto dto = new TaiKhoanDto();
@@ -143,5 +152,52 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void guiOtpQuenMatKhau(String email) {
+        // Tìm tài khoản theo email
+        TaiKhoan tk = repo.findByEmail(email)
+                .orElseThrow(() -> new KhongTimThay("Không tìm thấy tài khoản với email: " + email));
+
+        // Sinh OTP 6 chữ số ngẫu nhiên
+        String otp = String.format("%06d", new Random().nextInt(999999));
+
+        // Lưu vào store: [otp, thời điểm hết hạn = bây giờ + 5 phút]
+        String hetHan = LocalDateTime.now().plusMinutes(5).toString();
+        otpStore.put(email, new String[]{otp, hetHan});
+
+        // Gửi mail (async — không block response)
+        mailService.sendMailOtpQuenMatKhau(tk.getHoTen(), otp, email);
+    }
+
+    @Override
+    public void datLaiMatKhau(String email, String otp, String matKhauMoi) {
+        // Kiểm tra OTP có trong store không
+        String[] data = otpStore.get(email);
+        if (data == null) {
+            throw new LoiThaoTac("Mã OTP không hợp lệ hoặc chưa được gửi.");
+        }
+
+        // Kiểm tra hết hạn
+        LocalDateTime hetHan = LocalDateTime.parse(data[1]);
+        if (LocalDateTime.now().isAfter(hetHan)) {
+            otpStore.remove(email);
+            throw new LoiThaoTac("Mã OTP đã hết hạn. Vui lòng yêu cầu gửi lại.");
+        }
+
+        // Kiểm tra OTP có khớp không
+        if (!data[0].equals(otp)) {
+            throw new LoiThaoTac("Mã OTP không chính xác.");
+        }
+
+        // Tất cả hợp lệ → cập nhật mật khẩu mới
+        TaiKhoan tk = repo.findByEmail(email)
+                .orElseThrow(() -> new KhongTimThay("Không tìm thấy tài khoản."));
+        tk.setMatKhau(matKhauMoi.trim());
+        repo.save(tk);
+
+        // Xóa OTP khỏi store sau khi dùng xong
+        otpStore.remove(email);
     }
 }

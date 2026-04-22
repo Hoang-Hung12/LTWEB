@@ -11,4 +11,10 @@ public interface TaiKhoanService {
     TaiKhoanDto updateTaiKhoan(String maTK, TaiKhoanDto dto);
     void deleteTaiKhoan(String maTK);
     boolean login(String sdt, String matKhau);
+
+    // Quên mật khẩu: gửi OTP về email
+    void guiOtpQuenMatKhau(String email);
+
+    // Quên mật khẩu: xác nhận OTP và đặt mật khẩu mới
+    void datLaiMatKhau(String email, String otp, String matKhauMoi);
 }

@@ -68,4 +68,21 @@ public class TaiKhoanController {
         taiKhoanService.deleteTaiKhoan(maTK);
         return ResponseEntity.noContent().build();
     }
+
+    /** Bước 1 — Gửi OTP về email khi quên mật khẩu */
+    @PostMapping("/quen-mat-khau")
+    public ResponseEntity<String> quenMatKhau(@RequestParam String email) {
+        taiKhoanService.guiOtpQuenMatKhau(email);
+        return ResponseEntity.ok("Mã OTP đã được gửi đến email " + email + ". Có hiệu lực trong 5 phút.");
+    }
+
+    /** Bước 2 — Xác nhận OTP và đặt lại mật khẩu mới */
+    @PostMapping("/dat-lai-mat-khau")
+    public ResponseEntity<String> datLaiMatKhau(
+            @RequestParam String email,
+            @RequestParam String otp,
+            @RequestParam String matKhauMoi) {
+        taiKhoanService.datLaiMatKhau(email, otp, matKhauMoi);
+        return ResponseEntity.ok("Đặt lại mật khẩu thành công!");
+    }
 }

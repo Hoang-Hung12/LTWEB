@@ -14,50 +14,95 @@
     <h4 class="mb-0 fw-bold"><i class="fas fa-futbol me-2"></i>ARENAX</h4>
   </div>
   <div class="p-4">
-    <ul class="nav nav-tabs nav-fill mb-4" id="myTab">
-      <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#login">Đăng nhập</button></li>
-      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#register">Đăng ký</button></li>
-    </ul>
-    <div class="tab-content">
 
-      <!-- ĐĂNG NHẬP -->
-      <div class="tab-pane fade show active" id="login">
-        <div id="login-error" class="alert alert-danger py-2 d-none"></div>
-        <div class="mb-3">
-          <input type="text" class="form-control" id="login-sdt" placeholder="Số điện thoại">
+    <!-- TABS ĐĂNG NHẬP / ĐĂNG KÝ -->
+    <div id="panel-tabs">
+      <ul class="nav nav-tabs nav-fill mb-4" id="myTab">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#login">Đăng nhập</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#register">Đăng ký</button></li>
+      </ul>
+      <div class="tab-content">
+
+        <!-- ĐĂNG NHẬP -->
+        <div class="tab-pane fade show active" id="login">
+          <div id="login-error" class="alert alert-danger py-2 d-none"></div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="login-sdt" placeholder="Số điện thoại">
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" id="login-pw" placeholder="Mật khẩu">
+          </div>
+          <div class="text-end mb-3">
+            <a href="#" class="text-primary small" id="btn-show-forgot">Quên mật khẩu?</a>
+          </div>
+          <button class="btn btn-primary w-100 fw-bold" id="btn-login" onclick="doLogin()">ĐĂNG NHẬP</button>
+          <div class="text-center mt-3">
+            <a href="index.html" class="text-muted small">← Quay về trang chủ</a>
+          </div>
         </div>
-        <div class="mb-3">
-          <input type="password" class="form-control" id="login-pw" placeholder="Mật khẩu">
+
+        <!-- ĐĂNG KÝ -->
+        <div class="tab-pane fade" id="register">
+          <div id="reg-error" class="alert alert-danger py-2 d-none"></div>
+          <div id="reg-success" class="alert alert-success py-2 d-none"></div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="reg-hoten" placeholder="Họ và tên">
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="reg-sdt" placeholder="Số điện thoại">
+          </div>
+          <div class="mb-3">
+            <input type="email" class="form-control" id="reg-email" placeholder="Email">
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" id="reg-pw" placeholder="Mật khẩu">
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" id="reg-pw2" placeholder="Nhập lại mật khẩu">
+          </div>
+          <button class="btn btn-success w-100 fw-bold" id="btn-reg" onclick="doRegister()">ĐĂNG KÝ TÀI KHOẢN</button>
         </div>
-        <button class="btn btn-primary w-100 fw-bold" id="btn-login" onclick="doLogin()">ĐĂNG NHẬP</button>
+
+      </div>
+    </div>
+
+    <!-- PANEL QUÊN MẬT KHẨU -->
+    <div id="panel-forgot" class="d-none">
+
+      <!-- BƯỚC 1: Nhập SĐT -->
+      <div id="forgot-step1">
+        <h6 class="fw-bold mb-1">Quên mật khẩu</h6>
+        <p class="text-muted small mb-3">Nhập số điện thoại đã đăng ký để tiếp tục.</p>
+        <div id="forgot-error" class="alert alert-danger py-2 d-none"></div>
+        <div class="mb-3">
+          <input type="text" class="form-control" id="forgot-sdt" placeholder="Số điện thoại">
+        </div>
+        <button class="btn btn-primary w-100 fw-bold" id="btn-forgot-next" onclick="doForgotStep1()">TIẾP THEO</button>
         <div class="text-center mt-3">
-          <a href="index.html" class="text-muted small">← Quay về trang chủ</a>
+          <a href="#" class="text-muted small" id="btn-back-login">← Quay lại đăng nhập</a>
         </div>
       </div>
 
-      <!-- ĐĂNG KÝ -->
-      <div class="tab-pane fade" id="register">
-        <div id="reg-error" class="alert alert-danger py-2 d-none"></div>
-        <div id="reg-success" class="alert alert-success py-2 d-none"></div>
+      <!-- BƯỚC 2: Đặt mật khẩu mới -->
+      <div id="forgot-step2" class="d-none">
+        <h6 class="fw-bold mb-1">Đặt mật khẩu mới</h6>
+        <p class="text-muted small mb-3">Tìm thấy tài khoản. Hãy nhập mật khẩu mới của bạn.</p>
+        <div id="reset-error" class="alert alert-danger py-2 d-none"></div>
+        <div id="reset-success" class="alert alert-success py-2 d-none"></div>
         <div class="mb-3">
-          <input type="text" class="form-control" id="reg-hoten" placeholder="Họ và tên">
+          <input type="password" class="form-control" id="reset-pw" placeholder="Mật khẩu mới">
         </div>
         <div class="mb-3">
-          <input type="text" class="form-control" id="reg-sdt" placeholder="Số điện thoại">
+          <input type="password" class="form-control" id="reset-pw2" placeholder="Nhập lại mật khẩu mới">
         </div>
-        <div class="mb-3">
-          <input type="email" class="form-control" id="reg-email" placeholder="Email">
+        <button class="btn btn-success w-100 fw-bold" id="btn-reset" onclick="doResetPassword()">CẬP NHẬT MẬT KHẨU</button>
+        <div class="text-center mt-3">
+          <a href="#" class="text-muted small" id="btn-back-step1">← Nhập lại số điện thoại</a>
         </div>
-        <div class="mb-3">
-          <input type="password" class="form-control" id="reg-pw" placeholder="Mật khẩu">
-        </div>
-        <div class="mb-3">
-          <input type="password" class="form-control" id="reg-pw2" placeholder="Nhập lại mật khẩu">
-        </div>
-        <button class="btn btn-success w-100 fw-bold" id="btn-reg" onclick="doRegister()">ĐĂNG KÝ TÀI KHOẢN</button>
       </div>
 
     </div>
+
   </div>
 </div>
 
