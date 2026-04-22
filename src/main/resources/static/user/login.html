@@ -83,10 +83,25 @@
         </div>
       </div>
 
-      <!-- BƯỚC 2: Đặt mật khẩu mới -->
+      <!-- BƯỚC 2: Nhập mã OTP -->
       <div id="forgot-step2" class="d-none">
+        <h6 class="fw-bold mb-1">Nhập mã xác nhận</h6>
+        <p class="text-muted small mb-3" id="otp-hint">Mã OTP đã được gửi đến email của bạn. Có hiệu lực trong 5 phút.</p>
+        <div id="otp-error" class="alert alert-danger py-2 d-none"></div>
+        <div class="mb-3">
+          <input type="text" class="form-control text-center fw-bold fs-4 letter-spacing-3"
+                 id="forgot-otp" placeholder="_ _ _ _ _ _" maxlength="6" autocomplete="one-time-code">
+        </div>
+        <button class="btn btn-primary w-100 fw-bold" id="btn-otp-next" onclick="doForgotStep2()">XÁC NHẬN MÃ OTP</button>
+        <div class="text-center mt-3">
+          <a href="#" class="text-muted small" id="btn-back-step1">← Nhập lại số điện thoại</a>
+        </div>
+      </div>
+
+      <!-- BƯỚC 3: Đặt mật khẩu mới -->
+      <div id="forgot-step3" class="d-none">
         <h6 class="fw-bold mb-1">Đặt mật khẩu mới</h6>
-        <p class="text-muted small mb-3">Tìm thấy tài khoản. Hãy nhập mật khẩu mới của bạn.</p>
+        <p class="text-muted small mb-3">OTP hợp lệ. Hãy nhập mật khẩu mới của bạn.</p>
         <div id="reset-error" class="alert alert-danger py-2 d-none"></div>
         <div id="reset-success" class="alert alert-success py-2 d-none"></div>
         <div class="mb-3">
@@ -97,7 +112,7 @@
         </div>
         <button class="btn btn-success w-100 fw-bold" id="btn-reset" onclick="doResetPassword()">CẬP NHẬT MẬT KHẨU</button>
         <div class="text-center mt-3">
-          <a href="#" class="text-muted small" id="btn-back-step1">← Nhập lại số điện thoại</a>
+          <a href="#" class="text-muted small" id="btn-back-step2">← Nhập lại mã OTP</a>
         </div>
       </div>
 

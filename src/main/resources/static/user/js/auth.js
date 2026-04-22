@@ -5,6 +5,12 @@ function resolveApiBase() {
     if (!origin || origin === 'null' || href.startsWith('file:')) {
         return 'http://localhost:8080';
     }
+    // Nếu đang mở qua Live Server hoặc bất kỳ port nào khác 8080
+    // → vẫn phải trỏ về Spring Boot đang chạy ở port 8080
+    const port = window.location.port;
+    if (port && port !== '8080') {
+        return window.location.protocol + '//' + window.location.hostname + ':8080';
+    }
     return origin;
 }
 
